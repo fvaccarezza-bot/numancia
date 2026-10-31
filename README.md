@@ -24,7 +24,7 @@ Cada una con su versión `@2x`. Si falta una, la página muestra un placeholder 
 - Geist y Geist Mono: Google Fonts (ya enlazadas).
 - PP Telegraf Ultrabold: poner `PPTelegraf-Ultrabold.woff2` en `fonts/`.
   Hace falta licencia **web** de Pangram Pangram. Mientras no esté, usa Archivo como reemplazo.
-  ⚠️ Si se suben las fuentes, mantener el repo **privado**.
+  ⚠️ El repo es público: NO subir los archivos de la fuente. Cargarlos directo en el hosting (Netlify/Vercel) o en el servidor.
 
 ## Ver en local
 Abrir `index.html` en el navegador, o:
