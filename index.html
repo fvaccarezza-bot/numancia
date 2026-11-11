@@ -1,397 +1,428 @@
-<title>Numancia · Landing</title>
-<meta name="description" content="Numancia Innovación: fondo de inversión en ciencia aplicada en Latinoamérica.">
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1440">
+<title>Numancia Innovación · Fondo de inversión en ciencia aplicada</title>
+<meta name="description" content="Fondo de inversión en ciencia aplicada en Latinoamérica. Administrado por Zofingen S.G.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112,800&family=Geist:wght@400;500&family=Geist+Mono:wght@400&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,700..900&family=Geist:wght@400;500;600&family=Geist+Mono:wght@100;400&display=swap" rel="stylesheet">
 <style>
-/* PP Telegraf: poner los archivos en /fonts con licencia web. Mientras no estén, se usa Archivo expandida como reemplazo. */
-@font-face{font-family:"PP Telegraf";src:url("fonts/PPTelegraf-Ultrabold.woff2") format("woff2"),url("fonts/PPTelegraf-Ultrabold.woff") format("woff");font-weight:800;font-style:normal;font-display:swap}
+/* PP Telegraf (licencia web de Pangram Pangram). Poner los .woff2 en /fonts.
+   Mientras no estén, se usa Archivo ancho como reemplazo. */
+@font-face{font-family:"PP Telegraf";src:url("fonts/PPTelegraf-Ultrabold.woff2") format("woff2");font-weight:800;font-display:swap}
+@font-face{font-family:"PP Telegraf";src:url("fonts/PPTelegraf-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
 
-/* Layout: 1440 de referencia, contenedor de 1200 (12 col de 78 + gutter 24). Fondos de sección a sangre. Marca de un solo tema (claro), colores fijos. */
 :root{
-  color-scheme:light;
-  --tinta:#1D1D1B; --papel:#FAF8F3; --texto:#45443F; --linea:#B8B6B2; --gris:#757571;
-  --amarillo:#F2C230; --verde:#4FA43A; --violeta:#B07BD0; --celeste:#3B9BDC; --agua:#BFE4E1;
-  --violeta-60:#CEADDE; --violeta-30:#E4D2E8; --amarillo-30:#F8E8B8; --agua-30:#E8F2EE;
-  --display:"PP Telegraf","Archivo",ui-sans-serif,system-ui,sans-serif;
-  --sans:"Geist",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
-  --mono:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
-  --container:1200px; --gutter:24px; --pad:clamp(20px,6vw,120px);
+  --tinta:#1D1D1B; --papel:#FAF8F3; --texto:#45443F;
+  --amarillo:#F2C230; --verde:#6EA03F; --violeta:#B07BD0; --celeste:#3B9BDC; --agua:#BFE4E1;
+  --tinta30:#B8B6B2; --violeta60:#CEADDE; --violeta30:#E4D2E8; --agua30:#E8F2EE;
+  --display:"PP Telegraf","Archivo",system-ui,sans-serif;
+  --sans:"Geist",system-ui,sans-serif;
+  --mono:"Geist Mono",ui-monospace,monospace;
+  --amarillo-fade:linear-gradient(90deg,var(--amarillo) 0%,rgba(242,194,48,.2) 100%);
 }
-*{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:96px}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-body{margin:0;background:var(--papel);color:var(--texto);font:400 16px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
-img{max-width:100%;display:block}
-a{color:inherit}
-:focus-visible{outline:2px solid var(--tinta);outline-offset:3px}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:#ECEAE4}
+body{font-family:var(--sans);color:var(--tinta);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+img{display:block}
+a{color:inherit;text-decoration:none}
 
-.wrap{max-width:calc(var(--container) + 2*var(--pad));margin:0 auto;padding-inline:var(--pad)}
-.section{padding-block:clamp(72px,8vw,110px)}
+/* ---------- página a 1440 fijo ---------- */
+.page{position:relative;width:1440px;margin:0 auto;background:var(--papel);overflow:hidden}
+/* grano general: ruido en overlay */
+.page::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:50;opacity:.18;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 1.6 -.3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+section{position:relative}
+.abs{position:absolute}
 
-/* type */
-.d1,.d2,.t1,.t2,.t3,.t4{font-family:var(--display);font-weight:800;color:var(--tinta);margin:0;text-wrap:balance;font-stretch:112%}
-.d1{font-size:clamp(72px,10.4vw,150px);line-height:.85;letter-spacing:-.03em}
-.d2{font-size:clamp(44px,6.1vw,88px);line-height:.92;letter-spacing:-.03em}
-.t2{font-size:clamp(30px,2.8vw,40px);line-height:1.05;letter-spacing:-.02em}
-.t3{font-size:clamp(22px,2vw,28px);line-height:1.15;letter-spacing:-.01em}
-.t4{font-size:20px;line-height:1.2;letter-spacing:-.005em}
-.lead{font-size:20px;line-height:1.5;margin:0;color:var(--texto);max-width:588px}
-.small{font-size:16px;line-height:1.5;margin:0;color:var(--texto)}
-.eyebrow{display:inline-block;width:fit-content;justify-self:start;font:400 15px/1.5 var(--mono);text-transform:uppercase;color:var(--tinta);letter-spacing:.02em;margin:0;
-  background:linear-gradient(transparent 52%,var(--hl,var(--amarillo)) 52%);padding:0 3px}
-.mono{font-family:var(--mono)}
+/* ---------- tipografía ---------- */
+.display{font-family:var(--display);font-weight:800;font-stretch:118%;color:var(--tinta)}
+.d88{font-size:88px;line-height:.92;letter-spacing:-.03em}
+.d56{font-size:56px;line-height:.98;letter-spacing:-.025em}
+.d40{font-size:40px;line-height:1.05;letter-spacing:-.02em}
+.d28{font-size:28px;line-height:1.15;letter-spacing:-.01em}
+.d20{font-size:20px;line-height:1.2;letter-spacing:-.005em}
+.sub22{font-family:var(--display);font-weight:400;font-size:22px;line-height:1.25;letter-spacing:-.01em}
+.body20{font-size:20px;line-height:1.5;color:var(--texto)}
+.body18{font-size:18px;line-height:1.5;color:var(--texto)}
+.body16{font-size:16px;line-height:1.5;color:var(--texto)}
+.mono{font-family:var(--mono);text-transform:uppercase}
 
-/* buttons */
-.btn{display:inline-flex;align-items:center;gap:8px;font:500 16px/1 var(--sans);text-decoration:none;padding:15px 26px;border-radius:999px;border:2px solid var(--tinta);transition:transform .15s ease,background .15s ease,color .15s ease}
-.btn:hover{transform:translateY(-1px)}
-.btn--dark{background:var(--tinta);color:var(--papel)}
-.btn--dark:hover{background:#000}
-.btn--ghost{background:transparent;color:var(--tinta)}
-.btn--ghost:hover{background:var(--tinta);color:var(--papel)}
-.btn--yellow{background:var(--amarillo);border-color:var(--amarillo);color:var(--tinta)}
+/* resaltador tipo marcador detrás de la última línea */
+.mark{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 40' preserveAspectRatio='none'%3E%3Cpath fill='%23BFE4E1' d='M2 9 L40 4 L95 6 L150 3 L210 6 L265 3 L320 5 L372 3 L398 8 L396 30 L360 35 L300 33 L240 36 L180 34 L120 37 L60 34 L4 36 L0 24Z'/%3E%3C/svg%3E") no-repeat 0 88%/100% 42%;padding:0 .12em;margin:0 -.12em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
 
-/* image slots: show a placeholder until the file exists */
-.img{position:relative;margin:0;background:var(--slot,var(--agua-30));overflow:hidden}
-.img img{width:100%;height:100%;object-fit:cover;position:relative;z-index:1}
-.img figcaption{position:absolute;inset:0;display:grid;place-items:center;font:400 12px/1.4 var(--mono);text-transform:uppercase;color:var(--tinta);opacity:.6;text-align:center;padding:12px}
-.img--free{background:transparent}
-.img--free img{object-fit:contain}
+/* tags tipo sticker */
+.tag{display:inline-flex;align-items:center;gap:.6em;padding:6px 10px;font:400 14px/1.5 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--tinta);
+  background:var(--papel);border:1px solid #fff;border-radius:2px;transform:rotate(var(--r,0deg));
+  box-shadow:0 1px 1px rgba(28,28,26,.14),1px 5px 10px rgba(28,28,26,.12),inset 0 -1px 0 rgba(28,28,26,.06)}
+.tag b{font-weight:100}
+.tag.am{background:var(--amarillo)} .tag.ag{background:var(--agua)}
+.tag.sm{font-size:12px;padding:5px 8px}
 
-/* nav */
-.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--papel);border-bottom:1px solid var(--linea)}
-.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:96px;gap:24px}
-.logo{font-family:var(--display);font-weight:800;font-size:40px;letter-spacing:-.03em;color:var(--tinta);text-decoration:none;line-height:1;font-stretch:112%}
-.nav ul{display:flex;gap:37px;list-style:none;margin:0 0 0 auto;padding:0}
-.nav ul a{text-decoration:none;color:var(--tinta);font-size:16px}
+/* botones */
+.btn{display:inline-flex;align-items:center;height:40px;padding:0 26px;border-radius:999px;border:2px solid var(--tinta);font:400 16px/1 var(--sans);white-space:nowrap;transition:transform .2s,background .2s,color .2s}
+.btn.solid{background:var(--tinta);color:var(--papel)}
+.btn:hover{transform:translateY(-2px)}
+.btn.ghost:hover{background:var(--tinta);color:var(--papel)}
+
+/* texturas */
+.mili{position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(#DCE7E0 1px,transparent 1px),linear-gradient(90deg,#DCE7E0 1px,transparent 1px);
+  background-size:36px 36px;background-position:12px 0,12px 0;
+  -webkit-mask-image:linear-gradient(135deg,#000 0%,rgba(0,0,0,.35) 60%,transparent 100%);mask-image:linear-gradient(135deg,#000 0%,rgba(0,0,0,.35) 60%,transparent 100%)}
+.trama{position:absolute;inset:0;pointer-events:none;opacity:.45;
+  background-image:radial-gradient(circle,#E3B229 1.3px,transparent 1.6px);background-size:11px 11px;
+  -webkit-mask-image:linear-gradient(120deg,transparent 35%,#000 100%);mask-image:linear-gradient(120deg,transparent 35%,#000 100%)}
+
+/* ---------- NAV ---------- */
+.nav{position:sticky;top:0;z-index:40;height:96px;background:rgba(250,248,243,.6);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--tinta30)}
+.nav .logo{left:120px;top:24px;font-size:40px;line-height:1.05;letter-spacing:-.02em}
+.nav ul{position:absolute;left:560px;top:22px;height:48px;display:flex;align-items:center;gap:37px;list-style:none;font-size:16px}
 .nav ul a:hover{text-decoration:underline;text-underline-offset:4px}
-.menu{display:none;background:none;border:0;width:44px;height:44px;cursor:pointer;padding:10px}
-.menu span{display:block;height:2px;background:var(--tinta);margin:6px 0}
+.nav .btn{height:48px}
+.wrap{position:relative;width:1440px;margin:0 auto}
 
-/* hero */
-.hero{background:var(--amarillo);overflow:hidden}
-.hero .wrap{display:grid;grid-template-columns:7fr 5fr;align-items:center;gap:var(--gutter);padding-block:clamp(64px,8vw,120px) clamp(72px,9vw,150px)}
-.hero .copy{display:grid;gap:36px;min-width:0}
-.hero .eyebrow{--hl:var(--papel)}
-.hero .actions{display:flex;gap:24px;flex-wrap:wrap;margin-top:12px}
-.hero .img{--slot:transparent;aspect-ratio:675/441;width:calc(100% + var(--pad));margin-right:calc(-1*var(--pad))}
+/* ---------- HERO ---------- */
+.hero{height:820px;overflow:hidden}
+.hero .mol{left:673px;top:-48px;width:951px;height:855px}
+.hero .copy{left:120px;top:120px;width:743px}
+.hero h1{margin-top:47px}
+.hero p{width:588px;margin-top:32px}
+.hero .ctas{display:flex;gap:32px;margin-top:32px}
 
-/* tesis */
-.tesis .wrap{display:grid;grid-template-columns:1fr 518px;gap:var(--gutter) 40px;align-items:start}
-.tesis .copy{display:grid;gap:24px;max-width:560px}
-.tesis .t2{max-width:400px}
-.tesis .img{aspect-ratio:518/345}
+/* ---------- LA TESIS ---------- */
+.tesis{height:560px;background:var(--amarillo-fade);z-index:3}
+.tesis .copy{left:169px;top:121px;width:549px}
+.tesis h2{width:460px;margin-top:24px}
+.tesis p{margin-top:24px}
+.tesis .foto{left:753px;top:107px;width:518px;height:345px}
+.tesis .planilla{left:995px;top:68px;width:461px;height:454px}
 
-/* objetivos */
-.objetivos{border-top:1px solid var(--linea)}
-.obj-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--gutter);margin-top:28px}
-.obj{display:grid;gap:18px;align-content:start;min-width:0}
-.obj-num{display:flex;align-items:center;gap:20px}
-.obj-num .d1{color:var(--agua);font-variant-numeric:tabular-nums}
-.obj-num .img{width:140px;aspect-ratio:1}
-.obj .lead{max-width:560px}
-.hitos{list-style:none;margin:26px 0 0;padding:0;display:grid;gap:11px}
-.hitos li{display:flex;align-items:center;gap:16px;font:400 15px/1.5 var(--mono);text-transform:uppercase;color:var(--tinta)}
-.hitos li::before{content:"";flex:none;width:28px;height:2px;background:var(--violeta)}
-.capital{display:grid;grid-template-columns:4fr 8fr;gap:var(--gutter);align-items:end;margin-top:clamp(64px,7vw,110px)}
-.capital .copy{display:grid;gap:22px;padding-bottom:12px}
-.capital .t3{max-width:320px;font-size:22px}
-.steps-img{position:relative}
-.steps-img .img{aspect-ratio:809/300}
-.steps-img .tag{position:absolute;z-index:2;font:400 12px/1.3 var(--mono);text-transform:uppercase;color:var(--tinta);letter-spacing:.04em}
+/* ---------- DOS OBJETIVOS ---------- */
+.objetivos{height:1132px;overflow:hidden;z-index:2}
+.objetivos .num{font-size:180px;line-height:.8;top:150px}
+.objetivos .col{top:330px;width:560px}
+.objetivos .col p{margin-top:18px}
+.objetivos ul{list-style:none;margin-top:50px;display:grid;gap:11px}
+.objetivos li{display:flex;align-items:center;gap:16px;font:400 12px/1.5 var(--mono);text-transform:uppercase}
+.objetivos li::before{content:"";width:28px;height:2px;background:var(--violeta);flex:none}
+.objetivos .col.b li::before{width:20px}
+.banda{left:0;top:791px;width:1440px;height:195px;background:var(--amarillo-fade);overflow:hidden}
+.banda-copy{left:120px;top:826px;width:444px}
+.banda-copy hr{border:0;width:75px;height:2px;background:var(--violeta);margin:18px 0 14px}
+.objetivos .hitos{left:511px;top:702px;width:839px;height:362px}
 
-/* filosofia */
-.filosofia{background:var(--violeta-30)}
-.filosofia .d2{margin-top:36px;max-width:1100px}
-.filosofia blockquote{margin:36px 0 0;max-width:720px}
-.conds{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gutter);margin-top:62px}
-.cond{display:grid;gap:12px;align-content:start;min-width:0}
-.cond .img{--slot:var(--violeta-60);aspect-ratio:3/2;margin-bottom:16px}
-.cond .t4{border-top:2px solid var(--tinta);padding-top:22px}
+/* ---------- FILOSOFÍA (copias pegadas) ---------- */
+.filosofia{height:812px;background:var(--violeta30);z-index:4}
+.filosofia h2{left:120px;top:109px;width:1100px}
+.copia{position:absolute;width:372px;height:490px;background:var(--papel);transform-origin:0 0;
+  box-shadow:0 1px 2px rgba(28,28,26,.15),2px 10px 18px rgba(28,28,26,.14);transition:transform .3s}
+.copia:hover{transform:rotate(var(--r)) translateY(-6px)}
+.copia{transform:rotate(var(--r))}
+.copia .ph{position:absolute;left:16px;top:16px;width:340px;height:260px;object-fit:cover}
+.copia .tag{position:absolute;left:28px;top:236px;transform:none}
+.copia h3{position:absolute;left:20px;top:300px;width:340px}
+.copia .regla{position:absolute;left:20px;top:340px;width:150px;height:2px;background:var(--violeta)}
+.copia p{position:absolute;left:20px;top:358px;width:330px}
+.copia .cta{position:absolute;left:20px;top:453px;font:400 13px/1.3 var(--mono);text-transform:uppercase;text-decoration:underline;text-underline-offset:3px}
+.copia .cta:hover{background:var(--amarillo)}
+.cinta{position:absolute;height:54px;opacity:.85;object-fit:fill;z-index:2}
 
-/* areas */
-.areas-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--gutter);margin-top:36px}
-.area{position:relative;overflow:hidden;padding:48px;min-height:500px;display:grid;align-content:start;gap:30px}
-.area--vivir{background:var(--agua)}
-.area--producir{background:var(--violeta-30)}
-.area .lead{max-width:420px;position:relative;z-index:1}
-.area .shape{position:absolute;right:-20px;bottom:-30px;width:300px;height:300px}
-.pending{font:400 13px/1.4 var(--mono);color:#D9363E;margin-left:14px;text-transform:uppercase}
+/* ---------- CITA ---------- */
+.cita{height:632px;background:var(--amarillo-fade);overflow:hidden;z-index:1}
+.cita .bg{left:0;top:-52px;width:1440px;height:903px;object-fit:cover;opacity:.1;filter:grayscale(.2)}
+.cita .tag{left:627px;top:133px}
+.cita blockquote{left:182px;top:196px;width:1076px;text-align:center}
+.cita figcaption{left:0;right:0;top:506px;text-align:center;font:400 15px/1.3 var(--mono)}
 
-/* mas alla */
-.mas{border-top:1px solid var(--linea)}
-.mas-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gutter);margin-top:36px}
-.mas-grid > div{display:grid;gap:14px;align-content:start}
+/* ---------- ÁREAS ---------- */
+.areas{height:730px;overflow:hidden}
+.areas h2{left:178px;top:75px;width:900px}
+.area{position:absolute;top:227px;width:588px;height:401px;overflow:hidden}
+.area.vivir{left:118px;background:linear-gradient(90deg,rgba(191,228,225,0) 0%,var(--agua) 100%)}
+.area.producir{left:795px;background:linear-gradient(90deg,var(--violeta30) 0%,rgba(228,210,232,0) 100%)}
+.area .txt{position:absolute;left:48px;top:48px;width:340px}
+.area .regla{width:200px;height:2px;margin:30px 0}
+.area.vivir .regla{background:var(--agua)} .area.producir .regla{background:var(--violeta)}
+.area .sub22{width:320px}
+.area .body16{width:320px;margin-top:30px}
+.area .objs{position:absolute;left:368px;top:0;width:220px;height:401px}
+.area .forma{position:absolute;pointer-events:none}
 
-/* proceso */
-.proceso{background:var(--amarillo)}
-.proceso .eyebrow{--hl:var(--papel)}
-.proceso .d2{margin-top:16px;max-width:1000px}
-.pasos{list-style:none;margin:62px 0 0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);gap:var(--gutter);position:relative}
-.pasos::before{content:"";position:absolute;left:0;right:0;top:19px;height:3px;background:var(--tinta)}
-.paso{display:grid;gap:14px;align-content:start;position:relative;min-width:0}
-.paso .n{width:40px;height:40px;border-radius:50%;border:3px solid var(--tinta);background:var(--papel);display:grid;place-items:center;font:400 15px/1 var(--mono);color:var(--tinta);margin-bottom:12px}
-.paso:last-child .n{background:var(--tinta);color:var(--papel)}
+/* ---------- MÁS ALLÁ ---------- */
+.mas{height:451px}
+.mas .tag{left:120px;top:35px}
+.mas .cols{position:absolute;left:120px;top:149px;width:1220px;display:grid;grid-template-columns:repeat(3,370px);gap:55px}
+.mas .head{display:flex;gap:18px;align-items:flex-start;height:82px}
+.mas .head span{font:400 15px/1.5 var(--mono)}
+.mas .head img{margin-top:-4px}
+.mas h3{margin-top:18px}
+.mas p{margin-top:18px;width:360px}
 
-/* cta */
-.cta-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--gutter)}
-.cta{padding:56px 48px 48px;min-height:420px;display:grid;align-content:start;gap:26px}
-.cta--dark{background:var(--tinta)}
-.cta--dark .t2,.cta--dark .lead{color:var(--papel)}
-.cta--agua{background:var(--agua)}
-.cta .btn{justify-self:start;margin-top:auto}
+/* ---------- DÓNDE ESTAMOS ---------- */
+.donde{height:680px;background:var(--amarillo-fade);overflow:hidden}
+.donde .mapa{left:0;top:0;width:1440px;height:680px}
+.donde .copy{left:120px;top:110px;width:747px}
+.donde h2{margin-top:38px}
+.donde p{width:668px;margin-top:32px}
+.cifras{display:flex;gap:48px;margin-top:56px}
+.cifras b{display:block;font-size:56px;line-height:.98;letter-spacing:-.025em}
+.cifras span{display:block;margin-top:4px;font:400 15px/1.5 var(--mono);text-transform:uppercase}
 
-/* footer */
-.footer{background:var(--tinta);color:var(--papel);padding-block:80px 52px}
-.footer .grid{display:grid;grid-template-columns:7fr 5fr;gap:var(--gutter)}
-.footer .logo{color:var(--papel)}
-.footer p{margin:0;color:var(--papel)}
-.footer .eyebrow{--hl:var(--violeta);color:var(--papel)}
-.footer .legal{margin-top:72px;font:400 13px/1.4 var(--mono);color:#E8857E}
-.todo{color:#E8857E}
+/* ---------- CÓMO TRABAJAMOS ---------- */
+.proceso{height:680px}
+.proceso .tag{left:120px;top:105px}
+.proceso h2{left:120px;top:150px;width:1000px}
+.proceso .linea{left:120px;top:384px;width:1200px;height:3px;background:var(--tinta)}
+.paso{position:absolute;top:366px;width:221px}
+.paso i{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;border:3px solid var(--tinta);background:var(--papel);font:400 15px/1 var(--mono);font-style:normal}
+.paso.ult i{background:var(--tinta);color:var(--papel)}
+.paso h3{margin-top:24px;min-height:64px}
+.paso p{margin-top:16px}
 
-/* responsive */
-@media (max-width:1100px){
-  .nav ul{gap:22px}
-  .tesis .wrap{grid-template-columns:1fr 1fr}
-}
-@media (max-width:900px){
-  .nav ul{display:none;position:absolute;left:0;right:0;top:96px;background:var(--papel);flex-direction:column;gap:0;padding:8px var(--pad) 20px;border-bottom:1px solid var(--linea)}
-  .nav ul.open{display:flex}
-  .nav ul a{display:block;padding:12px 0;font-size:18px}
-  .menu{display:block}
-  .nav .btn{display:none}
-  .hero .wrap,.tesis .wrap,.capital,.footer .grid{grid-template-columns:1fr}
-  .hero .img{width:100%;margin-right:0}
-  .obj-grid,.areas-grid,.cta-grid{grid-template-columns:1fr;gap:48px}
-  .areas-grid,.cta-grid{gap:var(--gutter)}
-  .conds,.mas-grid{grid-template-columns:1fr;gap:40px}
-  .pasos{grid-template-columns:1fr;gap:28px}
-  .pasos::before{left:19px;right:auto;top:0;bottom:0;width:3px;height:auto}
-  .paso{grid-template-columns:40px 1fr;column-gap:20px}
-  .paso .n{grid-row:span 2;margin:0}
-  .area{min-height:0;padding:36px 36px 190px}
-  .area .shape{width:200px;height:200px}
-  .cta{padding:40px 32px;min-height:0}
-}
-@media (max-width:520px){
-  .nav .wrap{height:72px}
-  html{scroll-padding-top:72px}
-  .nav ul{top:72px}
-  .logo{font-size:30px}
-  .steps-img .tag{display:none}
-  .obj-num .img{width:100px}
-}
+/* ---------- CONTACTO ---------- */
+.contacto{height:639px}
+.puerta{position:absolute;left:120px;width:1200px;height:200px;display:block;transition:transform .25s}
+.puerta:hover{transform:translateY(-4px)}
+.puerta.a{top:60px;background:var(--amarillo-fade)}
+.puerta.b{top:350px;background:linear-gradient(90deg,var(--agua) 0%,rgba(191,228,225,.1) 100%)}
+.puerta .tag{position:absolute;left:40px;top:30px}
+.puerta h3{position:absolute;left:39px;top:81px}
+.puerta p{position:absolute;left:39px;top:139px}
+.puerta .accion{position:absolute;right:221px;top:92px;font:400 12px/1.3 var(--mono);text-transform:uppercase}
+.puerta .flecha{position:absolute;left:1015px;top:40px;width:120px;height:120px;border-radius:50%;background:var(--tinta);color:var(--papel);display:grid;place-items:center;font:400 51px/1 var(--sans);transition:transform .25s}
+.puerta:hover .flecha{transform:translateX(6px)}
+
+/* ---------- FOOTER ---------- */
+.footer{height:360px;background:var(--tinta);color:var(--papel);overflow:hidden}
+.footer p{left:120px;top:71px;font-size:16px;line-height:1.5}
+.footer .wordmark{left:-28px;top:119px;font-size:311.87px;line-height:1.05;letter-spacing:-.02em;color:var(--papel);white-space:nowrap;
+  text-shadow:0 -10px 0 var(--amarillo),0 -20px 0 var(--violeta)}
 </style>
+</head>
+<body>
+<div class="page">
 
+<!-- NAV -->
 <header class="nav">
-  <div class="wrap">
-    <a class="logo" href="#top" aria-label="Numancia, inicio">numancia</a>
-    <ul id="menu-list">
+  <div class="wrap" style="height:96px">
+    <a href="#top" class="abs logo display">numancia</a>
+    <ul>
       <li><a href="#fondo">El fondo</a></li>
       <li><a href="#como-invertimos">Cómo invertimos</a></li>
       <li><a href="#areas">Áreas</a></li>
       <li><a href="#proceso">Proceso</a></li>
       <li><a href="#contacto">Contacto</a></li>
+      <li style="margin-left:0"><a class="btn solid" href="#contacto">Presentar un proyecto</a></li>
     </ul>
-    <a class="btn btn--dark" href="#contacto">Presentar un proyecto</a>
-    <button class="menu" id="menu-btn" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu-list"><span></span><span></span><span></span></button>
   </div>
 </header>
 
-<main id="top">
-  <!-- HERO -->
-  <section class="hero">
-    <div class="wrap">
-      <div class="copy">
-        <p class="eyebrow">Fondo de inversión en ciencia aplicada · Latinoamérica</p>
-        <h1 class="d2">Rara vez el obstáculo es la ciencia.</h1>
-        <p class="lead">Invertimos en compañías de base científica y financiamos lo que les falta para llegar al mercado: una tecnología madura y una compañía lista para firmar.</p>
-        <div class="actions">
-          <a class="btn btn--dark" href="#contacto">Presentar un proyecto</a>
-          <a class="btn btn--ghost" href="#contacto-inversores">Soy inversor <span aria-hidden="true">→</span></a>
-        </div>
-      </div>
-      <figure class="img">
-        <img src="img/hero-placa-petri.png" srcset="img/hero-placa-petri.png 1x, img/hero-placa-petri@2x.png 2x" alt="Placa de Petri con cultivo" onerror="this.remove()">
-        <figcaption>img/hero-placa-petri.png</figcaption>
-      </figure>
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="mili"></div>
+  <img class="abs mol" src="img/hero-molecula.png" alt="Modelo de una molécula en colores amarillo, violeta y agua">
+  <div class="abs copy">
+    <span class="tag am" style="--r:1.6deg">Fondo de inversión en ciencia aplicada · Latinoamérica</span>
+    <h1 class="display d88">Rara vez el obstáculo es<br><span class="mark">la ciencia.</span></h1>
+    <p class="body20">Invertimos en compañías de base científica y financiamos lo que les falta para llegar al mercado: una tecnología madura y una compañía lista para firmar.</p>
+    <div class="ctas">
+      <a class="btn solid" href="#contacto">Presentar un proyecto</a>
+      <a class="btn ghost" href="#contacto">Soy inversor&nbsp;&nbsp;→</a>
     </div>
-  </section>
-
-  <!-- TESIS -->
-  <section class="section tesis" id="fondo">
-    <div class="wrap">
-      <div class="copy">
-        <p class="eyebrow">La tesis</p>
-        <h2 class="t2">La ciencia está. Falta el camino al mercado.</h2>
-        <p class="lead">En Latinoamérica hay ciencia de nivel mundial que no llega al mercado. Lo que falta es capital paciente, estructura empresarial y un puente hacia la industria. Numancia invierte en ese espacio.</p>
-      </div>
-      <figure class="img">
-        <img src="img/tesis-foto.jpg" srcset="img/tesis-foto.jpg 1x, img/tesis-foto@2x.jpg 2x" alt="Investigadoras trabajando en un laboratorio" onerror="this.remove()">
-        <figcaption>img/tesis-foto.jpg</figcaption>
-      </figure>
-    </div>
-  </section>
-
-  <!-- OBJETIVOS -->
-  <section class="section objetivos" id="como-invertimos">
-    <div class="wrap">
-      <p class="eyebrow">En cada inversión, dos objetivos en paralelo</p>
-      <div class="obj-grid">
-        <article class="obj">
-          <div class="obj-num"><span class="d1" aria-hidden="true">01</span>
-            <figure class="img img--free"><img src="img/objetivo-1.png" srcset="img/objetivo-1.png 1x, img/objetivo-1@2x.png 2x" alt="" onerror="this.remove()"><figcaption>objetivo-1.png</figcaption></figure></div>
-          <h3 class="t2">Madurez tecnológica</h3>
-          <p class="lead">Llevar la tecnología del laboratorio al punto en que un socio industrial o un inversor pueda evaluarla y comprarla.</p>
-          <ul class="hitos">
-            <li>Validaciones técnicas pendientes</li>
-            <li>Procesos reproducibles y escalables</li>
-            <li>Calidad: BPL, BPM, ISO, trazabilidad</li>
-            <li>Camino regulatorio</li>
-            <li>Patentes y libertad de operación</li>
-          </ul>
-        </article>
-        <article class="obj">
-          <div class="obj-num"><span class="d1" aria-hidden="true">02</span>
-            <figure class="img img--free"><img src="img/objetivo-2.png" srcset="img/objetivo-2.png 1x, img/objetivo-2@2x.png 2x" alt="" onerror="this.remove()"><figcaption>objetivo-2.png</figcaption></figure></div>
-          <h3 class="t2">Preparación corporativa</h3>
-          <p class="lead">Construir la compañía que va a ser dueña de esa tecnología, lista para la próxima ronda, licencia o alianza.</p>
-          <ul class="hitos">
-            <li>Estructura para inversión internacional</li>
-            <li>PI a nombre de la compañía</li>
-            <li>Acuerdos con instituciones</li>
-            <li>Gobierno y gestión por resultados</li>
-            <li>Lista para due diligence</li>
-          </ul>
-        </article>
-      </div>
-
-      <div class="capital">
-        <div class="copy">
-          <h3 class="t2">El capital se libera contra hitos acordados al invertir.</h3>
-          <p class="t3">Así el riesgo baja de forma visible para todos.</p>
-        </div>
-        <div class="steps-img">
-          <figure class="img img--free"><img src="img/hitos.png" srcset="img/hitos.png 1x, img/hitos@2x.png 2x" alt="Escalera de hitos: capital inicial, hito 1, hito 2, hito 3 y objetivo" onerror="this.remove()"><figcaption>img/hitos.png</figcaption></figure>
-          <span class="tag" style="left:11.9%;top:26.7%">Capital<br>inicial</span>
-          <span class="tag" style="left:28.8%;top:18.7%">Hito 01</span>
-          <span class="tag" style="left:46.2%;top:3.3%">Hito 02</span>
-          <span class="tag" style="left:62%;top:-5.3%">Hito 03</span>
-          <span class="tag" style="left:78.9%;top:-16.3%">Objetivo</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FILOSOFÍA -->
-  <section class="section filosofia">
-    <div class="wrap">
-      <p class="eyebrow">Cómo decidimos</p>
-      <h2 class="d2">Primero el problema. Después la tecnología.</h2>
-      <blockquote><p class="lead">“Preferimos un buen científico frente a un problema real antes que un buen pitch frente a un mercado imaginado.”</p></blockquote>
-      <div class="conds">
-        <div class="cond">
-          <figure class="img"><img src="img/condicion-ciencia.jpg" srcset="img/condicion-ciencia.jpg 1x, img/condicion-ciencia@2x.jpg 2x" alt="Científica trabajando en el laboratorio" onerror="this.remove()"><figcaption>img/condicion-ciencia.jpg</figcaption></figure>
-          <h3 class="t4">Ciencia validada</h3>
-          <p class="small">Conocimiento reconocido a nivel internacional, no una apuesta aislada.</p>
-        </div>
-        <div class="cond">
-          <figure class="img"><img src="img/condicion-region.jpg" srcset="img/condicion-region.jpg 1x, img/condicion-region@2x.jpg 2x" alt="Paisaje productivo de la región" onerror="this.remove()"><figcaption>img/condicion-region.jpg</figcaption></figure>
-          <h3 class="t4">Latinoamérica como ventaja</h3>
-          <p class="small">Como base productiva, mercado de aplicación o acceso a recursos y talento.</p>
-        </div>
-        <div class="cond">
-          <figure class="img"><img src="img/condicion-mercado.jpg" srcset="img/condicion-mercado.jpg 1x, img/condicion-mercado@2x.jpg 2x" alt="Planta industrial" onerror="this.remove()"><figcaption>img/condicion-mercado.jpg</figcaption></figure>
-          <h3 class="t4">Mercado relevante</h3>
-          <p class="small">Grande para crecer en serio, con un camino claro: licencia, servicios, producto o alianza.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ÁREAS -->
-  <section class="section areas" id="areas">
-    <div class="wrap">
-      <p class="eyebrow">Áreas de interés</p><span class="pending">nombres a definir</span>
-      <div class="areas-grid">
-        <article class="area area--vivir">
-          <h3 class="t2">Vivir mejor</h3>
-          <p class="lead">Tecnologías que mejoran la salud y el bienestar: una terapia, un mejor tratamiento de heridas, un diagnóstico más temprano, un alimento más sano o un dispositivo que simplifica un tratamiento.</p>
-          <svg class="shape" viewBox="0 0 200 200" aria-hidden="true"><g transform="rotate(-35 100 100)"><path d="M100 62 H62 A38 38 0 0 0 62 138 H100 Z" fill="var(--tinta)"/><path d="M100 62 H138 A38 38 0 0 1 138 138 H100 Z" fill="var(--amarillo)"/></g></svg>
-        </article>
-        <article class="area area--producir">
-          <h3 class="t2">Producir mejor</h3>
-          <p class="lead">Tecnologías para aprovechar mejor los recursos naturales en los sectores donde Latinoamérica ya es fuerte: agro, pesca y minería.</p>
-          <svg class="shape" viewBox="0 0 200 200" aria-hidden="true"><g transform="rotate(30 100 100)"><path d="M100 14 C165 55 170 140 100 188 C30 140 35 55 100 14 Z" fill="var(--violeta)"/></g></svg>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- MÁS ALLÁ DEL CAPITAL -->
-  <section class="section mas">
-    <div class="wrap">
-      <p class="eyebrow">Más allá del capital</p>
-      <div class="mas-grid">
-        <div><h3 class="t3">Consejo científico</h3><p class="small">Asesores que ayudan a evaluar compañías y, cuando hace falta, acompañan desde el directorio.</p></div>
-        <div><h3 class="t3">Red industrial</h3><p class="small">Acceso a socios industriales e internacionales y a instituciones científicas.</p></div>
-        <div><h3 class="t3">Financiamiento no dilutivo</h3><p class="small">Subsidios y programas públicos que suman sin ceder participación.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PROCESO -->
-  <section class="section proceso" id="proceso">
-    <div class="wrap">
-      <p class="eyebrow">Cómo trabajamos</p>
-      <h2 class="d2">De la primera charla a la siguiente ronda.</h2>
-      <ol class="pasos">
-        <li class="paso"><span class="n">1</span><h3 class="t3">Primer contacto</h3><p class="small">Una charla para entender el problema. No hace falta un plan de negocios.</p></li>
-        <li class="paso"><span class="n">2</span><h3 class="t3">Evaluación</h3><p class="small">Científicos revisan los datos; en paralelo, el mercado. Devolvemos lo que vimos.</p></li>
-        <li class="paso"><span class="n">3</span><h3 class="t3">Diseño de la inversión</h3><p class="small">Hitos para los dos objetivos y el instrumento adecuado.</p></li>
-        <li class="paso"><span class="n">4</span><h3 class="t3">Ejecución</h3><p class="small">Capital contra hitos, con asesores, red y fondos no dilutivos.</p></li>
-        <li class="paso"><span class="n">5</span><h3 class="t3">Siguiente etapa</h3><p class="small">Lista para una ronda, una licencia o una alianza.</p></li>
-      </ol>
-    </div>
-  </section>
-
-  <!-- CONTACTO -->
-  <section class="section" id="contacto">
-    <div class="wrap cta-grid">
-      <article class="cta cta--dark">
-        <h2 class="t2">¿Tenés un proyecto científico?</h2>
-        <p class="lead">Contanos qué problema resuelve tu tecnología y en qué punto está.</p>
-        <a class="btn btn--yellow" href="#contacto">Presentar un proyecto</a>
-      </article>
-      <article class="cta cta--agua" id="contacto-inversores">
-        <h2 class="t2">¿Querés invertir en el fondo?</h2>
-        <p class="lead">Conocé la tesis, la estructura del fondo y cómo participar.</p>
-        <a class="btn btn--dark" href="#contacto">Hablar con el equipo</a>
-      </article>
-    </div>
-  </section>
-</main>
-
-<footer class="footer">
-  <div class="wrap">
-    <div class="grid">
-      <div style="display:grid;gap:28px;align-content:start">
-        <a class="logo" href="#top">numancia</a>
-        <p class="small" style="color:var(--papel)">Fondo de inversión en ciencia aplicada.<br>Administrado por Zofingen S.G.</p>
-      </div>
-      <div style="display:grid;gap:10px;align-content:start">
-        <p class="eyebrow">Contacto</p>
-        <p class="small todo">contacto@numancia — a definir</p>
-        <p class="small todo">LinkedIn · a definir</p>
-      </div>
-    </div>
-    <p class="legal">Material preliminar. No constituye oferta pública. (disclaimer CNV a confirmar)</p>
   </div>
+</section>
+
+<!-- LA TESIS -->
+<section class="tesis" id="fondo">
+  <div class="trama"></div>
+  <div class="abs copy">
+    <span class="tag" style="--r:-1.1deg"><b>FIG.#1</b>· La tesis</span>
+    <h2 class="display d56">La ciencia está.<br>Falta el camino<br><span class="mark">al mercado.</span></h2>
+    <p class="body18">En Latinoamérica hay ciencia de nivel mundial que no llega al mercado. Lo que falta es capital paciente, estructura empresarial y un puente hacia la industria. Numancia invierte en ese espacio.</p>
+  </div>
+  <img class="abs foto" src="img/tesis-foto.jpg" alt="Investigadora trabajando en un taller de prototipos">
+  <img class="abs planilla" src="img/tesis-planilla.png" alt="">
+</section>
+
+<!-- DOS OBJETIVOS -->
+<section class="objetivos" id="como-invertimos">
+  <div class="banda abs"><div class="trama"></div></div>
+  <span class="tag am abs" style="left:120px;top:74px;--r:.9deg"><b>FIG.#2</b>· dos objetivos en paralelo</span>
+
+  <span class="abs display num" style="left:120px;color:var(--agua)">01</span>
+  <img class="abs" src="img/objetivo-1.png" style="left:448px;top:138px;width:149px" alt="">
+  <div class="abs col a" style="left:120px">
+    <h3 class="display d40">Madurez tecnológica</h3>
+    <p class="body16">Llevar la tecnología del laboratorio al punto en que un socio industrial o un inversor pueda evaluarla y comprarla.</p>
+    <ul>
+      <li>Validaciones técnicas pendientes</li>
+      <li>Procesos reproducibles y escalables</li>
+      <li>Calidad: BPL, BPM, ISO, trazabilidad</li>
+      <li>Camino regulatorio</li>
+      <li>Patentes y libertad de operación</li>
+    </ul>
+  </div>
+
+  <span class="abs display num" style="left:732px;color:var(--violeta60)">02</span>
+  <img class="abs" src="img/objetivo-2.png" style="left:1046px;top:150px;width:148px" alt="">
+  <div class="abs col b" style="left:732px">
+    <h3 class="display d40">Preparación corporativa</h3>
+    <p class="body16">Construir la compañía que va a ser dueña de esa tecnología, lista para la próxima ronda, licencia o alianza.</p>
+    <ul>
+      <li>Estructura para inversión internacional</li>
+      <li>PI a nombre de la compañía</li>
+      <li>Acuerdos con instituciones</li>
+      <li>Gobierno y gestión por resultados</li>
+      <li>Lista para due diligence</li>
+    </ul>
+  </div>
+
+  <div class="abs banda-copy">
+    <h3 class="display d28">El capital se libera contra hitos acordados al invertir.</h3>
+    <hr>
+    <p class="sub22">Así el riesgo baja de forma visible para todos.</p>
+  </div>
+  <img class="abs hitos" src="img/hitos.png" alt="Capital inicial, hito 01, hito 02, hito 03 y objetivo">
+</section>
+
+<!-- FILOSOFÍA -->
+<section class="filosofia">
+  <span class="tag abs" style="left:120px;top:60px;--r:-1.4deg"><b>FIG.#3</b>· Cómo decidimos</span>
+  <h2 class="abs display d88">Primero el problema.<br><span class="mark">Después la tecnología.</span></h2>
+
+  <article class="copia" style="left:128px;top:334px;--r:3deg">
+    <img class="ph" src="img/foto-ciencia.jpg" alt="Científica observando una placa de Petri">
+    <span class="tag sm"><b>LÁM.#2</b>· Laboratorio</span>
+    <h3 class="display d20">Ciencia validada</h3><div class="regla"></div>
+    <p class="body16">Conocimiento reconocido a nivel internacional, no una apuesta aislada.</p>
+    <a class="cta" href="#proceso">Cómo evaluamos&nbsp;&nbsp;→</a>
+  </article>
+  <img class="cinta" src="img/cinta.png" style="left:215px;top:318px;width:208px;transform:rotate(-2.6deg)" alt="">
+
+  <article class="copia" style="left:525px;top:391px;--r:-2.2deg">
+    <img class="ph" src="img/foto-region.jpg" alt="Campo cultivado con una estación agrícola al fondo">
+    <span class="tag sm"><b>LÁM.#3</b>· Campo</span>
+    <h3 class="display d20">Latinoamérica como ventaja</h3><div class="regla"></div>
+    <p class="body16">Como base productiva, mercado de aplicación o acceso a recursos y talento.</p>
+    <a class="cta" href="#donde">Dónde estamos&nbsp;&nbsp;→</a>
+  </article>
+  <img class="cinta" src="img/cinta.png" style="left:648px;top:355px;width:148px;transform:rotate(-2.6deg)" alt="">
+
+  <article class="copia" style="left:955px;top:337px;--r:1.6deg">
+    <img class="ph" src="img/foto-mercado.jpg" alt="Ingeniero revisando un biorreactor en una planta piloto">
+    <span class="tag sm"><b>LÁM.#4</b>· Planta piloto</span>
+    <h3 class="display d20">Mercado relevante</h3><div class="regla"></div>
+    <p class="body16">Grande para crecer en serio, con un camino claro: licencia, servicios, producto o alianza.</p>
+    <a class="cta" href="#areas">Áreas de interés&nbsp;&nbsp;→</a>
+  </article>
+  <img class="cinta" src="img/cinta.png" style="left:1083px;top:317px;width:157px;transform:rotate(-2.6deg)" alt="">
+</section>
+
+<!-- CITA -->
+<section class="cita">
+  <img class="abs bg" src="img/cita-foto.jpg" alt="">
+  <span class="tag ag abs" style="--r:1.2deg"><b>FIG.#4</b>· Criterio</span>
+  <figure>
+    <blockquote class="abs display d88">“ Un buen científico frente a un problema real, antes que un buen pitch ”</blockquote>
+    <figcaption class="abs">— Criterio de inversión de Numancia</figcaption>
+  </figure>
+</section>
+
+<!-- ÁREAS -->
+<section class="areas" id="areas">
+  <h2 class="abs display d88"><span class="mark">Más allá del capital.</span></h2>
+  <div class="area vivir">
+    <img class="objs" src="img/areas-vivir.png" alt="Objetos de salud: estetoscopio, medicamentos, dispositivos de diagnóstico">
+    <img class="forma" src="img/forma-amarilla.png" style="left:420px;top:300px;width:200px" alt="">
+    <div class="txt">
+      <h3 class="display d40">Vivir mejor</h3><div class="regla"></div>
+      <p class="sub22">Tecnologías que mejoran la salud y el bienestar</p>
+      <p class="body16">una terapia, un mejor tratamiento de heridas, un diagnóstico más temprano, un alimento más sano o un dispositivo que simplifica un tratamiento.</p>
+    </div>
+  </div>
+  <div class="area producir">
+    <img class="objs" src="img/areas-producir.png" alt="Objetos productivos: dron, sensores, biorreactor, panel solar">
+    <img class="forma" src="img/forma-violeta.png" style="left:470px;top:225px;width:170px" alt="">
+    <div class="txt">
+      <h3 class="display d40">Producir mejor</h3><div class="regla"></div>
+      <p class="sub22">Tecnologías que aprovechan mejor los recursos naturales</p>
+      <p class="body16">un cultivo más resistente, una pesca más eficiente, una minería con menos impacto o un insumo que agrega valor.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MÁS ALLÁ DEL CAPITAL -->
+<section class="mas">
+  <span class="tag am abs" style="--r:-.8deg"><b>FIG.#5</b>· Áreas de interés</span>
+  <div class="cols">
+    <div><div class="head"><span>01.</span><img src="img/mas-1.png" width="104" alt=""></div>
+      <h3 class="display d20">Consejo científico</h3>
+      <p class="body16">Asesores que ayudan a evaluar compañías y, cuando hace falta, acompañan desde el directorio.</p></div>
+    <div><div class="head"><span>02.</span><img src="img/mas-2.png" width="151" alt=""></div>
+      <h3 class="display d20">Red industrial</h3>
+      <p class="body16">Acceso a socios industriales e internacionales y a instituciones científicas.</p></div>
+    <div><div class="head"><span>03.</span><img src="img/mas-3.png" width="128" alt=""></div>
+      <h3 class="display d20">Financiamiento no dilutivo</h3>
+      <p class="body16">Subsidios y programas públicos que suman sin ceder participación.</p></div>
+  </div>
+</section>
+
+<!-- DÓNDE ESTAMOS -->
+<section class="donde" id="donde">
+  <img class="abs mapa" src="img/mapa.png" alt="Mapa de Latinoamérica con Ciudad de México, Bogotá, São Paulo, Santiago, Montevideo y Buenos Aires">
+  <div class="abs copy">
+    <span class="tag" style="--r:1.5deg"><b>FIG.#6</b>· Dónde estamos</span>
+    <h2 class="display d88">El talento está.<br><span class="mark">Faltaba el puente.</span></h2>
+    <p class="body18">Latinoamérica produce ciencia de primer nivel que pocas veces llega al mercado. Estamos donde esa ciencia ocurre, de Ciudad de México a Buenos Aires.</p>
+    <div class="cifras">
+      <div><b class="display">8</b><span>Países</span></div>
+      <div><b class="display">12</b><span>Compañías</span></div>
+      <div><b class="display">45</b><span>Instituciones</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CÓMO TRABAJAMOS -->
+<section class="proceso" id="proceso">
+  <span class="tag am abs" style="--r:-1deg"><b>FIG.#7</b>· Cómo trabajamos</span>
+  <h2 class="abs display d88">De la primera charla<br>a la siguiente ronda.</h2>
+  <div class="abs linea"></div>
+  <div class="paso" style="left:120px"><i>1</i><h3 class="display d28">Primer contacto</h3><p class="body16">Una charla para entender el problema. No hace falta un plan de negocios.</p></div>
+  <div class="paso" style="left:365px"><i>2</i><h3 class="display d28">Evaluación</h3><p class="body16">Científicos revisan los datos; en paralelo, el mercado. Devolvemos lo que vimos.</p></div>
+  <div class="paso" style="left:610px"><i>3</i><h3 class="display d28">Diseño de la inversión</h3><p class="body16">Hitos para los dos objetivos y el instrumento adecuado.</p></div>
+  <div class="paso" style="left:854px"><i>4</i><h3 class="display d28">Ejecución</h3><p class="body16">Capital contra hitos, con asesores, red y fondos no dilutivos.</p></div>
+  <div class="paso ult" style="left:1099px"><i>5</i><h3 class="display d28">Siguiente etapa</h3><p class="body16">Lista para una ronda, una licencia o una alianza.</p></div>
+</section>
+
+<!-- CONTACTO -->
+<section class="contacto" id="contacto">
+  <a class="puerta a" href="mailto:contacto@numancia.com?subject=Presentar%20un%20proyecto">
+    <span class="tag" style="--r:1.3deg"><b>A</b>· Para científicos</span>
+    <h3 class="display d40">¿Tenés un proyecto científico?</h3>
+    <p class="body18">Contanos qué problema resuelve tu tecnología y en qué punto está.</p>
+    <span class="accion">Presentar un proyecto</span>
+    <span class="flecha">→</span>
+  </a>
+  <a class="puerta b" href="mailto:contacto@numancia.com?subject=Invertir%20en%20el%20fondo">
+    <span class="tag" style="--r:-1.1deg"><b>B</b>· Para inversores</span>
+    <h3 class="display d40">¿Querés invertir en el fondo?</h3>
+    <p class="body18">Conocé la tesis, la estructura del fondo y cómo participar.</p>
+    <span class="accion">Hablar con el equipo</span>
+    <span class="flecha">→</span>
+  </a>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <section style="height:360px">
+    <p class="abs">Fondo de inversión en ciencia aplicada.<br>Administrado por Zofingen S.G.</p>
+    <span class="abs display wordmark" aria-hidden="true">numancia</span>
+  </section>
 </footer>
 
-<script>
-  const btn=document.getElementById('menu-btn'),list=document.getElementById('menu-list');
-  btn.addEventListener('click',()=>{const open=list.classList.toggle('open');btn.setAttribute('aria-expanded',open);btn.setAttribute('aria-label',open?'Cerrar menú':'Abrir menú')});
-  list.addEventListener('click',e=>{if(e.target.tagName==='A'){list.classList.remove('open');btn.setAttribute('aria-expanded','false')}});
-</script>
+</div>
+</body>
+</html>
