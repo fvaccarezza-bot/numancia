@@ -30,7 +30,13 @@ img{display:block}
 a{color:inherit;text-decoration:none}
 
 /* ---------- página a 1440 fijo ---------- */
-.page{position:relative;width:1440px;margin:0 auto;background:var(--papel);overflow:hidden}
+/* La página ocupa todo el ancho; el contenido queda en 1440 centrado y los fondos se extienden hasta el borde.
+   clip y no hidden: hidden convierte a .page en contenedor de scroll y el nav sticky deja de pegarse */
+.page{position:relative;min-width:1440px;background:var(--papel);overflow:clip}
+section{width:1440px;margin-inline:auto}
+/* fondo a sangre: border-image pinta por fuera de la caja sin que lo recorte el overflow */
+:root{--sangre:max(0px,calc(50vw - 720px))}
+.bleed{background:none;border-image:var(--bg) 0 fill / 0 / 0 var(--sangre)}
 /* grano general: ruido en overlay */
 .page::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:50;opacity:.18;mix-blend-mode:overlay;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 1.6 -.3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
@@ -51,7 +57,7 @@ section{position:relative}
 .mono{font-family:var(--mono);text-transform:uppercase}
 
 /* resaltador tipo marcador detrás de la última línea */
-.mark{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 40' preserveAspectRatio='none'%3E%3Cpath fill='%23BFE4E1' d='M2 9 L40 4 L95 6 L150 3 L210 6 L265 3 L320 5 L372 3 L398 8 L396 30 L360 35 L300 33 L240 36 L180 34 L120 37 L60 34 L4 36 L0 24Z'/%3E%3C/svg%3E") no-repeat 0 88%/100% 42%;padding:0 .12em;margin:0 -.12em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.mark{background:linear-gradient(var(--agua),var(--agua)) no-repeat 0 88%/100% 42%;padding:0 .12em;margin:0 -.12em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
 
 /* tags tipo sticker */
 .tag{display:inline-flex;align-items:center;gap:.6em;padding:6px 10px;font:400 14px/1.5 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--tinta);
@@ -62,30 +68,63 @@ section{position:relative}
 .tag.sm{font-size:12px;padding:5px 8px}
 
 /* botones */
-.btn{display:inline-flex;align-items:center;height:40px;padding:0 26px;border-radius:999px;border:2px solid var(--tinta);font:400 16px/1 var(--sans);white-space:nowrap;transition:transform .2s,background .2s,color .2s}
-.btn.solid{background:var(--tinta);color:var(--papel)}
-.btn:hover{transform:translateY(-2px)}
-.btn.ghost:hover{background:var(--tinta);color:var(--papel)}
+/* hover: un relleno sube desde abajo (curvo, se aplana al llegar) y el texto rueda hacia arriba */
+.btn{position:relative;isolation:isolate;overflow:hidden;display:inline-flex;align-items:center;height:48px;padding:0 26px;border-radius:999px;border:2px solid var(--tinta);font:400 16px/1 var(--sans);white-space:nowrap;transition:color .45s var(--ease)}
+.btn::before{content:"";position:absolute;inset:-2px;z-index:-1;background:var(--relleno);border-radius:50% 50% 0 0/100% 100% 0 0;translate:0 102%;transition:translate .6s var(--ease),border-radius .6s var(--ease)}
+.btn:hover::before,.btn:focus-visible::before{translate:0 0;border-radius:0}
+.btn .t{display:block;overflow:hidden;padding-block:2px}
+.btn .t>span{display:block;text-shadow:0 1.5em 0 currentColor;transition:translate .55s var(--ease)}
+.btn:hover .t>span,.btn:focus-visible .t>span{translate:0 -1.5em}
+.btn.solid{background:var(--tinta);color:var(--papel);--relleno:var(--amarillo)}
+.btn.solid:hover,.btn.solid:focus-visible{color:var(--tinta)}
+.btn.ghost{--relleno:var(--tinta)}
+.btn.ghost:hover,.btn.ghost:focus-visible{color:var(--papel)}
 
 /* texturas */
-.mili{position:absolute;inset:0;pointer-events:none;
+.mili{position:absolute;inset:0 calc(-1*var(--sangre));pointer-events:none;
   background-image:linear-gradient(#DCE7E0 1px,transparent 1px),linear-gradient(90deg,#DCE7E0 1px,transparent 1px);
   background-size:36px 36px;background-position:12px 0,12px 0;
   -webkit-mask-image:linear-gradient(135deg,#000 0%,rgba(0,0,0,.35) 60%,transparent 100%);mask-image:linear-gradient(135deg,#000 0%,rgba(0,0,0,.35) 60%,transparent 100%)}
-.trama{position:absolute;inset:0;pointer-events:none;opacity:.45;
+.trama{position:absolute;inset:0 calc(-1*var(--sangre));pointer-events:none;opacity:.45;
   background-image:radial-gradient(circle,#E3B229 1.3px,transparent 1.6px);background-size:11px 11px;
   -webkit-mask-image:linear-gradient(120deg,transparent 35%,#000 100%);mask-image:linear-gradient(120deg,transparent 35%,#000 100%)}
 
-/* ---------- NAV ---------- */
-.nav{position:sticky;top:0;z-index:40;height:96px;background:rgba(250,248,243,.6);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--tinta30)}
-.nav .logo{left:120px;top:24px;font-size:40px;line-height:1.05;letter-spacing:-.02em}
-.nav ul{position:absolute;left:560px;top:22px;height:48px;display:flex;align-items:center;gap:37px;list-style:none;font-size:16px}
-.nav ul a:hover{text-decoration:underline;text-underline-offset:4px}
-.nav .btn{height:48px}
-.wrap{position:relative;width:1440px;margin:0 auto}
+/* ---------- MENÚ LATERAL (minimal) ---------- */
+.riel{position:fixed;left:0;top:0;bottom:0;width:72px;z-index:60;background:var(--papel);border-right:1px solid rgba(29,29,27,.12);display:flex;flex-direction:column;align-items:center}
+.riel-menu{width:72px;height:72px;flex:none;display:grid;place-content:center;justify-items:start;gap:7px;background:none;border:0;cursor:pointer}
+.riel-menu span{display:block;width:22px;height:1.5px;background:var(--tinta);transform-origin:50% 50%;transition:translate .4s var(--ease),rotate .4s var(--ease),width .3s var(--ease)}
+.riel-menu span:nth-child(2){width:14px}
+.riel-menu:hover span:nth-child(2){width:22px}
+.abierto .riel-menu span:nth-child(1){translate:0 4.25px;rotate:45deg}
+.abierto .riel-menu span:nth-child(2){width:22px;translate:0 -4.25px;rotate:-45deg}
+.riel-logo{margin-top:24px;writing-mode:vertical-rl;rotate:180deg;font-size:20px;line-height:1;letter-spacing:-.01em}
+.menu-fondo{position:fixed;inset:0;z-index:58;background:rgba(29,29,27,.16);opacity:0;pointer-events:none;transition:opacity .5s}
+.abierto .menu-fondo{opacity:1;pointer-events:auto}
+.menu{position:fixed;left:72px;top:0;bottom:0;right:0;z-index:59;display:flex;flex-direction:column;overflow:auto;
+  background:var(--papel);
+  translate:calc(-100% - 72px) 0;transition:translate .7s var(--ease)}
+html.abierto{overflow:hidden}
+.abierto .menu{translate:0 0}
+.menu-cab{flex:none;display:flex;justify-content:space-between;align-items:center;height:72px;padding:0 48px;
+  font:400 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:rgba(29,29,27,.5)}
+.menu-cab button{font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit;background:none;border:0;padding:8px 0;cursor:pointer;transition:color .2s}
+.menu-cab button:hover{color:var(--tinta)}
+.menu ol{list-style:none;flex:1;display:flex;flex-direction:column;justify-content:center;padding:0 48px}
+.menu ol a{display:grid;grid-template-columns:72px 1fr;align-items:baseline;padding:clamp(4px,.9vh,12px) 0;color:var(--tinta);outline:0}
+.menu ol i{font:400 11px/1 var(--mono);font-style:normal;letter-spacing:.1em;color:rgba(29,29,27,.35);transition:color .25s}
+.menu ol span{font-family:var(--display);font-weight:800;font-stretch:118%;font-size:clamp(34px,7vh,80px);line-height:1.05;letter-spacing:-.025em;opacity:.45;transition:opacity .25s,translate .4s var(--ease)}
+.menu ol b{display:none}
+.menu ol a:hover span,.menu ol a:focus-visible span,.menu ol a[aria-current] span{opacity:1}
+.menu ol a:hover span,.menu ol a:focus-visible span{translate:12px 0}
+.menu ol a[aria-current] i{color:var(--tinta)}
+.menu-pie{flex:none;display:flex;justify-content:space-between;align-items:end;gap:24px;padding:32px 48px 40px}
+.menu-cta{justify-self:start;display:inline-flex;gap:12px;align-items:center;padding-bottom:6px;border-bottom:1px solid var(--tinta);font-size:17px;color:var(--tinta)}
+.menu-cta span{transition:translate .4s var(--ease)}
+.menu-cta:hover span{translate:6px 0}
+.menu-pie p{font:400 11px/1.6 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:rgba(29,29,27,.45)}
 
 /* ---------- HERO ---------- */
-.hero{height:820px;overflow:hidden}
+.hero{height:820px;overflow:visible clip}
 .hero .mol{left:673px;top:-48px;width:951px;height:855px}
 .hero .copy{left:120px;top:120px;width:743px}
 .hero h1{margin-top:47px}
@@ -93,15 +132,15 @@ section{position:relative}
 .hero .ctas{display:flex;gap:32px;margin-top:32px}
 
 /* ---------- LA TESIS ---------- */
-.tesis{height:560px;background:var(--amarillo-fade);z-index:3}
-.tesis .copy{left:169px;top:121px;width:549px}
+.tesis{height:560px;--bg:var(--amarillo-fade);z-index:3}
+.tesis .copy{left:120px;top:121px;width:549px}
 .tesis h2{width:460px;margin-top:24px}
 .tesis p{margin-top:24px}
 .tesis .foto{left:753px;top:107px;width:518px;height:345px}
 .tesis .planilla{left:995px;top:68px;width:461px;height:454px}
 
 /* ---------- DOS OBJETIVOS ---------- */
-.objetivos{height:1132px;overflow:hidden;z-index:2}
+.objetivos{height:1132px;overflow:visible clip;z-index:2}
 .objetivos .num{font-size:180px;line-height:.8;top:150px}
 .objetivos .col{top:330px;width:560px}
 .objetivos .col p{margin-top:18px}
@@ -109,17 +148,16 @@ section{position:relative}
 .objetivos li{display:flex;align-items:center;gap:16px;font:400 12px/1.5 var(--mono);text-transform:uppercase}
 .objetivos li::before{content:"";width:28px;height:2px;background:var(--violeta);flex:none}
 .objetivos .col.b li::before{width:20px}
-.banda{left:0;top:791px;width:1440px;height:195px;background:var(--amarillo-fade);overflow:hidden}
+.banda{left:0;top:791px;width:1440px;height:195px;--bg:var(--amarillo-fade)}
 .banda-copy{left:120px;top:826px;width:444px}
 .banda-copy hr{border:0;width:75px;height:2px;background:var(--violeta);margin:18px 0 14px}
 .objetivos .hitos{left:511px;top:702px;width:839px;height:362px}
 
 /* ---------- FILOSOFÍA (copias pegadas) ---------- */
-.filosofia{height:812px;background:var(--violeta30);z-index:4}
+.filosofia{height:812px;--bg:linear-gradient(var(--violeta30),var(--violeta30));z-index:4}
 .filosofia h2{left:120px;top:109px;width:1100px}
 .copia{position:absolute;width:372px;height:490px;background:var(--papel);transform-origin:0 0;
-  box-shadow:0 1px 2px rgba(28,28,26,.15),2px 10px 18px rgba(28,28,26,.14);transition:transform .3s}
-.copia:hover{transform:rotate(var(--r)) translateY(-6px)}
+  box-shadow:0 1px 2px rgba(28,28,26,.15),2px 10px 18px rgba(28,28,26,.14);}
 .copia{transform:rotate(var(--r))}
 .copia .ph{position:absolute;left:16px;top:16px;width:340px;height:260px;object-fit:cover}
 .copia .tag{position:absolute;left:28px;top:236px;transform:none}
@@ -127,19 +165,18 @@ section{position:relative}
 .copia .regla{position:absolute;left:20px;top:340px;width:150px;height:2px;background:var(--violeta)}
 .copia p{position:absolute;left:20px;top:358px;width:330px}
 .copia .cta{position:absolute;left:20px;top:453px;font:400 13px/1.3 var(--mono);text-transform:uppercase;text-decoration:underline;text-underline-offset:3px}
-.copia .cta:hover{background:var(--amarillo)}
 .cinta{position:absolute;height:54px;opacity:.85;object-fit:fill;z-index:2}
 
 /* ---------- CITA ---------- */
-.cita{height:632px;background:var(--amarillo-fade);overflow:hidden;z-index:1}
-.cita .bg{left:0;top:-52px;width:1440px;height:903px;object-fit:cover;opacity:.1;filter:grayscale(.2)}
+.cita{height:632px;--bg:var(--amarillo-fade);overflow:visible clip;z-index:1}
+.cita .bg{left:calc(-1*var(--sangre));top:-52px;width:calc(1440px + 2*var(--sangre));height:903px;object-fit:cover;opacity:.1;filter:grayscale(.2)}
 .cita .tag{left:627px;top:133px}
 .cita blockquote{left:182px;top:196px;width:1076px;text-align:center}
 .cita figcaption{left:0;right:0;top:506px;text-align:center;font:400 15px/1.3 var(--mono)}
 
 /* ---------- ÁREAS ---------- */
 .areas{height:730px;overflow:hidden}
-.areas h2{left:178px;top:75px;width:900px}
+.areas h2{left:120px;top:118px;width:900px}
 .area{position:absolute;top:227px;width:588px;height:401px;overflow:hidden}
 .area.vivir{left:118px;background:linear-gradient(90deg,rgba(191,228,225,0) 0%,var(--agua) 100%)}
 .area.producir{left:795px;background:linear-gradient(90deg,var(--violeta30) 0%,rgba(228,210,232,0) 100%)}
@@ -162,7 +199,7 @@ section{position:relative}
 .mas p{margin-top:18px;width:360px}
 
 /* ---------- DÓNDE ESTAMOS ---------- */
-.donde{height:680px;background:var(--amarillo-fade);overflow:hidden}
+.donde{height:680px;--bg:var(--amarillo-fade);overflow:visible clip}
 .donde .mapa{left:0;top:0;width:1440px;height:680px}
 .donde .copy{left:120px;top:110px;width:747px}
 .donde h2{margin-top:38px}
@@ -173,7 +210,7 @@ section{position:relative}
 
 /* ---------- CÓMO TRABAJAMOS ---------- */
 .proceso{height:680px}
-.proceso .tag{left:120px;top:105px}
+.proceso .tag{left:120px;top:95px}
 .proceso h2{left:120px;top:150px;width:1000px}
 .proceso .linea{left:120px;top:384px;width:1200px;height:3px;background:var(--tinta)}
 .paso{position:absolute;top:366px;width:221px}
@@ -184,59 +221,132 @@ section{position:relative}
 
 /* ---------- CONTACTO ---------- */
 .contacto{height:639px}
-.puerta{position:absolute;left:120px;width:1200px;height:200px;display:block;transition:transform .25s}
-.puerta:hover{transform:translateY(-4px)}
-.puerta.a{top:60px;background:var(--amarillo-fade)}
-.puerta.b{top:350px;background:linear-gradient(90deg,var(--agua) 0%,rgba(191,228,225,.1) 100%)}
-.puerta .tag{position:absolute;left:40px;top:30px}
+/* hover: el círculo de la flecha se expande hasta tapar la tarjeta (tinta), el texto pasa a papel
+   y la flecha queda en un círculo del color de la tarjeta */
+.puerta{position:absolute;left:120px;width:1200px;height:200px;display:block;isolation:isolate;overflow:hidden;--cx:1075px;--cy:100px}
+.puerta::before{content:"";position:absolute;inset:0;background:var(--tinta);clip-path:circle(0 at var(--cx) var(--cy));transition:clip-path .8s var(--ease)}
+.puerta:hover::before,.puerta:focus-visible::before{clip-path:circle(1120px at var(--cx) var(--cy))}
+.puerta.a{top:60px;--c:var(--amarillo);background-image:linear-gradient(90deg,var(--amarillo) 50%,rgba(242,194,48,.35) 100%)}
+.puerta.b{top:350px;--c:var(--agua);background-image:linear-gradient(90deg,var(--agua) 50%,rgba(191,228,225,.3) 100%)}
+.puerta .tag{position:absolute;left:40px;top:30px;transition:translate .6s var(--ease),rotate .6s var(--ease)}
+.puerta:hover .tag{translate:4px -2px;rotate:-1.5deg}
+.puerta h3,.puerta p,.puerta .accion{transition:color .5s var(--ease) .05s}
+.puerta:hover h3,.puerta:hover .accion,.puerta:focus-visible h3,.puerta:focus-visible .accion{color:var(--papel)}
+.puerta:hover p,.puerta:focus-visible p{color:rgba(250,248,243,.7)}
 .puerta h3{position:absolute;left:39px;top:81px}
 .puerta p{position:absolute;left:39px;top:139px}
 .puerta .accion{position:absolute;right:221px;top:92px;font:400 12px/1.3 var(--mono);text-transform:uppercase}
-.puerta .flecha{position:absolute;left:1015px;top:40px;width:120px;height:120px;border-radius:50%;background:var(--tinta);color:var(--papel);display:grid;place-items:center;font:400 51px/1 var(--sans);transition:transform .25s}
-.puerta:hover .flecha{transform:translateX(6px)}
+.puerta .flecha{position:absolute;left:1039px;top:64px;width:72px;height:72px;border-radius:50%;background:var(--tinta);color:var(--papel);display:grid;place-items:center;font:400 32px/1 var(--sans);transition:scale .6s var(--ease),background .4s,color .4s}
+.puerta .flecha span{transition:translate .6s var(--ease)}
+.puerta:hover .flecha,.puerta:focus-visible .flecha{scale:1.35;background:var(--c);color:var(--tinta)}
+.puerta:hover .flecha span,.puerta:focus-visible .flecha span{translate:4px 0}
 
 /* ---------- FOOTER ---------- */
-.footer{height:360px;background:var(--tinta);color:var(--papel);overflow:hidden}
-.footer p{left:120px;top:71px;font-size:16px;line-height:1.5}
-.footer .wordmark{left:-28px;top:119px;font-size:311.87px;line-height:1.05;letter-spacing:-.02em;color:var(--papel);white-space:nowrap;
+.footer{background:var(--tinta);color:var(--papel);overflow:hidden}
+.pie-links{display:grid;grid-template-columns:1.7fr 1fr 1fr 1fr;gap:48px;padding:104px 120px 80px}
+.pie-links h4{margin-bottom:22px;font:400 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:rgba(250,248,243,.45)}
+.pie-links ul{list-style:none;display:grid;gap:12px;font-size:16px;line-height:1.35}
+.pie-links li{color:rgba(250,248,243,.6)}
+.pie-links a{color:var(--papel);background:linear-gradient(currentColor,currentColor) no-repeat 0 100%/0 1px;padding-bottom:2px;transition:background-size .45s var(--ease)}
+.pie-links a:hover,.pie-links a:focus-visible{background-size:100% 1px}
+.pie-marca p{font-family:var(--display);font-size:28px;line-height:1.15;letter-spacing:-.01em;max-width:420px}
+.pie-marca .pie-cta{display:inline-flex;gap:10px;margin-top:32px;font-size:16px;color:var(--amarillo);background-size:100% 1px}
+.pie-marca .pie-cta span{transition:translate .4s var(--ease)}
+.pie-marca .pie-cta:hover span{translate:5px 0}
+.pie-base{width:1440px;margin:0 auto;padding:0 120px}
+.pie-base div{display:flex;justify-content:space-between;padding:22px 0;border-top:1px solid rgba(250,248,243,.14);font:400 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:rgba(250,248,243,.45)}
+.pie-base a{transition:color .2s}
+.pie-base a:hover{color:var(--papel)}
+/* el riel tapa los primeros 72px: el wordmark se ajusta al ancho visible */
+.pie-marca-xl{margin-left:72px;container-type:inline-size}
+/* el wordmark ocupa todo el ancho del viewport: tamaño estimado en cqw y ajustado por JS a la fuente real */
+.footer .wordmark{display:block;width:max-content;margin:0 auto;padding-top:40px;margin-bottom:-.17em;font-size:var(--fs,21.5cqw);line-height:.8;letter-spacing:-.02em;color:var(--papel);white-space:nowrap;
   text-shadow:0 -10px 0 var(--amarillo),0 -20px 0 var(--violeta)}
+
+/* ---------- LOADER ---------- */
+html.cargando{overflow:hidden}
+.loader{position:fixed;inset:0;z-index:100;background:var(--tinta);color:var(--papel);overflow:hidden;
+  clip-path:inset(0 0 0 0);transition:clip-path 1.1s cubic-bezier(.76,0,.24,1)}
+.loader.fuera{clip-path:inset(0 0 100% 0)}
+.loader .marca{position:absolute;left:50%;top:46%;translate:-50% -50%;display:flex;overflow:hidden;padding:.14em .04em 0;
+  font-family:var(--display);font-weight:800;font-stretch:118%;font-size:clamp(140px,17vw,320px);line-height:1;letter-spacing:-.02em;white-space:nowrap}
+/* las capas amarilla y violeta suben con el porcentaje (--p de 0 a 1) */
+.loader .marca span{display:block;animation:subir 1s cubic-bezier(.16,1,.3,1) calc(var(--i)*60ms) both;
+  text-shadow:0 calc(var(--p,0)*-.032em) 0 var(--amarillo),0 calc(var(--p,0)*-.064em) 0 var(--violeta)}
+@keyframes subir{from{translate:0 110%}}
+.loader .pie{position:absolute;left:48px;right:48px;bottom:44px;display:flex;justify-content:space-between;align-items:flex-end}
+.loader .cuenta{font-family:var(--display);font-weight:800;font-stretch:118%;font-size:88px;line-height:.92;letter-spacing:-.03em;font-variant-numeric:tabular-nums;color:#fff}
+.loader .cuenta small{font-size:1em;margin-left:.04em;color:inherit}
+.loader .barra{position:absolute;left:0;bottom:0;width:100%;height:8px;background:var(--amarillo);transform-origin:0 50%;scale:var(--p,0) 1}
+
+/* ---------- REVEAL AL SCROLL ---------- */
+/* sutil: fundido con un leve ascenso, el resaltador que se dibuja y la línea del proceso */
+:root{--ease:cubic-bezier(.22,1,.36,1)}
+.js .rv{transition:opacity 1.1s var(--ease) var(--d,0s),translate 1.1s var(--ease) var(--d,0s),scale 1.6s var(--ease) var(--d,0s),
+  background-size 1.2s var(--ease) var(--d,0s),transform .3s}
+.js .rv-up:not(.in){opacity:0;translate:0 24px}
+.js .rv-fade:not(.in){opacity:0}
+.js .rv-linea{transform-origin:0 50%}
+.js .rv-linea:not(.in){scale:0 1}
+.js .rv-mark:not(.in){background-size:0% 42%}
+@media (prefers-reduced-motion:reduce){
+  .js .rv{transition:none!important;opacity:1!important;translate:none!important;scale:none!important}
+  .js .rv-mark{background-size:100% 42%!important}
+  .loader .marca span{animation:none}
+}
 </style>
+<script>document.documentElement.classList.add('js','cargando');history.scrollRestoration='manual'</script>
 </head>
 <body>
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="marca"><span style="--i:0">n</span><span style="--i:1">u</span><span style="--i:2">m</span><span style="--i:3">a</span><span style="--i:4">n</span><span style="--i:5">c</span><span style="--i:6">i</span><span style="--i:7">a</span></div>
+  <div class="pie">
+    <div class="cuenta"><span id="cuenta">000</span><small>%</small></div>
+  </div>
+  <div class="barra" id="barra"></div>
+</div>
 <div class="page">
 
-<!-- NAV -->
-<header class="nav">
-  <div class="wrap" style="height:96px">
-    <a href="#top" class="abs logo display">numancia</a>
-    <ul>
-      <li><a href="#fondo">El fondo</a></li>
-      <li><a href="#como-invertimos">Cómo invertimos</a></li>
-      <li><a href="#areas">Áreas</a></li>
-      <li><a href="#proceso">Proceso</a></li>
-      <li><a href="#contacto">Contacto</a></li>
-      <li style="margin-left:0"><a class="btn solid" href="#contacto">Presentar un proyecto</a></li>
-    </ul>
-  </div>
+<!-- MENÚ LATERAL -->
+<header class="riel">
+  <button class="riel-menu" id="menu-btn" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú"><span></span><span></span></button>
+  <a class="riel-logo display" href="#top">numancia</a>
 </header>
+<div class="menu-fondo" id="menu-fondo"></div>
+<nav class="menu" id="menu" aria-label="Secciones" inert data-lenis-prevent>
+  <div class="menu-cab"><span>Índice</span><button type="button" id="menu-cerrar">Cerrar</button></div>
+  <ol>
+    <li><a href="#fondo"><i>01</i><span>El fondo</span><b>→</b></a></li>
+    <li><a href="#como-invertimos"><i>02</i><span>Cómo invertimos</span><b>→</b></a></li>
+    <li><a href="#como-decidimos"><i>03</i><span>Cómo decidimos</span><b>→</b></a></li>
+    <li><a href="#areas"><i>04</i><span>Áreas</span><b>→</b></a></li>
+    <li><a href="#donde"><i>05</i><span>Dónde estamos</span><b>→</b></a></li>
+    <li><a href="#proceso"><i>06</i><span>Proceso</span><b>→</b></a></li>
+    <li><a href="#contacto"><i>07</i><span>Contacto</span><b>→</b></a></li>
+  </ol>
+  <div class="menu-pie">
+    <a class="menu-cta" href="#contacto">Presentar un proyecto <span>→</span></a>
+    <p>Fondo de inversión en ciencia aplicada.<br>Administrado por Zofingen S.G.</p>
+  </div>
+</nav>
 
 <!-- HERO -->
 <section class="hero" id="top">
   <div class="mili"></div>
   <img class="abs mol" src="img/hero-molecula.png" alt="Modelo de una molécula en colores amarillo, violeta y agua">
   <div class="abs copy">
-    <span class="tag am" style="--r:1.6deg">Fondo de inversión en ciencia aplicada · Latinoamérica</span>
+    <span class="tag" style="--r:1.6deg">Fondo de inversión en ciencia aplicada · Latinoamérica</span>
     <h1 class="display d88">Rara vez el obstáculo es<br><span class="mark">la ciencia.</span></h1>
     <p class="body20">Invertimos en compañías de base científica y financiamos lo que les falta para llegar al mercado: una tecnología madura y una compañía lista para firmar.</p>
     <div class="ctas">
-      <a class="btn solid" href="#contacto">Presentar un proyecto</a>
-      <a class="btn ghost" href="#contacto">Soy inversor&nbsp;&nbsp;→</a>
+      <a class="btn solid" href="#contacto"><span class="t"><span>Presentar un proyecto</span></span></a>
+      <a class="btn ghost" href="#contacto"><span class="t"><span>Soy inversor&nbsp;&nbsp;→</span></span></a>
     </div>
   </div>
 </section>
 
 <!-- LA TESIS -->
-<section class="tesis" id="fondo">
+<section class="tesis bleed" id="fondo">
   <div class="trama"></div>
   <div class="abs copy">
     <span class="tag" style="--r:-1.1deg"><b>FIG.#1</b>· La tesis</span>
@@ -249,8 +359,8 @@ section{position:relative}
 
 <!-- DOS OBJETIVOS -->
 <section class="objetivos" id="como-invertimos">
-  <div class="banda abs"><div class="trama"></div></div>
-  <span class="tag am abs" style="left:120px;top:74px;--r:.9deg"><b>FIG.#2</b>· dos objetivos en paralelo</span>
+  <div class="banda abs bleed"><div class="trama"></div></div>
+  <span class="tag abs" style="left:120px;top:74px;--r:.9deg"><b>FIG.#2</b>· dos objetivos en paralelo</span>
 
   <span class="abs display num" style="left:120px;color:var(--agua)">01</span>
   <img class="abs" src="img/objetivo-1.png" style="left:448px;top:138px;width:149px" alt="">
@@ -289,7 +399,7 @@ section{position:relative}
 </section>
 
 <!-- FILOSOFÍA -->
-<section class="filosofia">
+<section class="filosofia bleed" id="como-decidimos">
   <span class="tag abs" style="left:120px;top:60px;--r:-1.4deg"><b>FIG.#3</b>· Cómo decidimos</span>
   <h2 class="abs display d88">Primero el problema.<br><span class="mark">Después la tecnología.</span></h2>
 
@@ -322,7 +432,7 @@ section{position:relative}
 </section>
 
 <!-- CITA -->
-<section class="cita">
+<section class="cita bleed">
   <img class="abs bg" src="img/cita-foto.jpg" alt="">
   <span class="tag ag abs" style="--r:1.2deg"><b>FIG.#4</b>· Criterio</span>
   <figure>
@@ -333,7 +443,7 @@ section{position:relative}
 
 <!-- ÁREAS -->
 <section class="areas" id="areas">
-  <h2 class="abs display d88"><span class="mark">Más allá del capital.</span></h2>
+  <h2 class="abs display d56"><span class="mark">Más allá del capital.</span></h2>
   <div class="area vivir">
     <img class="objs" src="img/areas-vivir.png" alt="Objetos de salud: estetoscopio, medicamentos, dispositivos de diagnóstico">
     <img class="forma" src="img/forma-amarilla.png" style="left:420px;top:300px;width:200px" alt="">
@@ -356,7 +466,7 @@ section{position:relative}
 
 <!-- MÁS ALLÁ DEL CAPITAL -->
 <section class="mas">
-  <span class="tag am abs" style="--r:-.8deg"><b>FIG.#5</b>· Áreas de interés</span>
+  <span class="tag abs" style="--r:-.8deg"><b>FIG.#5</b>· Áreas de interés</span>
   <div class="cols">
     <div><div class="head"><span>01.</span><img src="img/mas-1.png" width="104" alt=""></div>
       <h3 class="display d20">Consejo científico</h3>
@@ -371,7 +481,7 @@ section{position:relative}
 </section>
 
 <!-- DÓNDE ESTAMOS -->
-<section class="donde" id="donde">
+<section class="donde bleed" id="donde">
   <img class="abs mapa" src="img/mapa.png" alt="Mapa de Latinoamérica con Ciudad de México, Bogotá, São Paulo, Santiago, Montevideo y Buenos Aires">
   <div class="abs copy">
     <span class="tag" style="--r:1.5deg"><b>FIG.#6</b>· Dónde estamos</span>
@@ -387,7 +497,7 @@ section{position:relative}
 
 <!-- CÓMO TRABAJAMOS -->
 <section class="proceso" id="proceso">
-  <span class="tag am abs" style="--r:-1deg"><b>FIG.#7</b>· Cómo trabajamos</span>
+  <span class="tag abs" style="--r:-1deg"><b>FIG.#7</b>· Cómo trabajamos</span>
   <h2 class="abs display d88">De la primera charla<br>a la siguiente ronda.</h2>
   <div class="abs linea"></div>
   <div class="paso" style="left:120px"><i>1</i><h3 class="display d28">Primer contacto</h3><p class="body16">Una charla para entender el problema. No hace falta un plan de negocios.</p></div>
@@ -404,25 +514,158 @@ section{position:relative}
     <h3 class="display d40">¿Tenés un proyecto científico?</h3>
     <p class="body18">Contanos qué problema resuelve tu tecnología y en qué punto está.</p>
     <span class="accion">Presentar un proyecto</span>
-    <span class="flecha">→</span>
+    <span class="flecha"><span>→</span></span>
   </a>
   <a class="puerta b" href="mailto:contacto@numancia.com?subject=Invertir%20en%20el%20fondo">
     <span class="tag" style="--r:-1.1deg"><b>B</b>· Para inversores</span>
     <h3 class="display d40">¿Querés invertir en el fondo?</h3>
     <p class="body18">Conocé la tesis, la estructura del fondo y cómo participar.</p>
     <span class="accion">Hablar con el equipo</span>
-    <span class="flecha">→</span>
+    <span class="flecha"><span>→</span></span>
   </a>
 </section>
 
 <!-- FOOTER -->
 <footer class="footer">
-  <section style="height:360px">
-    <p class="abs">Fondo de inversión en ciencia aplicada.<br>Administrado por Zofingen S.G.</p>
-    <span class="abs display wordmark" aria-hidden="true">numancia</span>
+  <section class="pie-links">
+    <div class="pie-marca">
+      <p>Fondo de inversión en ciencia aplicada en Latinoamérica.</p>
+      <a class="pie-cta" href="#contacto">Presentar un proyecto <span>→</span></a>
+    </div>
+    <nav aria-label="Secciones del sitio">
+      <h4>Índice</h4>
+      <ul>
+        <li><a href="#fondo">El fondo</a></li>
+        <li><a href="#como-invertimos">Cómo invertimos</a></li>
+        <li><a href="#areas">Áreas</a></li>
+        <li><a href="#proceso">Proceso</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </nav>
+    <div>
+      <h4>Contacto</h4>
+      <ul>
+        <li><a href="mailto:contacto@numancia.com">contacto@numancia.com</a></li>
+        <!-- TODO: URL real del perfil -->
+        <li><a href="#">LinkedIn ↗</a></li>
+        <li>Ciudad de México — Buenos Aires</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Legal</h4>
+      <ul>
+        <!-- TODO: páginas legales -->
+        <li><a href="#">Aviso legal</a></li>
+        <li><a href="#">Política de privacidad</a></li>
+        <li><a href="#">Información regulatoria</a></li>
+      </ul>
+    </div>
   </section>
+  <div class="pie-base"><div><span>© 2026 Numancia Innovación · Administrado por Zofingen S.G.</span><a href="#top">Volver arriba ↑</a></div></div>
+  <div class="pie-marca-xl"><span class="display wordmark" aria-hidden="true">numancia</span></div>
 </footer>
 
 </div>
+
+<!-- Smooth scroll: si Lenis no carga, la página scrollea normal y los reveals siguen andando. -->
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.min.js" integrity="sha384-R18XzqnxvVLEF+BYfhpmDx30v7eP83fAckyfoRzK7/Uf6nGqufcmsk0eAKo7S3RU" crossorigin="anonymous"></script>
+<script>
+(()=>{
+  const quieto=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+  scrollTo(0,0);
+
+  /* ---------- smooth scroll ---------- */
+  let lenis=null;
+  if(window.Lenis){
+    lenis=new Lenis({autoRaf:true,lerp:.075,anchors:{duration:1.6,easing:t=>t===1?1:1-Math.pow(2,-10*t)}});
+    lenis.stop();
+    // Teclado y barra de scroll: cortar la inercia para que Lenis no pise el scroll nativo.
+    const cortar=e=>{if(!document.documentElement.matches('.cargando,.abierto')){lenis.stop();lenis.start()}};
+    addEventListener('keydown',cortar);addEventListener('pointerdown',cortar);
+  }
+
+  /* ---------- parallax ---------- */
+  const para=[[$('.hero .mol'),.1],[$('.cita .bg'),.08]].filter(p=>p[0]);
+  const mover=()=>{for(const [el,f] of para){const r=el.parentElement.getBoundingClientRect();
+    if(r.bottom<-200||r.top>innerHeight+200)continue;
+    el.style.transform=`translate3d(0,${(-(r.top+r.height/2-innerHeight/2)*f).toFixed(1)}px,0)`}};
+  if(!quieto){lenis?lenis.on('scroll',mover):addEventListener('scroll',mover,{passive:true});mover()}
+
+  /* ---------- menú lateral ---------- */
+  const raiz=document.documentElement,btn=$('#menu-btn'),menu=$('#menu');
+  const abrir=si=>{
+    raiz.classList.toggle('abierto',si);menu.inert=!si;
+    btn.setAttribute('aria-expanded',si);btn.setAttribute('aria-label',si?'Cerrar menú':'Abrir menú');
+    if(si){lenis?.stop();menu.querySelector('a').focus({preventScroll:true})}else lenis?.start();
+  };
+  btn.addEventListener('click',()=>abrir(!raiz.classList.contains('abierto')));
+  $('#menu-fondo').addEventListener('click',()=>abrir(false));
+  $('#menu-cerrar').addEventListener('click',()=>{abrir(false);btn.focus()});
+  menu.addEventListener('click',e=>{if(e.target.closest('a'))abrir(false)});
+  addEventListener('keydown',e=>{if(e.key==='Escape'&&raiz.classList.contains('abierto')){abrir(false);btn.focus()}});
+
+  // Sección actual en el índice
+  const secciones=$$('#menu ol a').map(a=>[a,$(a.hash)]);
+  const espiar=()=>{
+    let i=-1;secciones.forEach(([,sec],k)=>{if(sec.getBoundingClientRect().top<innerHeight*.4)i=k});
+    secciones.forEach(([a],k)=>k===i?a.setAttribute('aria-current','true'):a.removeAttribute('aria-current'));
+  };
+  addEventListener('scroll',espiar,{passive:true});espiar();
+
+  /* ---------- wordmark del footer a todo el ancho ---------- */
+  const marca=$('.footer .wordmark');
+  const ajustar=()=>{marca.style.removeProperty('--fs');const w=marca.parentElement.clientWidth,a=marca.getBoundingClientRect().width,f=parseFloat(getComputedStyle(marca).fontSize);
+    marca.style.setProperty('--fs',(f*w/a/w*100).toFixed(3)+'cqw')};
+  ajustar();document.fonts?.ready.then(ajustar);
+
+  /* ---------- reveal al scroll ---------- */
+  // Por bloque, no por elemento suelto
+  const tipos=[
+    ['.copy>*,section>.tag,section>h2,.cita blockquote,.cita figcaption,.objetivos .num,.objetivos .col,.banda-copy,'+
+     '.area,.mas .cols>div,.paso,.puerta,.copia','up'],
+    ['.hero .mol,.tesis .foto,.tesis .planilla,.objetivos img,.cinta,.donde .mapa','fade'],
+    ['.proceso .linea','linea'],['.mark','mark']
+  ];
+  const extra={mark:.3,fade:.1};
+  for(const [sel,t] of tipos)for(const el of $$(sel))if(!el.classList.contains('rv'))el.classList.add('rv','rv-'+t);
+
+  const contar=b=>{const fin=+b.textContent,t0=performance.now();
+    (function paso(t){const k=Math.min(1,(t-t0)/1400);b.textContent=Math.round(fin*(1-Math.pow(1-k,4)));if(k<1)requestAnimationFrame(paso)})(t0)};
+  const io=new IntersectionObserver(entradas=>{
+    // Lo que entra junto se escalona en orden de documento
+    entradas.filter(e=>e.isIntersecting).map(e=>e.target)
+      .sort((a,b)=>a.compareDocumentPosition(b)&2?1:-1)
+      .forEach((el,i)=>{const t=el.className.match(/rv-(\w+)/)[1];
+        el.style.setProperty('--d',(Math.min(i,6)*.07+(extra[t]||0))+'s');el.classList.add('in');io.unobserve(el);
+        if(el.matches('.cifras')&&!quieto)el.querySelectorAll('b').forEach(contar)});
+  },{rootMargin:'0px 0px -12% 0px'});
+
+  /* ---------- loader ---------- */
+  const loader=$('#loader'),cuenta=$('#cuenta');
+  const MIN=quieto?400:2200,t0=performance.now();
+  const imgs=$$('.page img');let listas=0,fuentes=0;
+  const sumar=()=>listas++;
+  imgs.forEach(im=>im.complete?sumar():(im.addEventListener('load',sumar,{once:true}),im.addEventListener('error',sumar,{once:true})));
+  document.fonts.ready.then(()=>fuentes=1);
+  let visto=0;
+  const tick=t=>{
+    const real=(listas+fuentes)/(imgs.length+1),tiempo=Math.min(1,(t-t0)/MIN);
+    const meta=Math.min(real,tiempo*(2-tiempo))*100,forzar=t-t0>9000;
+    visto+=((forzar?100:meta)-visto)*.12;if(meta>=100||forzar)visto=Math.max(visto,Math.min(100,visto+1.2));
+    cuenta.textContent=String(Math.floor(visto)).padStart(3,'0');loader.style.setProperty('--p',visto/100);
+    if(visto>=99.9)salir();else requestAnimationFrame(tick);
+  };
+  const salir=()=>{
+    cuenta.textContent='100';loader.style.setProperty('--p',1);
+    setTimeout(()=>{
+      loader.classList.add('fuera');document.documentElement.classList.remove('cargando');lenis?.start();
+      setTimeout(()=>$$('.rv').forEach(el=>io.observe(el)),280);
+      loader.addEventListener('transitionend',e=>{if(e.target===loader)loader.remove()});
+    },quieto?0:500);
+  };
+  requestAnimationFrame(tick);
+})();
+</script>
 </body>
 </html>
