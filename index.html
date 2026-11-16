@@ -24,8 +24,11 @@
   --amarillo-fade:linear-gradient(90deg,var(--amarillo) 0%,rgba(242,194,48,.2) 100%);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{background:#ECEAE4}
+/* reservar siempre el lugar de la barra de scroll: al terminar el loader (o cerrar el menú) el contenido no salta */
+html{background:#ECEAE4;scrollbar-gutter:stable}
 body{font-family:var(--sans);color:var(--tinta);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+/* grano sutil sobre todo el sitio (ruido SVG en mosaico, en overlay para no oscurecer) */
+body::after{content:"";position:fixed;inset:0;z-index:101;pointer-events:none;opacity:.22;mix-blend-mode:overlay;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='2.4' intercept='-.7'/%3E%3CfeFuncG type='linear' slope='2.4' intercept='-.7'/%3E%3CfeFuncB type='linear' slope='2.4' intercept='-.7'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23n)'/%3E%3C/svg%3E") 0 0/220px 220px}
 img{display:block}
 a{color:inherit;text-decoration:none}
 
@@ -60,17 +63,16 @@ section{position:relative}
 .mark{background:linear-gradient(var(--agua),var(--agua)) no-repeat 0 88%/100% 42%;padding:0 .12em;margin:0 -.12em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
 
 /* tags tipo sticker */
-.tag{display:inline-flex;align-items:center;gap:.6em;padding:6px 10px;font:400 14px/1.5 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--tinta);
-  background:var(--papel);border:1px solid #fff;border-radius:2px;
+.tag{display:inline-flex;align-items:center;gap:.6em;padding:6px 10px;font:400 12px/1.5 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--tinta);
+  background:var(--amarillo);border:1px solid rgba(255,255,255,.45);border-radius:2px;
   box-shadow:0 1px 1px rgba(28,28,26,.14),1px 5px 10px rgba(28,28,26,.12),inset 0 -1px 0 rgba(28,28,26,.06)}
 .tag b{font-weight:100}
 .tag.am{background:var(--amarillo)} .tag.ag{background:var(--agua)}
-.tag.sm{font-size:12px;padding:5px 8px}
 
 /* botones */
 /* hover: un relleno sube desde abajo (curvo, se aplana al llegar) y el texto rueda hacia arriba */
 .btn{position:relative;isolation:isolate;overflow:hidden;display:inline-flex;align-items:center;height:48px;padding:0 26px;border-radius:999px;border:2px solid var(--tinta);font:400 16px/1 var(--sans);white-space:nowrap;transition:color .45s var(--ease)}
-.btn::before{content:"";position:absolute;inset:-2px;z-index:-1;background:var(--relleno);border-radius:50% 50% 0 0/100% 100% 0 0;translate:0 102%;transition:translate .6s var(--ease),border-radius .6s var(--ease)}
+.btn::before{content:"";position:absolute;inset:-2px;z-index:-1;background:var(--relleno);border-radius:50% 50% 0 0/100% 100% 0 0;translate:0 115%;transition:translate .6s var(--ease),border-radius .6s var(--ease)}
 .btn:hover::before,.btn:focus-visible::before{translate:0 0;border-radius:0}
 .btn .t{display:block;overflow:hidden;padding-block:2px}
 .btn .t>span{display:block;text-shadow:0 1.5em 0 currentColor;transition:translate .55s var(--ease)}
@@ -153,13 +155,12 @@ html.abierto{overflow:hidden}
 .objetivos .hitos{left:511px;top:702px;width:839px;height:362px}
 
 /* ---------- FILOSOFÍA (copias pegadas) ---------- */
-.filosofia{height:812px;--bg:linear-gradient(var(--violeta30),var(--violeta30));z-index:4}
+.filosofia{height:748px;--bg:linear-gradient(var(--violeta30),var(--violeta30));z-index:4}
 .filosofia h2{left:120px;top:109px;width:1100px}
 .copia{position:absolute;width:372px;height:490px;background:var(--papel);transform-origin:0 0;
   box-shadow:0 1px 2px rgba(28,28,26,.15),2px 10px 18px rgba(28,28,26,.14);}
 .copia{transform:rotate(var(--r))}
 .copia .ph{position:absolute;left:16px;top:16px;width:340px;height:260px;object-fit:cover}
-.copia .tag{position:absolute;left:28px;top:236px;transform:none}
 .copia h3{position:absolute;left:20px;top:300px;width:340px}
 .copia .regla{position:absolute;left:20px;top:340px;width:150px;height:2px;background:var(--violeta)}
 .copia p{position:absolute;left:20px;top:358px;width:330px}
@@ -168,7 +169,6 @@ html.abierto{overflow:hidden}
 /* ---------- CITA ---------- */
 .cita{height:632px;--bg:var(--amarillo-fade);overflow:visible clip;z-index:1}
 .cita .bg{left:calc(-1*var(--sangre));top:-52px;width:calc(1440px + 2*var(--sangre));height:903px;object-fit:cover;opacity:.1;filter:grayscale(.2)}
-.cita .tag{left:627px;top:133px}
 .cita blockquote{left:182px;top:196px;width:1076px;text-align:center}
 .cita figcaption{left:0;right:0;top:506px;text-align:center;font:400 15px/1.3 var(--mono)}
 
@@ -187,9 +187,10 @@ html.abierto{overflow:hidden}
 .area .forma{position:absolute;pointer-events:none}
 
 /* ---------- MÁS ALLÁ ---------- */
-.mas{height:451px}
+.mas{height:560px}
 .mas .tag{left:120px;top:35px}
-.mas .cols{position:absolute;left:120px;top:149px;width:1220px;display:grid;grid-template-columns:repeat(3,370px);gap:55px}
+.mas h2{left:120px;top:105px;width:900px}
+.mas .cols{position:absolute;left:120px;top:258px;width:1220px;display:grid;grid-template-columns:repeat(3,370px);gap:55px}
 .mas .head{display:flex;gap:18px;align-items:flex-start;height:82px}
 .mas .head span{font:400 15px/1.5 var(--mono)}
 .mas .head img{margin-top:-4px}
@@ -198,18 +199,8 @@ html.abierto{overflow:hidden}
 
 /* ---------- DÓNDE ESTAMOS ---------- */
 .donde{height:680px;--bg:var(--amarillo-fade);overflow:visible clip}
-.donde .mapa{left:0;top:0;width:1440px;height:680px}
-/* hover en el mapa: una red de arcos suaves entre las ciudades y los pines laten.
-   La máscara corta las líneas alrededor de cada pin para que no los pisen */
-.donde .red{position:absolute;left:740px;top:0;width:700px;height:680px;overflow:visible}
-.red .zona{fill:transparent;pointer-events:all}
-.red path{fill:none;stroke:rgba(29,29,27,.32);stroke-width:1;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;
-  transition:stroke-dashoffset 1.6s cubic-bezier(.65,0,.35,1) calc(var(--i)*140ms)}
-.red:hover path{stroke-dashoffset:0}
-.red .onda{fill:none;stroke:rgba(29,29,27,.35);stroke-width:1;opacity:0;transform-box:fill-box;transform-origin:center}
-.red:hover .onda{animation:onda 2.8s cubic-bezier(.22,1,.36,1) calc(var(--i)*220ms + .4s) infinite}
-@keyframes onda{0%{opacity:.7;scale:1}100%{opacity:0;scale:2.2}}
-@media (prefers-reduced-motion:reduce){.red path{transition:none}.red:hover .onda{animation:none}}
+/* mapa de puntos dibujado en canvas: al pasar el mouse los puntos cercanos crecen, y se apartan (efecto lupa) */
+.donde .mapa{left:740px;top:0;width:700px;height:680px}
 .donde .copy{left:120px;top:110px;width:747px}
 .donde h2{margin-top:38px}
 .donde p{width:668px;margin-top:32px}
@@ -221,20 +212,26 @@ html.abierto{overflow:hidden}
 .proceso{height:680px}
 .proceso .tag{left:120px;top:95px}
 .proceso h2{left:120px;top:150px;width:1000px}
-.proceso .linea{left:120px;top:384px;width:1200px;height:3px;background:var(--tinta)}
+/* timeline atada al scroll: la línea se llena y cada paso se "enciende" cuando la línea lo alcanza */
+.proceso .linea{left:120px;top:384px;width:1200px;height:3px;background:rgba(29,29,27,.14)}
+.proceso .linea b{position:absolute;inset:0;background:var(--tinta);transform-origin:0 50%;scale:var(--prog,0) 1}
 .paso{position:absolute;top:366px;width:221px}
-.paso i{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;border:3px solid var(--tinta);background:var(--papel);font:400 15px/1 var(--mono);font-style:normal}
-.paso.ult i{background:var(--tinta);color:var(--papel)}
+.paso i{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;border:3px solid rgba(29,29,27,.2);background:var(--papel);color:rgba(29,29,27,.45);
+  font:400 15px/1 var(--mono);font-style:normal;transition:background .5s var(--ease),border-color .5s var(--ease),color .5s var(--ease),scale .5s var(--ease)}
+.paso h3,.paso p{opacity:.35;transition:opacity .6s var(--ease)}
 .paso h3{margin-top:24px;min-height:64px}
 .paso p{margin-top:16px}
+.paso.hecho i{background:var(--tinta);border-color:var(--tinta);color:var(--papel)}
+.paso.actual i{scale:1.15;background:var(--amarillo);color:var(--tinta)}
+.paso.hecho h3,.paso.hecho p{opacity:1}
 
 /* ---------- CONTACTO ---------- */
 .contacto{height:639px}
-/* hover: el círculo de la flecha se expande hasta tapar la tarjeta (tinta), el texto pasa a papel
-   y la flecha queda en un círculo del color de la tarjeta */
-.puerta{position:absolute;left:120px;width:1200px;height:200px;display:block;isolation:isolate;overflow:hidden;--cx:1075px;--cy:100px}
-.puerta::before{content:"";position:absolute;inset:0;background:var(--tinta);clip-path:circle(0 at var(--cx) var(--cy));transition:clip-path .8s var(--ease)}
-.puerta:hover::before,.puerta:focus-visible::before{clip-path:circle(1120px at var(--cx) var(--cy))}
+/* hover: mismo efecto que los botones del hero — un relleno tinta sube desde abajo (curvo, se aplana al llegar),
+   el texto pasa a papel, el rótulo de acción rueda hacia arriba y la flecha queda en un círculo del color de la tarjeta */
+.puerta{position:absolute;left:120px;width:1200px;height:200px;display:block;isolation:isolate;overflow:hidden}
+.puerta::before{content:"";position:absolute;inset:0;background:var(--tinta);border-radius:50% 50% 0 0/100% 100% 0 0;translate:0 105%;transition:translate .8s var(--ease),border-radius .8s var(--ease)}
+.puerta:hover::before,.puerta:focus-visible::before{translate:0 0;border-radius:0}
 .puerta.a{top:60px;--c:var(--amarillo);background-image:linear-gradient(90deg,var(--amarillo) 50%,rgba(242,194,48,.35) 100%)}
 .puerta.b{top:350px;--c:var(--agua);background-image:linear-gradient(90deg,var(--agua) 50%,rgba(191,228,225,.3) 100%)}
 .puerta .tag{position:absolute;left:40px;top:30px;transition:translate .6s var(--ease),rotate .6s var(--ease)}
@@ -245,10 +242,11 @@ html.abierto{overflow:hidden}
 .puerta h3{position:absolute;left:39px;top:81px}
 .puerta p{position:absolute;left:39px;top:139px}
 .puerta .accion{position:absolute;right:221px;top:92px;font:400 12px/1.3 var(--mono);text-transform:uppercase}
+.puerta .accion{overflow:hidden;padding-block:2px}
+.puerta .accion span{display:block;text-shadow:0 1.6em 0 currentColor;transition:translate .6s var(--ease)}
+.puerta:hover .accion span,.puerta:focus-visible .accion span{translate:0 -1.6em}
 .puerta .flecha{position:absolute;left:1039px;top:64px;width:72px;height:72px;border-radius:50%;background:var(--tinta);color:var(--papel);display:grid;place-items:center;font:400 32px/1 var(--sans);transition:scale .6s var(--ease),background .4s,color .4s}
-.puerta .flecha span{transition:translate .6s var(--ease)}
 .puerta:hover .flecha,.puerta:focus-visible .flecha{scale:1.35;background:var(--c);color:var(--tinta)}
-.puerta:hover .flecha span,.puerta:focus-visible .flecha span{translate:4px 0}
 
 /* ---------- FOOTER ---------- */
 .footer{background:var(--tinta);color:var(--papel);overflow:hidden}
@@ -270,13 +268,18 @@ html.abierto{overflow:hidden}
 .pie-marca-xl{margin-left:72px;container-type:inline-size}
 /* el wordmark ocupa todo el ancho del viewport: tamaño estimado en cqw y ajustado por JS a la fuente real */
 .footer .wordmark{display:block;width:max-content;margin:0 auto;padding-top:40px;margin-bottom:-.17em;font-size:var(--fs,21.5cqw);line-height:.8;letter-spacing:-.02em;color:var(--papel);white-space:nowrap;
-  text-shadow:0 -10px 0 var(--amarillo),0 -20px 0 var(--violeta)}
+  text-shadow:0 calc(var(--fp,1)*-.045em) 0 var(--amarillo),0 calc(var(--fp,1)*-.09em) 0 var(--violeta);
+  translate:0 calc((1 - var(--fp,1))*.12em)}
+/* parallax: las capas amarilla y violeta arrancan escondidas detrás del papel y se abren al llegar al fondo (--fp de 0 a 1) */
 
 /* ---------- LOADER ---------- */
 html.cargando{overflow:hidden}
 .loader{position:fixed;inset:0;z-index:100;background:var(--tinta);color:var(--papel);overflow:hidden;
   clip-path:inset(0 0 0 0);transition:clip-path 1.1s cubic-bezier(.76,0,.24,1)}
 .loader.fuera{clip-path:inset(0 0 100% 0)}
+/* mientras sube la cortina, el logo se achica apenas */
+.loader .marca{transition:scale 1.1s cubic-bezier(.76,0,.24,1)}
+.loader.fuera .marca{scale:.92}
 .loader .marca{position:absolute;left:50%;top:46%;translate:-50% -50%;display:flex;overflow:hidden;padding:.14em .04em 0;
   font-family:var(--display);font-weight:800;font-stretch:118%;font-size:clamp(140px,17vw,320px);line-height:1;letter-spacing:-.02em;white-space:nowrap}
 /* las capas amarilla y violeta suben con el porcentaje (--p de 0 a 1) */
@@ -411,25 +414,22 @@ html.cargando{overflow:hidden}
   <span class="tag abs" style="left:120px;top:60px;--r:-1.4deg"><b>FIG.#3</b>· Cómo decidimos</span>
   <h2 class="abs display d88">Primero el problema.<br><span class="mark">Después la tecnología.</span></h2>
 
-  <article class="copia" style="left:120px;top:384px;--r:0deg">
+  <article class="copia" style="left:120px;top:320px;--r:0deg">
     <img class="ph" src="img/foto-ciencia.jpg" alt="Científica observando una placa de Petri">
-    <span class="tag sm"><b>LÁM.#2</b>· Laboratorio</span>
     <h3 class="display d20">Ciencia validada</h3><div class="regla"></div>
     <p class="body16">Conocimiento reconocido a nivel internacional, no una apuesta aislada.</p>
     <a class="cta" href="#proceso">Cómo evaluamos&nbsp;&nbsp;→</a>
   </article>
 
-  <article class="copia" style="left:534px;top:384px;--r:0deg">
+  <article class="copia" style="left:534px;top:320px;--r:0deg">
     <img class="ph" src="img/foto-region.jpg" alt="Campo cultivado con una estación agrícola al fondo">
-    <span class="tag sm"><b>LÁM.#3</b>· Campo</span>
     <h3 class="display d20">Latinoamérica como ventaja</h3><div class="regla"></div>
     <p class="body16">Como base productiva, mercado de aplicación o acceso a recursos y talento.</p>
     <a class="cta" href="#donde">Dónde estamos&nbsp;&nbsp;→</a>
   </article>
 
-  <article class="copia" style="left:948px;top:384px;--r:0deg">
+  <article class="copia" style="left:948px;top:320px;--r:0deg">
     <img class="ph" src="img/foto-mercado.jpg" alt="Ingeniero revisando un biorreactor en una planta piloto">
-    <span class="tag sm"><b>LÁM.#4</b>· Planta piloto</span>
     <h3 class="display d20">Mercado relevante</h3><div class="regla"></div>
     <p class="body16">Grande para crecer en serio, con un camino claro: licencia, servicios, producto o alianza.</p>
     <a class="cta" href="#areas">Áreas de interés&nbsp;&nbsp;→</a>
@@ -439,7 +439,6 @@ html.cargando{overflow:hidden}
 <!-- CITA -->
 <section class="cita bleed">
   <img class="abs bg" src="img/cita-foto.jpg" alt="">
-  <span class="tag ag abs" style="--r:1.2deg"><b>FIG.#4</b>· Criterio</span>
   <figure>
     <blockquote class="abs display d88">“ Un buen científico frente a un problema real, antes que un buen pitch ”</blockquote>
     <figcaption class="abs">— Criterio de inversión de Numancia</figcaption>
@@ -448,7 +447,8 @@ html.cargando{overflow:hidden}
 
 <!-- ÁREAS -->
 <section class="areas" id="areas">
-  <h2 class="abs display d56"><span class="mark">Más allá del capital.</span></h2>
+  <span class="tag abs" style="left:120px;top:48px"><b>FIG.#4</b>· Áreas de interés</span>
+  <h2 class="abs display d56">Dónde ponemos <span class="mark">el foco.</span></h2>
   <div class="area vivir">
     <img class="objs" src="img/areas-vivir.png" alt="Objetos de salud: estetoscopio, medicamentos, dispositivos de diagnóstico">
     <img class="forma" src="img/forma-amarilla.png" style="left:420px;top:300px;width:200px" alt="">
@@ -471,7 +471,8 @@ html.cargando{overflow:hidden}
 
 <!-- MÁS ALLÁ DEL CAPITAL -->
 <section class="mas">
-  <span class="tag abs" style="--r:-.8deg"><b>FIG.#5</b>· Áreas de interés</span>
+  <span class="tag abs"><b>FIG.#5</b>· Qué sumamos</span>
+  <h2 class="abs display d56"><span class="mark">Más allá del capital.</span></h2>
   <div class="cols">
     <div><div class="head"><span>01.</span><img src="img/mas-1.png" width="104" alt=""></div>
       <h3 class="display d20">Consejo científico</h3>
@@ -487,36 +488,7 @@ html.cargando{overflow:hidden}
 
 <!-- DÓNDE ESTAMOS -->
 <section class="donde bleed" id="donde">
-  <img class="abs mapa" src="img/mapa.png" alt="Mapa de Latinoamérica con Ciudad de México, Bogotá, São Paulo, Santiago, Montevideo y Buenos Aires">
-  <svg class="red" viewBox="740 0 700 680" aria-hidden="true">
-    <defs><mask id="red-mascara" maskUnits="userSpaceOnUse" x="740" y="0" width="700" height="680">
-      <rect x="740" y="0" width="700" height="680" fill="#fff"/>
-      <circle cx="1228" cy="504" r="17" fill="#000"/>
-      <circle cx="1247" cy="495" r="17" fill="#000"/>
-      <circle cx="1154" cy="486" r="17" fill="#000"/>
-      <circle cx="1308" cy="422" r="17" fill="#000"/>
-      <circle cx="1132" cy="240" r="17" fill="#000"/>
-      <circle cx="971" cy="146" r="17" fill="#000"/>
-    </mask></defs>
-    <rect class="zona" x="740" y="0" width="700" height="680"/>
-    <g mask="url(#red-mascara)">
-    <path d="M971,146 Q1036,219 1132,240" pathLength="1" style="--i:0"/>
-    <path d="M1132,240 Q1249,303 1308,422" pathLength="1" style="--i:2"/>
-    <path d="M1132,240 Q1104,367 1154,486" pathLength="1" style="--i:1"/>
-    <path d="M1154,486 Q1188,507 1228,504" pathLength="1" style="--i:4"/>
-    <path d="M1228,504 Q1242,509 1247,495" pathLength="1" style="--i:6"/>
-    <path d="M1308,422 Q1289,468 1247,495" pathLength="1" style="--i:5"/>
-    <path d="M1154,486 Q1221,429 1308,422" pathLength="1" style="--i:3"/>
-    <path d="M971,146 Q1184,230 1308,422" pathLength="1" style="--i:1"/>
-    <path d="M1132,240 Q1222,357 1228,504" pathLength="1" style="--i:3"/>
-    </g>
-    <circle class="onda" cx="971" cy="146" r="15" style="--i:0"/>
-    <circle class="onda" cx="1132" cy="240" r="15" style="--i:1"/>
-    <circle class="onda" cx="1308" cy="422" r="15" style="--i:2"/>
-    <circle class="onda" cx="1154" cy="486" r="15" style="--i:3"/>
-    <circle class="onda" cx="1228" cy="504" r="15" style="--i:4"/>
-    <circle class="onda" cx="1247" cy="495" r="15" style="--i:5"/>
-  </svg>
+  <canvas class="abs mapa" role="img" aria-label="Mapa de puntos de Latinoamérica"></canvas>
   <div class="abs copy">
     <span class="tag" style="--r:1.5deg"><b>FIG.#6</b>· Dónde estamos</span>
     <h2 class="display d88">El talento está.<br><span class="mark">Faltaba el puente.</span></h2>
@@ -532,13 +504,13 @@ html.cargando{overflow:hidden}
 <!-- CÓMO TRABAJAMOS -->
 <section class="proceso" id="proceso">
   <span class="tag abs" style="--r:-1deg"><b>FIG.#7</b>· Cómo trabajamos</span>
-  <h2 class="abs display d88">De la primera charla<br>a la siguiente ronda.</h2>
-  <div class="abs linea"></div>
+  <h2 class="abs display d88">De la primera charla<br><span class="mark">a la siguiente ronda.</span></h2>
+  <div class="abs linea"><b></b></div>
   <div class="paso" style="left:120px"><i>1</i><h3 class="display d28">Primer contacto</h3><p class="body16">Una charla para entender el problema. No hace falta un plan de negocios.</p></div>
   <div class="paso" style="left:365px"><i>2</i><h3 class="display d28">Evaluación</h3><p class="body16">Científicos revisan los datos; en paralelo, el mercado. Devolvemos lo que vimos.</p></div>
   <div class="paso" style="left:610px"><i>3</i><h3 class="display d28">Diseño de la inversión</h3><p class="body16">Hitos para los dos objetivos y el instrumento adecuado.</p></div>
   <div class="paso" style="left:854px"><i>4</i><h3 class="display d28">Ejecución</h3><p class="body16">Capital contra hitos, con asesores, red y fondos no dilutivos.</p></div>
-  <div class="paso ult" style="left:1099px"><i>5</i><h3 class="display d28">Siguiente etapa</h3><p class="body16">Lista para una ronda, una licencia o una alianza.</p></div>
+  <div class="paso" style="left:1099px"><i>5</i><h3 class="display d28">Siguiente etapa</h3><p class="body16">Lista para una ronda, una licencia o una alianza.</p></div>
 </section>
 
 <!-- CONTACTO -->
@@ -547,15 +519,15 @@ html.cargando{overflow:hidden}
     <span class="tag" style="--r:1.3deg"><b>A</b>· Para científicos</span>
     <h3 class="display d40">¿Tenés un proyecto científico?</h3>
     <p class="body18">Contanos qué problema resuelve tu tecnología y en qué punto está.</p>
-    <span class="accion">Presentar un proyecto</span>
-    <span class="flecha"><span>→</span></span>
+    <span class="accion"><span>Presentar un proyecto</span></span>
+    <span class="flecha">→</span>
   </a>
   <a class="puerta b" href="mailto:contacto@numancia.com?subject=Invertir%20en%20el%20fondo">
     <span class="tag" style="--r:-1.1deg"><b>B</b>· Para inversores</span>
     <h3 class="display d40">¿Querés invertir en el fondo?</h3>
     <p class="body18">Conocé la tesis, la estructura del fondo y cómo participar.</p>
-    <span class="accion">Hablar con el equipo</span>
-    <span class="flecha"><span>→</span></span>
+    <span class="accion"><span>Hablar con el equipo</span></span>
+    <span class="flecha">→</span>
   </a>
 </section>
 
@@ -647,11 +619,60 @@ html.cargando{overflow:hidden}
   };
   addEventListener('scroll',espiar,{passive:true});espiar();
 
+  /* ---------- timeline del proceso ---------- */
+  const linea=$('.proceso .linea'),pasos=$$('.paso');
+  if(linea){
+    const avanzar=()=>{
+      const y=linea.getBoundingClientRect().top;
+      const prog=quieto?1:Math.min(1,Math.max(0,(innerHeight*.85-y)/(innerHeight*.35)));
+      linea.style.setProperty('--prog',prog);
+      let ult=-1;pasos.forEach((p,i)=>{const ok=prog*1200>=p.offsetLeft-120+20;p.classList.toggle('hecho',ok);if(ok)ult=i});
+      pasos.forEach((p,i)=>p.classList.toggle('actual',i===ult&&prog<1));
+    };
+    addEventListener('scroll',avanzar,{passive:true});addEventListener('resize',avanzar);avanzar();
+  }
+
+  /* ---------- mapa de puntos ---------- */
+  // Grilla extraída del diseño original: cada par es columna.fila (paso 15.375px)
+  const mapa=$('.donde .mapa');
+  if(mapa){
+    const P='53.0 54.0 55.0 56.0 57.0 58.0 59.0 60.0 61.0 62.0 63.0 64.0 65.0 66.0 67.0 68.0 69.0 70.0 71.0 72.0 73.0 74.0 53.1 54.1 55.1 56.1 57.1 58.1 59.1 60.1 61.1 62.1 63.1 64.1 65.1 66.1 67.1 68.1 69.1 70.1 71.1 72.1 73.1 54.2 55.2 56.2 57.2 58.2 59.2 60.2 61.2 62.2 63.2 64.2 65.2 66.2 67.2 68.2 69.2 70.2 71.2 72.2 55.3 56.3 57.3 58.3 59.3 60.3 61.3 62.3 63.3 64.3 65.3 66.3 67.3 68.3 69.3 70.3 71.3 56.4 57.4 58.4 59.4 60.4 61.4 62.4 63.4 64.4 65.4 66.4 67.4 68.4 69.4 70.4 58.5 59.5 60.5 61.5 62.5 63.5 64.5 70.5 57.6 59.6 60.6 61.6 62.6 63.6 70.6 58.7 60.7 61.7 62.7 63.7 61.8 62.8 63.8 70.8 71.8 62.9 67.9 72.9 73.9 62.10 63.10 64.10 65.10 66.10 67.10 66.11 67.11 68.11 69.11 68.12 69.12 69.13 73.13 74.13 75.13 76.13 78.13 72.14 73.14 74.14 75.14 76.14 77.14 78.14 79.14 72.15 73.15 74.15 75.15 76.15 77.15 78.15 79.15 80.15 81.15 72.16 73.16 74.16 75.16 76.16 77.16 78.16 79.16 80.16 81.16 82.16 71.17 72.17 73.17 74.17 75.17 76.17 77.17 78.17 79.17 80.17 81.17 82.17 83.17 71.18 72.18 73.18 74.18 75.18 76.18 77.18 78.18 79.18 80.18 81.18 82.18 83.18 84.18 85.18 71.19 72.19 73.19 74.19 75.19 76.19 77.19 78.19 79.19 80.19 81.19 82.19 83.19 84.19 85.19 86.19 87.19 88.19 71.20 72.20 73.20 74.20 75.20 76.20 77.20 78.20 79.20 80.20 81.20 82.20 83.20 84.20 85.20 86.20 87.20 88.20 89.20 72.21 73.21 74.21 75.21 76.21 77.21 78.21 79.21 80.21 81.21 82.21 83.21 84.21 85.21 86.21 87.21 88.21 89.21 72.22 73.22 74.22 75.22 76.22 77.22 78.22 79.22 80.22 81.22 82.22 83.22 84.22 85.22 86.22 87.22 88.22 73.23 74.23 75.23 76.23 77.23 78.23 79.23 80.23 81.23 82.23 83.23 84.23 85.23 86.23 87.23 74.24 75.24 76.24 77.24 78.24 79.24 80.24 81.24 82.24 83.24 84.24 85.24 86.24 87.24 75.25 76.25 77.25 78.25 79.25 80.25 81.25 82.25 83.25 84.25 85.25 86.25 87.25 75.26 76.26 77.26 78.26 79.26 80.26 81.26 82.26 83.26 84.26 85.26 86.26 87.26 75.27 76.27 77.27 78.27 79.27 80.27 81.27 82.27 83.27 84.27 75.28 76.28 77.28 78.28 79.28 80.28 81.28 82.28 83.28 84.28 75.29 76.29 77.29 78.29 79.29 80.29 81.29 82.29 83.29 75.30 76.30 77.30 78.30 79.30 80.30 81.30 82.30 75.31 76.31 77.31 78.31 79.31 80.31 81.31 82.31 74.32 75.32 76.32 77.32 78.32 74.33 75.33 76.33 77.33 78.33 74.34 75.34 76.34 77.34 78.34 74.35 75.35 76.35 77.35 74.36 75.36 76.36 74.37 75.37 76.37 73.38 74.38 75.38 73.39 74.39 75.39 79.39 74.40 75.40 76.40';
+    const X0=4.2-740,Y0=3.8,S=15.375,R=150,ctx=mapa.getContext('2d');
+    const pts=P.split(' ').map(t=>{const [k,r]=t.split('.').map(Number);return {x:X0+k*S,y:Y0+r*S,s:0}});
+    
+    let mx=-1e4,my=-1e4,dentro=false,corriendo=false;
+    const medir=()=>{const d=Math.min(devicePixelRatio||1,2);mapa.width=700*d;mapa.height=680*d;ctx.setTransform(d,0,0,d,0,0)};
+    const dibujar=()=>{
+      ctx.clearRect(0,0,700,680);ctx.fillStyle='#F2C230';let activo=false;
+      for(const p of pts){
+        const dx=p.x-mx,dy=p.y-my,d=Math.hypot(dx,dy);
+        const t=dentro&&!quieto?Math.max(0,1-d/R)**2:0;
+        p.s+=(t-p.s)*.12;if(Math.abs(t-p.s)>.002)activo=true;
+        const s=p.s,emp=d>0?10*s/d:0;
+        
+        ctx.beginPath();ctx.arc(p.x+dx*emp,p.y+dy*emp,5*(1+.9*s),0,7);ctx.fill();
+      }
+      corriendo=activo;if(activo)requestAnimationFrame(dibujar);
+    };
+    const arrancar=()=>{if(!corriendo){corriendo=true;requestAnimationFrame(dibujar)}};
+    mapa.addEventListener('pointermove',e=>{const r=mapa.getBoundingClientRect();mx=(e.clientX-r.left)*700/r.width;my=(e.clientY-r.top)*680/r.height;dentro=true;arrancar()});
+    mapa.addEventListener('pointerleave',()=>{dentro=false;arrancar()});
+    medir();dibujar();
+  }
+
+
   /* ---------- wordmark del footer a todo el ancho ---------- */
   const marca=$('.footer .wordmark');
   const ajustar=()=>{marca.style.removeProperty('--fs');const w=marca.parentElement.clientWidth,a=marca.getBoundingClientRect().width,f=parseFloat(getComputedStyle(marca).fontSize);
     marca.style.setProperty('--fs',(f*w/a/w*100).toFixed(3)+'cqw')};
   ajustar();document.fonts?.ready.then(ajustar);
+  if(!quieto){
+    const capas=()=>{const r=marca.parentElement.getBoundingClientRect();
+      if(r.top>innerHeight)return;
+      const resto=document.documentElement.scrollHeight-innerHeight-scrollY,t=Math.min(1,Math.max(0,1-resto/r.height));
+      marca.style.setProperty('--fp',(t*t*(3-2*t)).toFixed(3))};
+    lenis?lenis.on('scroll',capas):addEventListener('scroll',capas,{passive:true});addEventListener('resize',capas);capas();
+  }
 
   /* ---------- reveal al scroll ---------- */
   // Por bloque, no por elemento suelto
