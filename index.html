@@ -61,7 +61,7 @@ section{position:relative}
 
 /* tags tipo sticker */
 .tag{display:inline-flex;align-items:center;gap:.6em;padding:6px 10px;font:400 14px/1.5 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--tinta);
-  background:var(--papel);border:1px solid #fff;border-radius:2px;transform:rotate(var(--r,0deg));
+  background:var(--papel);border:1px solid #fff;border-radius:2px;
   box-shadow:0 1px 1px rgba(28,28,26,.14),1px 5px 10px rgba(28,28,26,.12),inset 0 -1px 0 rgba(28,28,26,.06)}
 .tag b{font-weight:100}
 .tag.am{background:var(--amarillo)} .tag.ag{background:var(--agua)}
@@ -125,7 +125,6 @@ html.abierto{overflow:hidden}
 
 /* ---------- HERO ---------- */
 .hero{height:820px;overflow:visible clip}
-.hero .mol{left:673px;top:-48px;width:951px;height:855px}
 .hero .copy{left:120px;top:120px;width:743px}
 .hero h1{margin-top:47px}
 .hero p{width:588px;margin-top:32px}
@@ -200,6 +199,17 @@ html.abierto{overflow:hidden}
 /* ---------- DÓNDE ESTAMOS ---------- */
 .donde{height:680px;--bg:var(--amarillo-fade);overflow:visible clip}
 .donde .mapa{left:0;top:0;width:1440px;height:680px}
+/* hover en el mapa: una red de arcos suaves entre las ciudades y los pines laten.
+   La máscara corta las líneas alrededor de cada pin para que no los pisen */
+.donde .red{position:absolute;left:740px;top:0;width:700px;height:680px;overflow:visible}
+.red .zona{fill:transparent;pointer-events:all}
+.red path{fill:none;stroke:rgba(29,29,27,.32);stroke-width:1;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;
+  transition:stroke-dashoffset 1.6s cubic-bezier(.65,0,.35,1) calc(var(--i)*140ms)}
+.red:hover path{stroke-dashoffset:0}
+.red .onda{fill:none;stroke:rgba(29,29,27,.35);stroke-width:1;opacity:0;transform-box:fill-box;transform-origin:center}
+.red:hover .onda{animation:onda 2.8s cubic-bezier(.22,1,.36,1) calc(var(--i)*220ms + .4s) infinite}
+@keyframes onda{0%{opacity:.7;scale:1}100%{opacity:0;scale:2.2}}
+@media (prefers-reduced-motion:reduce){.red path{transition:none}.red:hover .onda{animation:none}}
 .donde .copy{left:120px;top:110px;width:747px}
 .donde h2{margin-top:38px}
 .donde p{width:668px;margin-top:32px}
@@ -228,7 +238,7 @@ html.abierto{overflow:hidden}
 .puerta.a{top:60px;--c:var(--amarillo);background-image:linear-gradient(90deg,var(--amarillo) 50%,rgba(242,194,48,.35) 100%)}
 .puerta.b{top:350px;--c:var(--agua);background-image:linear-gradient(90deg,var(--agua) 50%,rgba(191,228,225,.3) 100%)}
 .puerta .tag{position:absolute;left:40px;top:30px;transition:translate .6s var(--ease),rotate .6s var(--ease)}
-.puerta:hover .tag{translate:4px -2px;rotate:-1.5deg}
+.puerta:hover .tag{translate:4px -2px}
 .puerta h3,.puerta p,.puerta .accion{transition:color .5s var(--ease) .05s}
 .puerta:hover h3,.puerta:hover .accion,.puerta:focus-visible h3,.puerta:focus-visible .accion{color:var(--papel)}
 .puerta:hover p,.puerta:focus-visible p{color:rgba(250,248,243,.7)}
@@ -332,7 +342,6 @@ html.cargando{overflow:hidden}
 <!-- HERO -->
 <section class="hero" id="top">
   <div class="mili"></div>
-  <img class="abs mol" src="img/hero-molecula.png" alt="Modelo de una molécula en colores amarillo, violeta y agua">
   <div class="abs copy">
     <span class="tag" style="--r:1.6deg">Fondo de inversión en ciencia aplicada · Latinoamérica</span>
     <h1 class="display d88">Rara vez el obstáculo es<br><span class="mark">la ciencia.</span></h1>
@@ -479,6 +488,35 @@ html.cargando{overflow:hidden}
 <!-- DÓNDE ESTAMOS -->
 <section class="donde bleed" id="donde">
   <img class="abs mapa" src="img/mapa.png" alt="Mapa de Latinoamérica con Ciudad de México, Bogotá, São Paulo, Santiago, Montevideo y Buenos Aires">
+  <svg class="red" viewBox="740 0 700 680" aria-hidden="true">
+    <defs><mask id="red-mascara" maskUnits="userSpaceOnUse" x="740" y="0" width="700" height="680">
+      <rect x="740" y="0" width="700" height="680" fill="#fff"/>
+      <circle cx="1228" cy="504" r="17" fill="#000"/>
+      <circle cx="1247" cy="495" r="17" fill="#000"/>
+      <circle cx="1154" cy="486" r="17" fill="#000"/>
+      <circle cx="1308" cy="422" r="17" fill="#000"/>
+      <circle cx="1132" cy="240" r="17" fill="#000"/>
+      <circle cx="971" cy="146" r="17" fill="#000"/>
+    </mask></defs>
+    <rect class="zona" x="740" y="0" width="700" height="680"/>
+    <g mask="url(#red-mascara)">
+    <path d="M971,146 Q1036,219 1132,240" pathLength="1" style="--i:0"/>
+    <path d="M1132,240 Q1249,303 1308,422" pathLength="1" style="--i:2"/>
+    <path d="M1132,240 Q1104,367 1154,486" pathLength="1" style="--i:1"/>
+    <path d="M1154,486 Q1188,507 1228,504" pathLength="1" style="--i:4"/>
+    <path d="M1228,504 Q1242,509 1247,495" pathLength="1" style="--i:6"/>
+    <path d="M1308,422 Q1289,468 1247,495" pathLength="1" style="--i:5"/>
+    <path d="M1154,486 Q1221,429 1308,422" pathLength="1" style="--i:3"/>
+    <path d="M971,146 Q1184,230 1308,422" pathLength="1" style="--i:1"/>
+    <path d="M1132,240 Q1222,357 1228,504" pathLength="1" style="--i:3"/>
+    </g>
+    <circle class="onda" cx="971" cy="146" r="15" style="--i:0"/>
+    <circle class="onda" cx="1132" cy="240" r="15" style="--i:1"/>
+    <circle class="onda" cx="1308" cy="422" r="15" style="--i:2"/>
+    <circle class="onda" cx="1154" cy="486" r="15" style="--i:3"/>
+    <circle class="onda" cx="1228" cy="504" r="15" style="--i:4"/>
+    <circle class="onda" cx="1247" cy="495" r="15" style="--i:5"/>
+  </svg>
   <div class="abs copy">
     <span class="tag" style="--r:1.5deg"><b>FIG.#6</b>· Dónde estamos</span>
     <h2 class="display d88">El talento está.<br><span class="mark">Faltaba el puente.</span></h2>
@@ -582,7 +620,7 @@ html.cargando{overflow:hidden}
   }
 
   /* ---------- parallax ---------- */
-  const para=[[$('.hero .mol'),.1],[$('.cita .bg'),.08]].filter(p=>p[0]);
+  const para=[[$('.cita .bg'),.08]].filter(p=>p[0]);
   const mover=()=>{for(const [el,f] of para){const r=el.parentElement.getBoundingClientRect();
     if(r.bottom<-200||r.top>innerHeight+200)continue;
     el.style.transform=`translate3d(0,${(-(r.top+r.height/2-innerHeight/2)*f).toFixed(1)}px,0)`}};
@@ -620,7 +658,7 @@ html.cargando{overflow:hidden}
   const tipos=[
     ['.copy>*,section>.tag,section>h2,.cita blockquote,.cita figcaption,.objetivos .num,.objetivos .col,.banda-copy,'+
      '.area,.mas .cols>div,.paso,.puerta,.copia','up'],
-    ['.hero .mol,.tesis .foto,.tesis .planilla,.objetivos img,.donde .mapa','fade'],
+    ['.tesis .foto,.tesis .planilla,.objetivos img,.donde .mapa','fade'],
     ['.proceso .linea','linea'],['.mark','mark']
   ];
   const extra={mark:.3,fade:.1};
