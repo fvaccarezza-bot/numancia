@@ -16,8 +16,8 @@
 
 :root{
   --tinta:#1D1D1B; --papel:#FAF8F3; --texto:#45443F;
-  --amarillo:#F2C230; --violeta:#B07BD0; --agua:#86C5A0;
-  --violeta60:#CEADDE; --violeta30:#E4D2E8; --amarillo60:#F6D883; --amarillo30:#F9EAC2; --agua60:#B4D9C1; --agua30:#D7E9DA;
+  --amarillo:#F2C230; --violeta:#963ECA; --agua:#86C5A0;
+  --violeta60:#BE88DA; --violeta30:#DCC0E7; --amarillo60:#F6D883; --amarillo30:#F9EAC2; --agua60:#B4D9C1; --agua30:#D7E9DA;
   --display:"PP Telegraf","Archivo",system-ui,sans-serif;
   --sans:"Geist",system-ui,sans-serif;
   --mono:"Geist Mono",ui-monospace,monospace;
@@ -54,7 +54,6 @@ section{position:relative}
 .d56{font-size:56px;line-height:.98;letter-spacing:-.025em}
 .d40{font-size:40px;line-height:1.05;letter-spacing:-.02em}
 .d28{font-size:28px;line-height:1.15;letter-spacing:-.01em}
-.d20{font-size:20px;line-height:1.2;letter-spacing:-.005em}
 .sub22{font-family:var(--display);font-weight:400;font-size:22px;line-height:1.25;letter-spacing:-.01em}
 .body20{font-size:20px;line-height:1.5;color:var(--texto)}
 .body18{font-size:18px;line-height:1.5;color:var(--texto)}
@@ -63,7 +62,7 @@ section{position:relative}
 
 /* resaltador tipo marcador detrás de la última línea */
 /* el color del subrayado se puede cambiar por sección con --m */
-.filosofia .mark{--m:var(--amarillo)}
+.filosofia .mark,.areas .mark,.mas .mark{--m:var(--amarillo)}
 .mark{background:linear-gradient(transparent 55%,var(--m,var(--agua)) 55%,var(--m,var(--agua)) 92%,transparent 92%) no-repeat 0 0/100% 100%;padding:0 .12em;margin:0 -.12em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
 
 /* tags tipo sticker */
@@ -87,6 +86,13 @@ section{position:relative}
 .btn.ghost:hover,.btn.ghost:focus-visible{color:var(--papel)}
 
 /* texturas */
+/* milimetrado en todas las secciones blancas: mismo trazo y fade que el del hero: fuerte arriba a la izquierda y se pierde en diagonal.
+   JS pone --gy para que la grilla siga continua de una sección a la otra */
+.objetivos,.areas,.mas,.proceso,.contacto{isolation:isolate}
+:is(.objetivos,.areas,.mas,.proceso,.contacto)::before{content:"";position:absolute;inset:0 calc(-1*var(--sangre));z-index:-1;pointer-events:none;
+  -webkit-mask-image:linear-gradient(135deg,#000 0%,rgba(0,0,0,.35) 60%,transparent 100%);mask-image:linear-gradient(135deg,#000 0%,rgba(0,0,0,.35) 60%,transparent 100%);
+  background-image:linear-gradient(#DCE7E0 1px,transparent 1px),linear-gradient(90deg,#DCE7E0 1px,transparent 1px);
+  background-size:36px 36px;background-position:12px var(--gy,0px)}
 .mili{position:absolute;inset:0 calc(-1*var(--sangre));pointer-events:none;
   background-image:linear-gradient(#DCE7E0 1px,transparent 1px),linear-gradient(90deg,#DCE7E0 1px,transparent 1px);
   background-size:36px 36px;background-position:12px 0,12px 0;
@@ -133,24 +139,49 @@ html.abierto{overflow:hidden}
 .hero{height:100vh;height:100svh;min-height:680px;overflow:visible clip}
 /* el hero queda fijo y la sección siguiente lo pisa. Mientras se va (--h de 0 a 1), solo el texto y la molécula
    toman blur y se desvanecen; el fondo y el milimetrado quedan intactos para que no se rompan los bordes */
-.hero{position:sticky;top:0;z-index:0}
+.hero{position:sticky;top:0;z-index:0;translate:0 calc(var(--h,0)*-80px)}
 .hero .copy,.hero .mol{filter:blur(calc(var(--h,0)*10px)) opacity(calc(1 - var(--h,0)*.5))}
 .hero .copy{left:120px;top:calc(50% + 28px);translate:0 -50%;width:743px}
 .hero h1{margin-top:47px}
+/* título: las letras suben desde abajo dentro de una máscara, igual que el wordmark del loader (al terminar el loader) */
+.hero h1 .pal{display:inline-block;white-space:nowrap;overflow:hidden;padding:.14em .02em .08em;margin:-.14em -.02em -.08em;vertical-align:top}
+.hero h1 .l{display:inline-block}
+/* entrada del hero en cascada, al subir la cortina del loader:
+   tag → letras del título → subrayado → párrafo → botones → molécula → barra.
+   Todo con "backwards": el estado inicial se aplica antes de arrancar y al terminar no queda nada bloqueado */
+html.cargando .hero .copy>*,html.cargando .hero .mol,html.cargando .riel{opacity:0}
+html.cargando .hero h1{opacity:1}
+html.cargando .hero h1 .l{translate:0 115%}
+html:not(.cargando) .hero h1 .l{animation:subir-l 1s cubic-bezier(.16,1,.3,1) calc(.25s + var(--i)*28ms) backwards}
+html:not(.cargando) .hero .copy>.tag{animation:entra-h .9s cubic-bezier(.16,1,.3,1) .1s backwards}
+html:not(.cargando) .hero h1 .mark{animation:resalta .9s cubic-bezier(.65,0,.35,1) 1.15s backwards}
+html:not(.cargando) .hero .copy>p{animation:entra-h 1s cubic-bezier(.16,1,.3,1) .85s backwards}
+html:not(.cargando) .hero .ctas .btn{animation:entra-h 1s cubic-bezier(.16,1,.3,1) calc(1.05s + var(--b,0)*.12s) backwards}
+html:not(.cargando) .hero .ctas .btn+.btn{--b:1}
+html:not(.cargando) .hero .mol{animation:entra-mol 1.6s cubic-bezier(.16,1,.3,1) .45s backwards,flotar 7s ease-in-out 2.05s infinite}
+html:not(.cargando) .riel{animation:baja-barra .9s cubic-bezier(.16,1,.3,1) 1.3s backwards}
+@keyframes subir-l{from{translate:0 115%}}
+@keyframes entra-h{from{opacity:0;translate:0 24px}}
+@keyframes resalta{from{background-size:0% 100%}}
+@keyframes entra-mol{from{opacity:0;scale:.9}}
+@keyframes baja-barra{from{translate:0 -100%}}
+@media (prefers-reduced-motion:reduce){.hero .copy>*,.hero h1 .l,.hero h1 .mark,.hero .ctas .btn,.hero .mol,.riel{animation:none!important;opacity:1!important}}
+@media (prefers-reduced-motion:reduce){.hero h1 .l{translate:none;animation:none!important}}
 .hero p{width:588px;margin-top:32px}
 .hero .ctas{display:flex;gap:32px;margin-top:32px}
 .hero .mol{left:673px;bottom:calc((100% - min(855px,100% - 20px))/2 - 28px);height:min(855px,calc(100% - 20px));width:auto}
 /* la molécula flota suave: sube, baja y se mece apenas */
-.hero .mol{animation:flotar 7s ease-in-out infinite}
 @keyframes flotar{0%,100%{translate:0 0;rotate:0deg}50%{translate:0 -18px;rotate:-1.8deg}}
 @media (prefers-reduced-motion:reduce){.hero .mol{animation:none}}
 
 /* ---------- LA TESIS ---------- */
 /* abanico: detrás del borde superior de la tesis se abren capas amarillo 60 y amarillo 30 mientras pisa al hero (--h de 0 a 1), como las capas del wordmark del footer */
 .abanico{position:relative;width:1440px;height:0;margin-inline:auto;z-index:2}
-.abanico i{position:absolute;left:calc(-1*var(--sangre));right:calc(-1*var(--sangre));top:0;height:560px;transform-origin:0 0;rotate:calc(var(--h,0)*var(--a))}
-.abanico i:nth-child(1){--a:-2.8deg;background:var(--amarillo30)}
-.abanico i:nth-child(2){--a:-1.4deg;background:var(--amarillo60)}
+.abanico i{position:absolute;left:calc(-1*var(--sangre));right:calc(-1*var(--sangre));top:0;height:1400px;transform-origin:0 0;rotate:calc(var(--h,0)*var(--a))}
+.abanico i:nth-child(1){--a:-18deg;background:color-mix(in srgb,var(--amarillo30) 50%,transparent)}
+.abanico i:nth-child(2){--a:-9deg;background:color-mix(in srgb,var(--amarillo60) 50%,transparent)}
+/* capas translúcidas con blur de lo que queda detrás */
+.abanico i{-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
 .tesis{height:560px;--bg:var(--amarillo-fade);z-index:3;
 }
 .tesis .copy{left:120px;top:121px;width:549px}
@@ -179,9 +210,10 @@ html.abierto{overflow:hidden}
 .copia{position:absolute;width:372px;height:490px;background:var(--papel);transform-origin:0 0;
   box-shadow:0 1px 2px rgba(28,28,26,.15),2px 10px 18px rgba(28,28,26,.14);}
 .copia .ph{position:absolute;left:16px;top:16px;width:340px;height:260px;object-fit:cover}
-.copia h3{position:absolute;left:20px;top:300px;width:340px}
-.copia .regla{position:absolute;left:20px;top:340px;width:150px;height:2px;background:var(--violeta)}
-.copia p{position:absolute;left:20px;top:358px;width:330px}
+/* título, raya y texto en flujo: si el título ocupa dos líneas, lo demás baja solo */
+.copia h3{margin:300px 20px 0;width:340px}
+.copia .regla{margin:12px 20px 0;width:150px;height:2px;background:var(--violeta)}
+.copia p{margin:16px 20px 0;width:330px}
 .copia .cta{position:absolute;left:20px;top:453px;font:400 13px/1.3 var(--mono);text-transform:uppercase;text-decoration:underline;text-underline-offset:3px}
 
 /* ---------- CITA ---------- */
@@ -191,11 +223,11 @@ html.abierto{overflow:hidden}
 .cita figcaption{left:0;right:0;top:506px;text-align:center;font:400 15px/1.3 var(--mono)}
 
 /* ---------- ÁREAS ---------- */
-.areas{height:730px;overflow:hidden}
+.areas{height:730px;overflow:visible clip}
 .areas h2{left:120px;top:118px;width:900px}
 .area{position:absolute;top:227px;width:588px;height:401px;overflow:hidden}
 .area.vivir{left:118px;background:linear-gradient(90deg,rgba(134,197,160,0) 0%,var(--agua) 100%)}
-.area.producir{left:795px;background:linear-gradient(90deg,var(--violeta30) 0%,rgba(228,210,232,0) 100%)}
+.area.producir{left:795px;background:linear-gradient(90deg,var(--violeta30) 0%,rgba(220,192,231,0) 100%)}
 .area .txt{position:absolute;left:48px;top:48px;width:340px}
 .area .regla{width:200px;height:2px;margin:30px 0}
 .area.vivir .regla{background:var(--agua)} .area.producir .regla{background:var(--violeta)}
@@ -205,7 +237,7 @@ html.abierto{overflow:hidden}
 .area .forma{position:absolute;pointer-events:none}
 
 /* ---------- MÁS ALLÁ ---------- */
-.mas{height:560px}
+.mas{height:620px}
 .mas .tag{left:120px;top:35px}
 .mas h2{left:120px;top:105px;width:900px}
 .mas .cols{position:absolute;left:120px;top:258px;width:1220px;display:grid;grid-template-columns:repeat(3,370px);gap:55px}
@@ -214,34 +246,47 @@ html.abierto{overflow:hidden}
 .mas .head img{margin-top:-4px}
 .mas h3{margin-top:18px}
 .mas p{margin-top:18px;width:360px}
+/* un CTA por tarjeta, cada uno para un público distinto; alineados abajo aunque los textos tengan distinto largo */
+.mas .cols>div{display:flex;flex-direction:column;align-items:flex-start}
+.mas .cols .btn{margin-top:auto;translate:0 26px}
 
 /* ---------- DÓNDE ESTAMOS ---------- */
-.donde{height:680px;--bg:var(--amarillo-fade);overflow:visible clip}
+.donde{height:730px;--bg:var(--amarillo-fade);overflow:visible clip}
 /* mapa de puntos dibujado en canvas: al pasar el mouse los puntos cercanos crecen, y se apartan (efecto lupa) */
 .donde .mapa{left:740px;top:0;width:700px;height:680px}
-.donde .copy{left:120px;top:110px;width:747px}
+.donde .copy{left:120px;top:90px;width:747px}
 .donde h2{margin-top:38px}
 .donde p{width:668px;margin-top:32px}
-.cifras{display:flex;gap:48px;margin-top:56px}
+.cifras{display:flex;gap:48px}
+/* CTA debajo de las cifras */
+.fila-cifras{display:flex;flex-direction:column;align-items:flex-start;gap:48px;margin-top:56px}
+.fila-cifras .btn{white-space:nowrap}
 .cifras b{display:block;font-size:56px;line-height:.98;letter-spacing:-.025em}
 .cifras span{display:block;margin-top:4px;font:400 15px/1.5 var(--mono);text-transform:uppercase}
 
 /* ---------- CÓMO TRABAJAMOS ---------- */
-.proceso{height:680px}
+.proceso{height:650px}
 .proceso .tag{left:120px;top:95px}
 .proceso h2{left:120px;top:150px;width:1000px}
 /* timeline atada al scroll: la línea se llena y cada paso se "enciende" cuando la línea lo alcanza */
-.proceso .linea{left:120px;top:384px;width:1200px;height:3px;background:rgba(29,29,27,.14)}
+.proceso .linea{left:120px;top:384px;width:999px;height:3px;background:rgba(29,29,27,.14)}
 .proceso .linea b{position:absolute;inset:0;background:var(--tinta);transform-origin:0 50%;scale:var(--prog,0) 1}
 .paso{position:absolute;top:366px;width:221px}
 .paso i{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;border:3px solid rgba(29,29,27,.2);background:var(--papel);color:rgba(29,29,27,.45);
   font:400 15px/1 var(--mono);font-style:normal;transition:background .5s var(--ease),border-color .5s var(--ease),color .5s var(--ease),scale .5s var(--ease)}
 .paso h3,.paso p{opacity:.35;transition:opacity .6s var(--ease)}
-.paso h3{margin-top:24px;min-height:64px}
+.paso h3{margin-top:24px}
 .paso p{margin-top:16px}
 .paso.hecho i{background:var(--tinta);border-color:var(--tinta);color:var(--papel)}
 .paso.actual i{scale:1.15;background:var(--amarillo);color:var(--tinta)}
 .paso.hecho h3,.paso.hecho p{opacity:1}
+/* el 5 es la meta: queda en amarillo. Al llegar, la línea sigue y se va por el borde: la compañía sigue sola */
+.paso.meta.hecho i{scale:1.15;background:var(--amarillo);border-color:var(--tinta);color:var(--tinta)}
+.proceso .salida{left:1139px;top:384px;right:calc(28px - var(--sangre));height:3px}
+.proceso .salida b{position:absolute;inset:0;background:var(--tinta);transform-origin:0 50%;scale:0 1;transition:scale 1.1s cubic-bezier(.65,0,.35,1)}
+.proceso .salida::after{content:"";position:absolute;right:0;top:-6px;width:12px;height:12px;border-top:3px solid var(--tinta);border-right:3px solid var(--tinta);rotate:45deg;opacity:0;transition:opacity .3s}
+.proceso.fin .salida b{scale:1 1}
+.proceso.fin .salida::after{opacity:1;transition-delay:.9s}
 
 /* ---------- CONTACTO ---------- */
 .contacto{height:639px}
@@ -290,10 +335,10 @@ html.abierto{overflow:hidden}
 /* el wordmark se ajusta al ancho visible */
 .pie-marca-xl{container-type:inline-size}
 /* el wordmark ocupa todo el ancho del viewport: tamaño estimado en cqw y ajustado por JS a la fuente real */
-.footer .wordmark{display:block;width:max-content;margin:0 auto;padding-top:40px;margin-bottom:-.17em;font-size:var(--fs,21.5cqw);line-height:.8;letter-spacing:-.02em;color:var(--papel);white-space:nowrap;
-  text-shadow:0 calc(var(--fp,1)*-.045em) 0 var(--amarillo),0 calc(var(--fp,1)*-.09em) 0 var(--agua);
+.footer .wordmark{display:block;width:max-content;margin:0 auto;padding-top:40px;margin-bottom:-.21em;font-size:var(--fs,21.5cqw);line-height:.8;letter-spacing:-.02em;color:var(--papel);white-space:nowrap;
+  text-shadow:0 calc(var(--fp,1)*-.045em) 0 var(--amarillo),0 calc(var(--fp,1)*-.09em) 0 var(--violeta);
   translate:0 calc((1 - var(--fp,1))*.12em)}
-/* parallax: las capas amarilla y verde arrancan escondidas detrás del papel y se abren al llegar al fondo (--fp de 0 a 1) */
+/* parallax: las capas amarilla y violeta arrancan escondidas detrás del papel y se abren al llegar al fondo (--fp de 0 a 1) */
 
 /* ---------- LOADER ---------- */
 html.cargando{overflow:hidden;background:var(--tinta)}
@@ -309,9 +354,9 @@ html.cargando{overflow:hidden;background:var(--tinta)}
   -webkit-mask:radial-gradient(130% 110% at 0 0,#000 0%,rgba(0,0,0,.35) 35%,transparent 70%);mask:radial-gradient(130% 110% at 0 0,#000 0%,rgba(0,0,0,.35) 35%,transparent 70%)}
 .loader .marca{position:absolute;left:50%;top:46%;translate:-50% -50%;display:flex;overflow:hidden;padding:.14em .04em 0;
   font-family:var(--display);font-weight:800;font-stretch:118%;font-size:clamp(140px,17vw,320px);line-height:1;letter-spacing:-.02em;white-space:nowrap}
-/* las capas amarilla y verde suben con el porcentaje (--p de 0 a 1) */
+/* las capas amarilla y violeta suben con el porcentaje (--p de 0 a 1) */
 .loader .marca span{display:block;animation:subir 1s cubic-bezier(.16,1,.3,1) calc(var(--i)*60ms) both;
-  text-shadow:0 calc(var(--p,0)*-.032em) 0 var(--amarillo),0 calc(var(--p,0)*-.064em) 0 var(--agua)}
+  text-shadow:0 calc(var(--p,0)*-.032em) 0 var(--amarillo),0 calc(var(--p,0)*-.064em) 0 var(--violeta)}
 @keyframes subir{from{translate:0 110%}}
 .loader .pie{position:absolute;left:48px;right:48px;bottom:44px;display:flex;justify-content:space-between;align-items:flex-end}
 .loader .cuenta{font-family:var(--display);font-weight:800;font-stretch:118%;font-size:88px;line-height:.92;letter-spacing:-.03em;font-variant-numeric:tabular-nums;color:#fff}
@@ -374,7 +419,7 @@ html.cargando{overflow:hidden;background:var(--tinta)}
   <img class="abs mol" src="img/hero-molecula.png" alt="Modelo de una molécula en colores amarillo, violeta y agua">
   <div class="abs copy">
     <span class="tag">Fondo de inversión en ciencia aplicada · Latinoamérica</span>
-    <h1 class="display d88">Rara vez el obstáculo es<br><span class="mark">la ciencia.</span></h1>
+    <h1 class="display d88">Rara vez el<br>obstáculo es<br><span class="mark">la ciencia.</span></h1>
     <p class="body20">Invertimos en compañías de base científica y financiamos lo que les falta para llegar al mercado: una tecnología madura y una compañía lista para firmar.</p>
     <div class="ctas">
       <a class="btn solid" href="#contacto"><span class="t"><span>Presentar un proyecto</span></span></a>
@@ -444,21 +489,21 @@ html.cargando{overflow:hidden;background:var(--tinta)}
 
   <article class="copia" style="left:120px;top:320px">
     <img class="ph" src="img/foto-ciencia.jpg" alt="Científica observando una placa de Petri">
-    <h3 class="display d20">Ciencia validada</h3><div class="regla"></div>
+    <h3 class="display d28">Ciencia validada</h3><div class="regla"></div>
     <p class="body16">Conocimiento reconocido a nivel internacional, no una apuesta aislada.</p>
     <a class="cta" href="#proceso">Cómo evaluamos&nbsp;&nbsp;→</a>
   </article>
 
   <article class="copia" style="left:534px;top:320px">
     <img class="ph" src="img/foto-region.jpg" alt="Campo cultivado con una estación agrícola al fondo">
-    <h3 class="display d20">Latinoamérica como ventaja</h3><div class="regla"></div>
+    <h3 class="display d28">Latinoamérica como ventaja</h3><div class="regla"></div>
     <p class="body16">Como base productiva, mercado de aplicación o acceso a recursos y talento.</p>
     <a class="cta" href="#donde">Dónde estamos&nbsp;&nbsp;→</a>
   </article>
 
   <article class="copia" style="left:948px;top:320px">
     <img class="ph" src="img/foto-mercado.jpg" alt="Ingeniero revisando un biorreactor en una planta piloto">
-    <h3 class="display d20">Mercado relevante</h3><div class="regla"></div>
+    <h3 class="display d28">Mercado relevante</h3><div class="regla"></div>
     <p class="body16">Grande para crecer en serio, con un camino claro: licencia, servicios, producto o alianza.</p>
     <a class="cta" href="#areas">Áreas de interés&nbsp;&nbsp;→</a>
   </article>
@@ -476,7 +521,7 @@ html.cargando{overflow:hidden;background:var(--tinta)}
 <!-- ÁREAS -->
 <section class="areas" id="areas">
   <span class="tag abs" style="left:120px;top:48px"><b>FIG.#4</b>· Áreas de interés</span>
-  <h2 class="abs display d56">Dónde ponemos el foco.</h2>
+  <h2 class="abs display d56">Dónde ponemos <span class="mark">el foco.</span></h2>
   <div class="area vivir">
     <img class="objs" src="img/areas-vivir.png" alt="Objetos de salud: estetoscopio, medicamentos, dispositivos de diagnóstico">
     <img class="forma" src="img/forma-amarilla.png" style="left:420px;top:300px;width:200px" alt="">
@@ -500,17 +545,20 @@ html.cargando{overflow:hidden;background:var(--tinta)}
 <!-- MÁS ALLÁ DEL CAPITAL -->
 <section class="mas">
   <span class="tag abs"><b>FIG.#5</b>· Qué sumamos</span>
-  <h2 class="abs display d56">Más allá del capital.</h2>
+  <h2 class="abs display d56">Más allá <span class="mark">del capital.</span></h2>
   <div class="cols">
     <div><div class="head"><span>01.</span><img src="img/mas-1.png" width="104" alt=""></div>
-      <h3 class="display d20">Consejo científico</h3>
-      <p class="body16">Asesores que ayudan a evaluar compañías y, cuando hace falta, acompañan desde el directorio.</p></div>
+      <h3 class="display d28">Consejo científico</h3>
+      <p class="body16">Asesores que ayudan a evaluar compañías y, cuando hace falta, acompañan desde el directorio.</p>
+      <a class="btn ghost" href="mailto:contacto@numancia.com?subject=Sumarme%20como%20asesor"><span class="t"><span>Sumate como asesor&nbsp;&nbsp;→</span></span></a></div>
     <div><div class="head"><span>02.</span><img src="img/mas-2.png" width="151" alt=""></div>
-      <h3 class="display d20">Red industrial</h3>
-      <p class="body16">Acceso a socios industriales e internacionales y a instituciones científicas.</p></div>
+      <h3 class="display d28">Red industrial</h3>
+      <p class="body16">Acceso a socios industriales e internacionales y a instituciones científicas.</p>
+      <a class="btn ghost" href="mailto:contacto@numancia.com?subject=Ser%20socio%20industrial"><span class="t"><span>Ser socio industrial&nbsp;&nbsp;→</span></span></a></div>
     <div><div class="head"><span>03.</span><img src="img/mas-3.png" width="128" alt=""></div>
-      <h3 class="display d20">Financiamiento no dilutivo</h3>
-      <p class="body16">Subsidios y programas públicos que suman sin ceder participación.</p></div>
+      <h3 class="display d28">Financiamiento no dilutivo</h3>
+      <p class="body16">Subsidios y programas públicos que suman sin ceder participación.</p>
+      <a class="btn ghost" href="mailto:contacto@numancia.com?subject=Consulta%20de%20elegibilidad"><span class="t"><span>Consultar elegibilidad&nbsp;&nbsp;→</span></span></a></div>
   </div>
 </section>
 
@@ -521,10 +569,13 @@ html.cargando{overflow:hidden;background:var(--tinta)}
     <span class="tag pa"><b>FIG.#6</b>· Dónde estamos</span>
     <h2 class="display d88">El talento está.<br><span class="mark">Faltaba el puente.</span></h2>
     <p class="body18">Latinoamérica produce ciencia de primer nivel que pocas veces llega al mercado. Estamos donde esa ciencia ocurre, de Ciudad de México a Buenos Aires.</p>
+    <div class="fila-cifras">
     <div class="cifras">
       <div><b class="display">8</b><span>Países</span></div>
       <div><b class="display">12</b><span>Compañías</span></div>
       <div><b class="display">45</b><span>Instituciones</span></div>
+    </div>
+    <a class="btn ghost" href="mailto:contacto@numancia.com?subject=Investigo%20en%20Latinoam%C3%A9rica"><span class="t"><span>¿Investigás en Latinoamérica? Escribinos&nbsp;&nbsp;→</span></span></a>
     </div>
   </div>
 </section>
@@ -534,11 +585,12 @@ html.cargando{overflow:hidden;background:var(--tinta)}
   <span class="tag abs"><b>FIG.#7</b>· Cómo trabajamos</span>
   <h2 class="abs display d88">De la primera charla<br><span class="mark">a la siguiente ronda.</span></h2>
   <div class="abs linea"><b></b></div>
+  <div class="abs salida" aria-hidden="true"><b></b></div>
   <div class="paso" style="left:120px"><i>1</i><h3 class="display d28">Primer contacto</h3><p class="body16">Una charla para entender el problema. No hace falta un plan de negocios.</p></div>
   <div class="paso" style="left:365px"><i>2</i><h3 class="display d28">Evaluación</h3><p class="body16">Científicos revisan los datos; en paralelo, el mercado. Devolvemos lo que vimos.</p></div>
-  <div class="paso" style="left:610px"><i>3</i><h3 class="display d28">Diseño de la inversión</h3><p class="body16">Hitos para los dos objetivos y el instrumento adecuado.</p></div>
+  <div class="paso" style="left:610px"><i>3</i><h3 class="display d28">Estructura</h3><p class="body16">Hitos para los dos objetivos y el instrumento adecuado.</p></div>
   <div class="paso" style="left:854px"><i>4</i><h3 class="display d28">Ejecución</h3><p class="body16">Capital contra hitos, con asesores, red y fondos no dilutivos.</p></div>
-  <div class="paso" style="left:1099px"><i>5</i><h3 class="display d28">Siguiente etapa</h3><p class="body16">Lista para una ronda, una licencia o una alianza.</p></div>
+  <div class="paso meta" style="left:1099px"><i>5</i><h3 class="display d28">Siguiente etapa</h3><p class="body16">Lista para una ronda, una licencia o una alianza.</p></div>
 </section>
 
 <!-- CONTACTO -->
@@ -582,7 +634,6 @@ html.cargando{overflow:hidden;background:var(--tinta)}
         <li><a href="mailto:contacto@numancia.com">contacto@numancia.com</a></li>
         <!-- TODO: URL real del perfil -->
         <li><a href="#">LinkedIn ↗</a></li>
-        <li>Ciudad de México — Buenos Aires</li>
       </ul>
     </div>
     <div>
@@ -623,6 +674,22 @@ html.cargando{overflow:hidden;background:var(--tinta)}
   const hero=$('.hero');
   if(hero&&!quieto){const irse=()=>{const p=Math.min(1,Math.max(0,scrollY/hero.offsetHeight));document.documentElement.style.setProperty('--h',p.toFixed(3));hero.style.visibility=scrollY>hero.offsetHeight*2.5?'hidden':''};
     addEventListener('scroll',irse,{passive:true});irse()}
+
+  /* ---------- título del hero: separar en letras para la entrada en cascada ---------- */
+  const titulo=$('.hero h1');
+  if(titulo){let i=0;const w=document.createTreeWalker(titulo,NodeFilter.SHOW_TEXT),nodos=[];while(w.nextNode())nodos.push(w.currentNode);
+    titulo.setAttribute('aria-label',titulo.textContent);
+    nodos.forEach(n=>{const f=document.createDocumentFragment();
+      n.textContent.split(/( )/).forEach(p=>{if(p===' '||p===''){if(p)f.append(' ');return}
+        const pal=document.createElement('span');pal.className='pal';pal.setAttribute('aria-hidden','true');
+        for(const c of p){const l=document.createElement('span');l.className='l';l.style.setProperty('--i',i++);l.textContent=c;pal.append(l)}
+        f.append(pal)});
+      n.replaceWith(f)})}
+
+  /* ---------- milimetrado continuo: cada sección blanca corre su grilla según dónde arranca ---------- */
+  const grillas=$$('.objetivos,.areas,.mas,.proceso,.contacto');
+  const alinear=()=>grillas.forEach(el=>el.style.setProperty('--gy',(-(el.getBoundingClientRect().top+scrollY)%36)+'px'));
+  alinear();addEventListener('resize',alinear);addEventListener('load',alinear);
 
   /* ---------- parallax ---------- */
   const para=[[$('.hero .mol'),.1],[$('.cita .bg'),.08]].filter(p=>p[0]);
@@ -665,8 +732,9 @@ html.cargando{overflow:hidden;background:var(--tinta)}
       const y=linea.getBoundingClientRect().top;
       const prog=quieto?1:Math.min(1,Math.max(0,(innerHeight*.85-y)/(innerHeight*.35)));
       linea.style.setProperty('--prog',prog);
-      let ult=-1;pasos.forEach((p,i)=>{const ok=prog*1200>=p.offsetLeft-120+20;p.classList.toggle('hecho',ok);if(ok)ult=i});
+      let ult=-1;pasos.forEach((p,i)=>{const ok=prog*999>=p.offsetLeft-120+20;p.classList.toggle('hecho',ok);if(ok)ult=i});
       pasos.forEach((p,i)=>p.classList.toggle('actual',i===ult&&prog<1));
+      linea.parentElement.classList.toggle('fin',prog>=1);
     };
     addEventListener('scroll',avanzar,{passive:true});addEventListener('resize',avanzar);avanzar();
   }
@@ -729,11 +797,11 @@ html.cargando{overflow:hidden;background:var(--tinta)}
   const tipos=[
     ['.copy>*,section>.tag,section>h2,.cita blockquote,.cita figcaption,.objetivos .num,.objetivos .col,.banda-copy,'+
      '.area,.mas .cols>div,.paso,.puerta,.copia','up'],
-    ['.hero .mol,.tesis .foto,.tesis .planilla,.objetivos img,.donde .mapa','fade'],
+    ['.tesis .foto,.tesis .planilla,.objetivos img,.donde .mapa','fade'],
     ['.proceso .linea','linea'],['.mark','mark']
   ];
   const extra={mark:.3,fade:.1};
-  for(const [sel,t] of tipos)for(const el of $$(sel))if(!el.classList.contains('rv'))el.classList.add('rv','rv-'+t);
+  for(const [sel,t] of tipos)for(const el of $$(sel))if(!el.classList.contains('rv')&&!el.closest('.hero'))el.classList.add('rv','rv-'+t);
 
   const contar=b=>{const fin=+b.textContent,t0=performance.now();
     (function paso(t){const k=Math.min(1,(t-t0)/1400);b.textContent=Math.round(fin*(1-Math.pow(1-k,4)));if(k<1)requestAnimationFrame(paso)})(t0)};
