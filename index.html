@@ -112,12 +112,12 @@ section{position:relative}
 .riel.oculta{translate:0 -100%}
 .riel-logo{order:-1;margin-right:auto;font-size:26px;line-height:1;letter-spacing:-.02em}
 .riel-menu{order:1}
-.riel-cta{margin-right:0}
-/* links de secciones a la vista; la hamburguesa queda oculta por ahora */
-.riel-links{display:flex;gap:32px;margin-right:36px;font-size:14px}
+.riel-cta{margin-right:8px}
+
+/* links a la vista: apagados, vuelve la hamburguesa con el menú a pantalla completa. Para prenderlos, display:flex */
+.riel-links{display:none;gap:32px;margin-right:36px;font-size:14px}
 .riel-links a{color:var(--tinta);text-decoration:none;background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;transition:background-size .35s var(--ease)}
 .riel-links a:hover{background-size:100% 1px}
-.riel-menu{display:none!important}
 .btn.chico{height:36px;padding:0 18px;font-size:14px}
 .riel-menu{width:64px;height:56px;flex:none;display:grid;place-content:center;justify-items:start;gap:7px;background:none;border:0;cursor:pointer}
 .riel-menu span{display:block;width:22px;height:1.5px;background:var(--tinta);transform-origin:50% 50%;transition:translate .4s var(--ease),rotate .4s var(--ease),width .3s var(--ease)}
@@ -412,9 +412,9 @@ html:not(.cargando) .riel{animation:baja-barra .9s cubic-bezier(.16,1,.3,1) 1.3s
 .pie-base a{transition:color .2s}
 .pie-base a:hover{color:var(--papel)}
 /* el wordmark se ajusta al ancho visible */
-.pie-marca-xl{container-type:inline-size}
+.pie-marca-xl{container-type:inline-size;overflow:hidden}
 /* el wordmark ocupa todo el ancho del viewport: tamaño estimado en cqw y ajustado por JS a la fuente real */
-.footer .wordmark{display:block;width:max-content;margin:0 auto;padding-top:40px;margin-bottom:-.21em;font-size:var(--fs,21.5cqw);line-height:.8;letter-spacing:-.02em;color:var(--papel);white-space:nowrap;
+.footer .wordmark{display:block;width:max-content;margin:0 0 0 50%;transform:translateX(-50%);padding-top:40px;margin-bottom:-.21em;font-size:var(--fs,21.5cqw);line-height:.8;letter-spacing:-.02em;color:var(--papel);white-space:nowrap;
   text-shadow:0 calc(var(--fp,1)*-.045em) 0 var(--amarillo),0 calc(var(--fp,1)*-.09em) 0 var(--violeta);
   translate:0 calc((1 - var(--fp,1))*.12em)}
 /* parallax: las capas amarilla y violeta arrancan escondidas detrás del papel y se abren al llegar al fondo (--fp de 0 a 1) */
@@ -942,7 +942,7 @@ html.cargando{overflow:hidden;background:var(--tinta)}
   /* ---------- wordmark del footer a todo el ancho ---------- */
   const marca=$('.footer .wordmark');
   const ajustar=()=>{marca.style.removeProperty('--fs');const w=marca.parentElement.clientWidth,a=marca.getBoundingClientRect().width,f=parseFloat(getComputedStyle(marca).fontSize);
-    marca.style.setProperty('--fs',(f*w/a/w*100).toFixed(3)+'cqw')};
+    marca.style.setProperty('--fs',(f*w/a/w*100*1.04).toFixed(3)+'cqw')};
   ajustar();document.fonts?.ready.then(ajustar);
   if(!quieto){
     const capas=()=>{const r=marca.parentElement.getBoundingClientRect();

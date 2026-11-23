@@ -40,7 +40,13 @@ a{color:inherit;text-decoration:none}
 .page{position:relative;min-width:1440px;background:var(--papel);overflow:clip}
 section{width:1440px;margin-inline:auto}
 /* fondo a sangre: border-image pinta por fuera de la caja sin que lo recorte el overflow */
-:root{--sangre:max(0px,calc(50vw - 720px))}
+/* Retina en notebooks: en pantallas de alta densidad y hasta 1800px de ancho la página se ve grande (como el navegador al 100%).
+   Se achica todo al 80%, igual que el zoom del navegador. Las unidades vw/vh van divididas por --z para seguir midiendo la pantalla entera */
+:root{--z:1}
+@media (min-resolution:2dppx) and (max-width:1800px){:root{--z:.8}html{zoom:var(--z)}
+  /* la barra no se achica: queda igual que en index */
+  html .riel{zoom:1.25;padding:0 calc(max(0px,calc(50vw - 720px)) + 120px)}}
+:root{--sangre:max(0px,calc(calc(50vw / var(--z)) - 720px))}
 .bleed{background:none;border-image:var(--bg) 0 fill / 0 / 0 var(--sangre)}
 /* el hero queda fijo detrás: todas las demás secciones llevan base papel opaca (también a sangre) para taparlo */
 section:not(.hero):not(.pie-links){background-color:var(--papel);box-shadow:calc(-1*var(--sangre)) 0 0 var(--papel),var(--sangre) 0 0 var(--papel)}
@@ -112,12 +118,12 @@ section{position:relative}
 .riel.oculta{translate:0 -100%}
 .riel-logo{order:-1;margin-right:auto;font-size:26px;line-height:1;letter-spacing:-.02em}
 .riel-menu{order:1}
-.riel-cta{margin-right:0}
-/* links de secciones a la vista; la hamburguesa queda oculta por ahora */
-.riel-links{display:flex;gap:32px;margin-right:36px;font-size:14px}
+.riel-cta{margin-right:8px}
+
+/* links a la vista: apagados, vuelve la hamburguesa con el menú a pantalla completa. Para prenderlos, display:flex */
+.riel-links{display:none;gap:32px;margin-right:36px;font-size:14px}
 .riel-links a{color:var(--tinta);text-decoration:none;background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;transition:background-size .35s var(--ease)}
 .riel-links a:hover{background-size:100% 1px}
-.riel-menu{display:none!important}
 .btn.chico{height:36px;padding:0 18px;font-size:14px}
 .riel-menu{width:64px;height:56px;flex:none;display:grid;place-content:center;justify-items:start;gap:7px;background:none;border:0;cursor:pointer}
 .riel-menu span{display:block;width:22px;height:1.5px;background:var(--tinta);transform-origin:50% 50%;transition:translate .4s var(--ease),rotate .4s var(--ease),width .3s var(--ease)}
@@ -133,9 +139,9 @@ section{position:relative}
 html.abierto{overflow:hidden}
 .abierto .menu{translate:0 0}
 .menu ol{list-style:none;flex:1;display:flex;flex-direction:column;justify-content:center;align-items:flex-end;padding:24px 48px 0}
-.menu ol a{display:grid;grid-template-columns:auto 72px;align-items:baseline;text-align:right;padding:clamp(4px,.9vh,12px) 0;color:var(--tinta);outline:0}
+.menu ol a{display:grid;grid-template-columns:auto 72px;align-items:baseline;text-align:right;padding:clamp(4px,calc(.9vh / var(--z)),12px) 0;color:var(--tinta);outline:0}
 .menu ol i{order:2;font:400 11px/1 var(--mono);font-style:normal;letter-spacing:.1em;color:rgba(29,29,27,.35);transition:color .25s}
-.menu ol span{font-family:var(--display);font-weight:800;font-stretch:118%;font-size:clamp(34px,7vh,80px);line-height:1.05;letter-spacing:-.025em;opacity:.45;transition:opacity .25s,translate .4s var(--ease)}
+.menu ol span{font-family:var(--display);font-weight:800;font-stretch:118%;font-size:clamp(34px,calc(7vh / var(--z)),80px);line-height:1.05;letter-spacing:-.025em;opacity:.45;transition:opacity .25s,translate .4s var(--ease)}
 .menu ol b{display:none}
 .menu ol a:hover span,.menu ol a:focus-visible span,.menu ol a[aria-current] span{opacity:1}
 .menu ol a:hover span,.menu ol a:focus-visible span{translate:-12px 0}
@@ -145,7 +151,7 @@ html.abierto{overflow:hidden}
 
 /* ---------- HERO ---------- */
 /* hero a todo el alto de la pantalla: el texto queda centrado debajo de la barra y la molécula escala con el alto */
-.hero{height:100vh;height:100svh;min-height:680px;overflow:visible clip}
+.hero{height:calc(100vh / var(--z));height:calc(100svh / var(--z));min-height:680px;overflow:visible clip}
 /* el hero queda fijo y la sección siguiente lo pisa. Mientras se va (--h de 0 a 1), solo el texto y la molécula
    toman blur y se desvanecen; el fondo y el milimetrado quedan intactos para que no se rompan los bordes */
 .hero{position:sticky;top:0;z-index:0;translate:0 calc(var(--h,0)*-80px)}
@@ -194,7 +200,7 @@ html:not(.cargando) .riel{animation:baja-barra .9s cubic-bezier(.16,1,.3,1) 1.3s
 .hero .adn{position:absolute;right:230px;bottom:-40px;height:calc(100% - 16px);width:auto;max-width:none;
   translate:0 calc(var(--h,0)*-320px);will-change:translate;
   -webkit-mask-image:linear-gradient(to left,transparent 0,#000 16%);mask-image:linear-gradient(to left,transparent 0,#000 16%)}
-.viaje-espacio{height:220vh}
+.viaje-espacio{height:calc(220vh / var(--z))}
 /* viaje lateral apagado por ahora: borrar esta línea para volver a activarlo */
 .viaje-espacio,.hero .capitulos,.hero .etapas{display:none!important}
 @media (prefers-reduced-motion:reduce){:root:not(.anim) .viaje-espacio{display:none}}
@@ -412,9 +418,9 @@ html:not(.cargando) .riel{animation:baja-barra .9s cubic-bezier(.16,1,.3,1) 1.3s
 .pie-base a{transition:color .2s}
 .pie-base a:hover{color:var(--papel)}
 /* el wordmark se ajusta al ancho visible */
-.pie-marca-xl{container-type:inline-size}
+.pie-marca-xl{container-type:inline-size;overflow:hidden}
 /* el wordmark ocupa todo el ancho del viewport: tamaño estimado en cqw y ajustado por JS a la fuente real */
-.footer .wordmark{display:block;width:max-content;margin:0 auto;padding-top:40px;margin-bottom:-.21em;font-size:var(--fs,21.5cqw);line-height:.8;letter-spacing:-.02em;color:var(--papel);white-space:nowrap;
+.footer .wordmark{display:block;width:max-content;margin:0 0 0 50%;transform:translateX(-50%);padding-top:40px;margin-bottom:-.21em;font-size:var(--fs,21.5cqw);line-height:.8;letter-spacing:-.02em;color:var(--papel);white-space:nowrap;
   text-shadow:0 calc(var(--fp,1)*-.045em) 0 var(--amarillo),0 calc(var(--fp,1)*-.09em) 0 var(--violeta);
   translate:0 calc((1 - var(--fp,1))*.12em)}
 /* parallax: las capas amarilla y violeta arrancan escondidas detrás del papel y se abren al llegar al fondo (--fp de 0 a 1) */
@@ -432,7 +438,7 @@ html.cargando{overflow:hidden;background:var(--tinta)}
   background:radial-gradient(circle,rgba(242,194,48,.28) .8px,transparent 1.2px) 0 0/11px 11px;
   -webkit-mask:radial-gradient(130% 110% at 0 0,#000 0%,rgba(0,0,0,.35) 35%,transparent 70%);mask:radial-gradient(130% 110% at 0 0,#000 0%,rgba(0,0,0,.35) 35%,transparent 70%)}
 .loader .marca{position:absolute;left:50%;top:46%;translate:-50% -50%;display:flex;overflow:hidden;padding:.14em .04em 0;
-  font-family:var(--display);font-weight:800;font-stretch:118%;font-size:clamp(140px,17vw,320px);line-height:1;letter-spacing:-.02em;white-space:nowrap}
+  font-family:var(--display);font-weight:800;font-stretch:118%;font-size:clamp(140px,calc(17vw / var(--z)),320px);line-height:1;letter-spacing:-.02em;white-space:nowrap}
 /* las capas amarilla y violeta suben con el porcentaje (--p de 0 a 1) */
 .loader .marca span{display:block;animation:subir 1s cubic-bezier(.16,1,.3,1) calc(var(--i)*60ms) both;
   text-shadow:0 calc(var(--p,0)*-.032em) 0 var(--amarillo),0 calc(var(--p,0)*-.064em) 0 var(--violeta)}
@@ -467,13 +473,15 @@ html.cargando{overflow:hidden;background:var(--tinta)}
    Parallax: al bajar (--h), lo de atrás se queda rezagado. */
 /* hero del alto del paisaje a lo ancho; scrollea normal (nada lo pisa) y la Tesis viene debajo */
 /* hero alto: se baja hasta su pie, ahí queda fijo (sticky con top negativo) y la Tesis sube y lo pisa */
-.hero{--alto:calc(max(100vh,calc((100vw - 15px)/1.5)) + 400px);height:var(--alto);top:calc(100vh - var(--alto))}
+.hero{--alto:calc(max(calc(100vh / var(--z)),calc((calc(100vw / var(--z)) - 15px)/1.5)) + 400px);height:var(--alto);top:calc(calc(100vh / var(--z)) - var(--alto))}
 .hero .mili{display:none}
 /* el texto queda fijo, centrado en la pantalla (fixed: sin JS, no vibra). Sin fade: la Tesis sube y lo tapa */
 .hero{translate:none}
-.hero .copy{position:fixed;z-index:2;left:calc(var(--sangre) + 120px);top:calc(50vh + 28px)}
+.hero .copy{position:fixed;z-index:2;left:calc(var(--sangre) + 120px);top:calc(calc(50vh / var(--z)) - 22px)}
+/* el texto se desenfoca y se apaga apenas arranca el scroll (--c llega a 1 a los 60% de pantalla); el paisaje se apaga apenas cuando lo pisa la Tesis (--d) */
+.hero .copy{filter:blur(calc(var(--c,0)*12px))!important;opacity:calc(1 - var(--c,0))!important}
+.hero .paisaje{opacity:calc(1 - var(--d,0)*.35)}
 .hero .copy.ido{visibility:hidden}
-.hero .copy{filter:none!important}
 .hero .paisaje{position:absolute;left:calc(-1*var(--sangre));right:calc(-1*var(--sangre));top:0;bottom:0;overflow:hidden;pointer-events:none;background:#7735B9}
 /* las 4 capas en el mismo lugar: ancho exacto de la pantalla, a su proporción, apoyadas abajo, sin parallax.
    Para acomodar cada una: --y (positivo baja, negativo sube) y --p (cuánto se mueve al bajar; 0 = quieta) */
@@ -504,6 +512,48 @@ html:not(.cargando) .hero .c4{animation-delay:.45s}
 .hero .btn.solid:hover{color:var(--tinta)}
 .hero .btn.ghost{border-color:var(--papel);color:var(--papel);--relleno:var(--papel)}
 .hero .btn.ghost:hover{color:var(--tinta)}
+
+/* ===== escenas del hero: cada una es un juego de 4 capas; el chip activo elige cuál se ve.
+   Al cambiar, las capas que se van bajan y se apagan; las nuevas suben en cascada (cielo primero, frente al final).
+   La animación usa transform; el parallax usa translate, así no se pisan.
+   Para sumar una escena: un .escena[data-escena] con sus 4 capas, un chip y, si hace falta, sus --y propios. */
+.hero .escena{position:absolute;inset:0}
+.hero .escena .capa{transition:transform .9s cubic-bezier(.5,0,.75,0),opacity .7s ease}
+.hero .escena:not(.activa) .capa{opacity:0;transform:translateY(90px)}
+.hero .escena:not(.activa) .c1{transform:none}
+.hero .escena.activa .capa{transition:transform 1.5s cubic-bezier(.16,1,.3,1) var(--e,0s),opacity 1s ease var(--e,0s)}
+.hero .escena.activa .c2{--e:.12s}.hero .escena.activa .c3{--e:.24s}.hero .escena.activa .c4{--e:.36s}
+.hero .escena:not(.activa) .capa{animation:none!important}
+/* posiciones propias de la escena ciencia (microscopio con flores) */
+.hero [data-escena=ciencia] .c1{--y:-380px}
+.hero [data-escena=ciencia] .c2{--y:-40px}
+.hero [data-escena=ciencia] .c3{--y:60px}
+.hero [data-escena=ciencia] .c4{--y:300px}
+/* chips */
+/* chips abajo al centro de la pantalla, aparte del texto (no se desenfocan con él); la Tesis los pisa al subir */
+.hero .escenas{position:fixed;z-index:3;left:50%;bottom:40px;translate:-50% 0;display:flex;gap:28px;transition:opacity .4s,translate .4s}
+.hero .escenas.ido{visibility:hidden}
+.hero .escenas button:focus{outline:0}
+.hero .escenas button:focus-visible{outline:1px solid var(--papel);outline-offset:6px}
+.hero .escenas button{position:relative;overflow:hidden;height:auto;padding:0 0 7px;border:0;border-radius:0;background:none;opacity:.6;color:var(--papel);
+  font:400 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:background .3s,color .3s,border-color .3s}
+.hero .escenas button:hover{opacity:1}
+.hero .escenas button.activa{opacity:1}
+.hero .escenas button.activa::before{content:"";position:absolute;left:0;bottom:0;height:1px;width:100%;background:rgba(250,248,243,.35)}
+/* rotación automática: una barra fina muestra cuánto falta para el próximo cambio */
+.hero .escenas button.activa::after{content:"";position:absolute;left:0;bottom:0;height:1px;width:100%;background:var(--papel);transform-origin:0 50%;scale:0 1}
+.hero .escenas.rota button.activa::after{animation:carga-escena var(--rot,7s) linear forwards}
+@keyframes carga-escena{to{scale:1 1}}
+html:not(.cargando) .hero .escenas{animation:entra-chips 1s cubic-bezier(.16,1,.3,1) 1.3s backwards}
+@keyframes entra-chips{from{opacity:0}}
+
+/* barra sobre el hero del paisaje: sin fondo ni filete, logo y hamburguesa en papel. Vuelve a la normal cuando la Tesis llega arriba */
+.riel{transition:translate .5s var(--ease),background-color .35s,border-color .35s}
+.riel-logo,.riel-menu span{transition:color .35s,background-color .35s,translate .4s var(--ease),rotate .4s var(--ease),width .3s var(--ease)}
+html:not(.abierto) .riel.sobre-hero{background-color:transparent;border-color:transparent}
+html:not(.abierto) .riel.sobre-hero .riel-logo{color:var(--papel)}
+html:not(.abierto) .riel.sobre-hero .riel-menu span{background:var(--papel)}
+.riel-cta[hidden]{display:none}
 </style>
 <script>document.documentElement.classList.add('js','cargando');history.scrollRestoration='manual';
 /* llave ?anim: fuerza las animaciones aunque el sistema pida movimiento reducido (Windows con "Efectos de animación" apagado).
@@ -527,7 +577,7 @@ html:not(.cargando) .hero .c4{animation-delay:.45s}
 <header class="riel">
   <button class="riel-menu" id="menu-btn" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú"><span></span><span></span></button>
   <nav class="riel-links" aria-label="Secciones"><a href="#fondo">El fondo</a><a href="#como-invertimos">Cómo invertimos</a><a href="#areas">Áreas</a><a href="#proceso">Proceso</a><a href="#contacto">Contacto</a></nav>
-  <a class="btn solid chico riel-cta" href="#contacto"><span class="t"><span>Presentar un proyecto</span></span></a>
+  <a hidden class="btn solid chico riel-cta" href="#contacto"><span class="t"><span>Presentar un proyecto</span></span></a>
   <a class="riel-logo display" href="#top">numancia</a>
 </header>
 <div class="menu-fondo" id="menu-fondo"></div>
@@ -547,11 +597,23 @@ html:not(.cargando) .hero .c4{animation-delay:.45s}
 <!-- HERO -->
 <section class="hero" id="top">
   <div class="mili"></div>
+  <div class="escenas" role="group" aria-label="Cambiar el paisaje">
+    <button type="button" class="activa" data-escena="mineria" data-tag="Minería con menos impacto · Latinoamérica" aria-pressed="true">Minería</button>
+    <button type="button" data-escena="ciencia" data-tag="Ciencia que llega al mercado · Latinoamérica" aria-pressed="false">Ciencia</button>
+  </div>
   <div class="paisaje" aria-hidden="true">
-    <img class="capa c1" src="img/parallax-1.png" alt="">
-    <img class="capa c2" src="img/parallax-2.png" alt="">
-    <img class="capa c3" src="img/parallax-3.png" alt="">
-    <img class="capa c4" src="img/parallax-4.png" alt="">
+    <div class="escena activa" data-escena="mineria">
+      <img class="capa c1" src="img/hero/mineria-1.png" alt="">
+      <img class="capa c2" src="img/hero/mineria-2.png" alt="">
+      <img class="capa c3" src="img/hero/mineria-3.png" alt="">
+      <img class="capa c4" src="img/hero/mineria-4.png" alt="">
+    </div>
+    <div class="escena" data-escena="ciencia">
+      <img class="capa c1" src="img/hero/ciencia-1.png" alt="">
+      <img class="capa c2" src="img/hero/ciencia-2.png" alt="">
+      <img class="capa c3" src="img/hero/ciencia-3.png" alt="">
+      <img class="capa c4" src="img/hero/ciencia-4.png" alt="">
+    </div>
   </div>
   <div class="capitulos">
     <div class="cap"><span class="tag">01 · Laboratorio</span><h2 class="display d56">Todo empieza con una idea <span class="mark">en un laboratorio.</span></h2></div>
@@ -991,8 +1053,8 @@ html:not(.cargando) .hero .c4{animation-delay:.45s}
 
   /* ---------- wordmark del footer a todo el ancho ---------- */
   const marca=$('.footer .wordmark');
-  const ajustar=()=>{marca.style.removeProperty('--fs');const w=marca.parentElement.clientWidth,a=marca.getBoundingClientRect().width,f=parseFloat(getComputedStyle(marca).fontSize);
-    marca.style.setProperty('--fs',(f*w/a/w*100).toFixed(3)+'cqw')};
+  const ajustar=()=>{marca.style.removeProperty('--fs');const w=marca.parentElement.clientWidth,a=marca.offsetWidth,f=parseFloat(getComputedStyle(marca).fontSize);
+    marca.style.setProperty('--fs',(f*w/a/w*100*1.04).toFixed(3)+'cqw')};
   ajustar();document.fonts?.ready.then(ajustar);
   if(!quieto){
     const capas=()=>{const r=marca.parentElement.getBoundingClientRect();
@@ -1054,11 +1116,30 @@ html:not(.cargando) .hero .c4{animation-delay:.45s}
   /* index2: --sy = scroll aplicado al parallax. Se actualiza en el mismo cuadro en que Lenis mueve la página
      (con el evento scroll nativo llegaba un cuadro tarde y el cielo vibraba). El texto se oculta cuando ya quedó tapado */
   (()=>{const hero=document.querySelector('.hero'),copia=hero&&hero.querySelector('.copy');if(!copia)return;
-    let ultimo=-1;
-    const f=y=>{y=Math.round(y);if(y===ultimo)return;ultimo=y;const H=hero.offsetHeight;
-      const P=H-innerHeight;hero.style.setProperty("--sy",Math.min(Math.max(0,y),P)+"px");hero.style.setProperty("--sz",Math.min(Math.max(0,y-P),innerHeight)+"px");copia.classList.toggle('ido',y>H)};
+    let ultimo=-1;const riel=document.querySelector('.riel'),chips=hero.querySelector('.escenas');
+    // con el zoom de retina (--z) el scroll y la pantalla vienen en px de pantalla: se pasan a px de la página
+    const f=y=>{y=Math.round(y);if(y===ultimo)return;ultimo=y;const z=parseFloat(getComputedStyle(document.documentElement).zoom)||1,innerHeight=window.innerHeight/z;y=y/z;const H=hero.offsetHeight;
+      const P=H-innerHeight;hero.style.setProperty("--sy",Math.min(Math.max(0,y),P)+"px");const sz=Math.min(Math.max(0,y-P),innerHeight);hero.style.setProperty("--sz",sz+"px");hero.style.setProperty("--d",(sz/innerHeight).toFixed(3));hero.style.setProperty("--c",Math.min(1,Math.max(0,y)/(innerHeight*.6)).toFixed(3));copia.classList.toggle('ido',y>H);riel&&riel.classList.toggle('sobre-hero',sz<innerHeight-56);chips&&chips.classList.toggle('ido',y>H)};
     if(window.lenisN)window.lenisN.on('scroll',l=>f(l.animatedScroll));else addEventListener('scroll',()=>f(scrollY),{passive:true});
     addEventListener('resize',()=>{ultimo=-1;f(scrollY)});f(scrollY)})();
+</script>
+<script>
+  /* escenas del hero: chips + rotación automática cada 7s hasta que alguien elige una */
+  (()=>{const hero=document.querySelector('.hero'),grupo=hero&&hero.querySelector('.escenas');if(!grupo)return;
+    const chips=[...grupo.querySelectorAll('button')],escenas=[...hero.querySelectorAll('.escena')],tag=hero.querySelector('.copy>.tag');
+    const quieto=matchMedia('(prefers-reduced-motion: reduce)').matches&&!document.documentElement.classList.contains('anim');
+    const ir=nombre=>{chips.forEach(c=>{const si=c.dataset.escena===nombre;c.classList.toggle('activa',si);c.setAttribute('aria-pressed',si)});
+      escenas.forEach(e=>e.classList.toggle('activa',e.dataset.escena===nombre));
+      const c=chips.find(c=>c.dataset.escena===nombre);if(tag&&c.dataset.tag)tag.textContent=c.dataset.tag};
+    let reloj=null;const RITMO=7000;
+    const reiniciar=()=>{grupo.classList.remove('rota');void grupo.offsetWidth;grupo.classList.add('rota')};
+    const siguiente=()=>{if(document.hidden||scrollY>innerHeight)return;const i=chips.findIndex(c=>c.classList.contains('activa'));ir(chips[(i+1)%chips.length].dataset.escena);reiniciar()};
+    const parar=()=>{clearInterval(reloj);reloj=null;grupo.classList.remove('rota')};
+    chips.forEach(c=>c.addEventListener('click',()=>{parar();ir(c.dataset.escena)}));
+    if(!quieto&&chips.length>1){grupo.style.setProperty('--rot',RITMO+'ms');
+      const arrancar=()=>{reiniciar();reloj=setInterval(siguiente,RITMO)};
+      document.documentElement.classList.contains('cargando')?new MutationObserver((m,o)=>{if(!document.documentElement.classList.contains('cargando')){o.disconnect();setTimeout(arrancar,1800)}}).observe(document.documentElement,{attributes:true,attributeFilter:['class']}):arrancar()}
+    ir(chips[0].dataset.escena)})();
 </script>
 </body>
 </html>
