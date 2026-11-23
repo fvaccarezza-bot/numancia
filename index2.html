@@ -160,7 +160,7 @@ html.abierto{overflow:hidden}
 @media (prefers-reduced-motion:reduce){:root:not(.anim) .hero .capitulos{display:none}}
 .hero .copy{left:120px;top:calc(50% + 28px);translate:0 -50%;width:743px}
 .hero .copy>.tag{background:var(--amarillo);box-shadow:none}
-.hero h1{margin-top:47px;white-space:nowrap;font-size:100px}
+.hero h1{margin-top:47px;white-space:nowrap;font-size:90px}
 /* título: las letras suben desde abajo dentro de una máscara, igual que el wordmark del loader (al terminar el loader) */
 .hero h1 .pal{display:inline-block;white-space:nowrap;overflow:hidden;padding:.14em .02em .08em;margin:-.14em -.02em -.08em;vertical-align:top}
 .hero h1 .l{display:inline-block}
@@ -466,23 +466,23 @@ html.cargando{overflow:hidden;background:var(--tinta)}
    se baja hasta las flores, ahí queda fijo (sticky con top negativo) y la Tesis lo pisa.
    Parallax: al bajar (--h), lo de atrás se queda rezagado. */
 /* hero del alto del paisaje a lo ancho; scrollea normal (nada lo pisa) y la Tesis viene debajo */
-.hero{position:relative;top:auto;height:max(100vh,calc((100vw - 15px)/1.5))}
+/* hero alto: se baja hasta su pie, ahí queda fijo (sticky con top negativo) y la Tesis sube y lo pisa */
+.hero{--alto:calc(max(100vh,calc((100vw - 15px)/1.5)) + 400px);height:var(--alto);top:calc(100vh - var(--alto))}
 .hero .mili{display:none}
-/* el texto queda fijo, centrado en la pantalla, mientras se baja por el paisaje (fixed: sin JS, no vibra).
-   Se desvanece (--f) a medida que sube la Tesis y termina antes de que lo pise */
+/* el texto queda fijo, centrado en la pantalla (fixed: sin JS, no vibra). Sin fade: la Tesis sube y lo tapa */
 .hero{translate:none}
-.hero .copy{position:fixed;z-index:2;left:calc(var(--sangre) + 120px);top:calc(50vh + 28px);opacity:calc(1 - var(--f,0))!important}
+.hero .copy{position:fixed;z-index:2;left:calc(var(--sangre) + 120px);top:calc(50vh + 28px)}
 .hero .copy.ido{visibility:hidden}
 .hero .copy{filter:none!important}
-.hero .paisaje{position:absolute;left:calc(-1*var(--sangre));right:calc(-1*var(--sangre));top:0;bottom:0;overflow:hidden;pointer-events:none;background:#7B3FC6}
+.hero .paisaje{position:absolute;left:calc(-1*var(--sangre));right:calc(-1*var(--sangre));top:0;bottom:0;overflow:hidden;pointer-events:none;background:#7735B9}
 /* las 4 capas en el mismo lugar: ancho exacto de la pantalla, a su proporción, apoyadas abajo, sin parallax.
    Para acomodar cada una: --y (positivo baja, negativo sube) y --p (cuánto se mueve al bajar; 0 = quieta) */
 .hero .capa{position:absolute;left:0;bottom:0;width:100%;height:auto;max-width:none;will-change:translate;
-  translate:0 calc(var(--y,0px) + var(--sy,0px)*var(--k,0))}
-.hero .c1{--y:-200px;--k:.6}
-.hero .c2{--y:0px;--k:.42}
-.hero .c3{--y:200px;--k:.24}
-.hero .c4{--y:0px;--k:.08}
+  translate:0 calc(var(--y,0px) + var(--sy,0px)*var(--k,0) + var(--sz,0px)*(var(--k,0) - 1))}
+.hero .c1{--y:-590px;--k:.9;-webkit-mask-image:linear-gradient(transparent,#000 12%);mask-image:linear-gradient(transparent,#000 12%)}
+.hero .c2{--y:50px;--k:.62}
+.hero .c3{--y:100px;--k:.3}
+.hero .c4{--y:420px;--k:-.12}
 
 /* la Tesis sube y se solapa sobre el pie del paisaje: así no se ve dónde termina cada capa */
 
@@ -496,9 +496,9 @@ html:not(.cargando) .hero .c4{animation-delay:.45s}
 @keyframes aparece-cielo{from{opacity:0;transform:scale(1.06)}}
 @media (prefers-reduced-motion:reduce){:root:not(.anim) .hero .capa{animation:none;translate:none}}
 /* texto claro sobre el cielo */
-.hero .copy h1{color:var(--papel);text-shadow:0 2px 24px rgba(60,20,110,.35)}
+.hero .copy h1{color:var(--papel)}
 .hero .copy h1 .mark{background:none!important;color:var(--papel)}
-.hero .copy p{color:var(--papel);text-shadow:0 1px 12px rgba(40,20,80,.55)}
+.hero .copy p{font-size:18px;color:var(--papel)}
 .hero .copy>.tag{background:var(--amarillo)}
 .hero .btn.solid{background:var(--papel);color:var(--tinta);border-color:var(--papel)}
 .hero .btn.solid:hover{color:var(--tinta)}
@@ -548,10 +548,10 @@ html:not(.cargando) .hero .c4{animation-delay:.45s}
 <section class="hero" id="top">
   <div class="mili"></div>
   <div class="paisaje" aria-hidden="true">
-    <img class="capa c1" src="img/capa-1-cielo.png" alt="">
-    <img class="capa c2" src="img/capa-2-fondo-lago.png" alt="">
-    <img class="capa c3" src="img/capa-3-medio.png" alt="">
-    <img class="capa c4" src="img/capa-4-frente.png" alt="">
+    <img class="capa c1" src="img/parallax-1.png" alt="">
+    <img class="capa c2" src="img/parallax-2.png" alt="">
+    <img class="capa c3" src="img/parallax-3.png" alt="">
+    <img class="capa c4" src="img/parallax-4.png" alt="">
   </div>
   <div class="capitulos">
     <div class="cap"><span class="tag">01 · Laboratorio</span><h2 class="display d56">Todo empieza con una idea <span class="mark">en un laboratorio.</span></h2></div>
@@ -836,7 +836,7 @@ html:not(.cargando) .hero .c4{animation-delay:.45s}
   /* ---------- smooth scroll ---------- */
   let lenis=null;
   if(window.Lenis){
-    lenis=new Lenis({autoRaf:true,lerp:.075,anchors:{duration:1.6,easing:t=>t===1?1:1-Math.pow(2,-10*t)}});
+    lenis=window.lenisN=new Lenis({autoRaf:true,lerp:.075,anchors:{duration:1.6,easing:t=>t===1?1:1-Math.pow(2,-10*t)}});
     lenis.stop();
     // Teclado y barra de scroll: cortar la inercia para que Lenis no pise el scroll nativo.
     const cortar=e=>{if(!document.documentElement.matches('.cargando,.abierto')){lenis.stop();lenis.start()}};
@@ -1051,13 +1051,14 @@ html:not(.cargando) .hero .c4{animation-delay:.45s}
 })();
 </script>
 <script>
-  /* index2: --f = cuánto se desvaneció el texto del hero. Arranca cuando la Tesis asoma por abajo y llega a 1
-     cuando la Tesis está por alcanzar el pie del texto */
-  (()=>{const hero=document.querySelector('.hero'),copia=hero&&hero.querySelector('.copy'),tesis=document.querySelector('.tesis');if(!copia||!tesis)return;
-    const f=()=>{hero.style.setProperty('--sy',Math.min(Math.max(0,scrollY),hero.offsetHeight)+'px');const arriba=tesis.getBoundingClientRect().top,pie=copia.getBoundingClientRect().bottom+40;
-      const k=Math.min(1,Math.max(0,(innerHeight-arriba)/Math.max(1,innerHeight-pie)));
-      hero.style.setProperty('--f',k.toFixed(3));copia.classList.toggle('ido',k>=1)};
-    addEventListener('scroll',f,{passive:true});addEventListener('resize',f);f()})();
+  /* index2: --sy = scroll aplicado al parallax. Se actualiza en el mismo cuadro en que Lenis mueve la página
+     (con el evento scroll nativo llegaba un cuadro tarde y el cielo vibraba). El texto se oculta cuando ya quedó tapado */
+  (()=>{const hero=document.querySelector('.hero'),copia=hero&&hero.querySelector('.copy');if(!copia)return;
+    let ultimo=-1;
+    const f=y=>{y=Math.round(y);if(y===ultimo)return;ultimo=y;const H=hero.offsetHeight;
+      const P=H-innerHeight;hero.style.setProperty("--sy",Math.min(Math.max(0,y),P)+"px");hero.style.setProperty("--sz",Math.min(Math.max(0,y-P),innerHeight)+"px");copia.classList.toggle('ido',y>H)};
+    if(window.lenisN)window.lenisN.on('scroll',l=>f(l.animatedScroll));else addEventListener('scroll',()=>f(scrollY),{passive:true});
+    addEventListener('resize',()=>{ultimo=-1;f(scrollY)});f(scrollY)})();
 </script>
 </body>
 </html>
