@@ -190,10 +190,12 @@ html:not(.cargando) .riel{animation:baja-barra .9s cubic-bezier(.16,1,.3,1) 1.3s
 .hero p{width:588px;margin-top:32px}
 .hero .ctas{display:flex;gap:32px;margin-top:32px}
 /* el espacio es transparente: deja ver el hero fijo mientras dura el recorrido */
-/* ADN ilustrado: anclado abajo a la derecha, ocupa el alto del hero debajo de la barra */
-.hero .adn{position:absolute;right:230px;bottom:-40px;height:calc(100% - 16px);width:auto;max-width:none;
-  translate:0 calc(var(--h,0)*-320px);will-change:translate;
-  -webkit-mask-image:linear-gradient(to left,transparent 0,#000 16%);mask-image:linear-gradient(to left,transparent 0,#000 16%)}
+/* ilustración editorial: a la derecha, centrada en alto, sobre un papel del mismo tono que el de la imagen; bordes fundidos */
+.hero .viaje{background:#F9EED9}
+.hero .ed{position:absolute;right:-5%;top:calc(50% + 28px);width:48%;height:auto;max-width:none;
+  translate:0 calc(-50% + var(--h,0)*-160px);will-change:translate;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent),linear-gradient(transparent,#000 6%,#000 94%,transparent);-webkit-mask-composite:source-in;
+  mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent),linear-gradient(transparent,#000 6%,#000 94%,transparent);mask-composite:intersect}
 .viaje-espacio{height:220vh}
 /* viaje lateral apagado por ahora: borrar esta línea para volver a activarlo */
 .viaje-espacio,.hero .capitulos,.hero .etapas{display:none!important}
@@ -459,6 +461,10 @@ html.cargando{overflow:hidden;background:var(--tinta)}
   .js:not(.anim) .rv-mark{background-size:100% 100%!important}
   :root:not(.anim) .loader .marca span{animation:none}
 }
+/* barra sobre el hero: sin fondo ni filete mientras se ve el hero; vuelve a la normal cuando la Tesis llega arriba */
+.riel{transition:translate .5s var(--ease),background-color .35s,border-color .35s}
+html:not(.abierto) .riel.sobre-hero{background-color:transparent;border-color:transparent}
+.riel-cta[hidden]{display:none}
 </style>
 <script>document.documentElement.classList.add('js','cargando');history.scrollRestoration='manual';
 /* llave ?anim: fuerza las animaciones aunque el sistema pida movimiento reducido (Windows con "Efectos de animación" apagado).
@@ -482,7 +488,7 @@ html.cargando{overflow:hidden;background:var(--tinta)}
 <header class="riel">
   <button class="riel-menu" id="menu-btn" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú"><span></span><span></span></button>
   <nav class="riel-links" aria-label="Secciones"><a href="#fondo">El fondo</a><a href="#como-invertimos">Cómo invertimos</a><a href="#areas">Áreas</a><a href="#proceso">Proceso</a><a href="#contacto">Contacto</a></nav>
-  <a class="btn solid chico riel-cta" href="#contacto"><span class="t"><span>Presentar un proyecto</span></span></a>
+  <a hidden class="btn solid chico riel-cta" href="#contacto"><span class="t"><span>Presentar un proyecto</span></span></a>
   <a class="riel-logo display" href="#top">numancia</a>
 </header>
 <div class="menu-fondo" id="menu-fondo"></div>
@@ -502,7 +508,7 @@ html.cargando{overflow:hidden;background:var(--tinta)}
 <!-- HERO -->
 <section class="hero" id="top">
   <div class="mili"></div>
-  <div class="viaje" aria-hidden="true"><img class="adn" src="img/adn.png" alt=""></div>
+  <div class="viaje" aria-hidden="true"><img class="ed" src="img/hero/editorial.png" alt=""></div>
   <div class="capitulos">
     <div class="cap"><span class="tag">01 · Laboratorio</span><h2 class="display d56">Todo empieza con una idea <span class="mark">en un laboratorio.</span></h2></div>
     <div class="cap"><span class="tag">02 · Validación</span><h2 class="display d56">La probamos con ciencia, <span class="mark">no con promesas.</span></h2></div>
@@ -838,8 +844,9 @@ html.cargando{overflow:hidden;background:var(--tinta)}
   const riel=$('.riel');let yAnt=scrollY;
   const barra=()=>{const y=scrollY;
     if(!document.documentElement.classList.contains('abierto'))riel.classList.toggle('oculta',y>yAnt&&y>160);
+    riel.classList.toggle('sobre-hero',y<innerHeight-56);
     yAnt=y};
-  addEventListener('scroll',barra,{passive:true});
+  addEventListener('scroll',barra,{passive:true});barra();
 
   const raiz=document.documentElement,btn=$('#menu-btn'),menu=$('#menu');
   const abrir=si=>{
