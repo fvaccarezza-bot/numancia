@@ -73,7 +73,7 @@ section{position:relative}
 
 /* resaltador tipo marcador detrás de la última línea */
 /* el color del subrayado se puede cambiar por sección con --m */
-.filosofia .mark,.areas .mark,.mas .mark{--m:var(--amarillo)}
+.filosofia .mark,.mas .mark{--m:var(--amarillo)}
 .mark{background:linear-gradient(transparent 55%,var(--m,var(--agua)) 55%,var(--m,var(--agua)) 92%,transparent 92%) no-repeat 0 0/100% 100%;padding:0 .12em;margin:0 -.12em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
 
 /* tags tipo sticker */
@@ -99,8 +99,8 @@ section{position:relative}
 /* texturas */
 /* milimetrado en todas las secciones blancas: mismo trazo y fade que el del hero: fuerte arriba a la izquierda y se pierde en diagonal.
    JS pone --gy para que la grilla siga continua de una sección a la otra */
-.objetivos,.areas,.mas,.proceso,.equipo,.contacto{isolation:isolate}
-:is(.objetivos,.areas,.mas,.proceso,.equipo,.contacto)::before{content:"";position:absolute;inset:0 calc(-1*var(--sangre));z-index:-1;pointer-events:none;
+.objetivos,.areas,.mas,.equipo,.contacto{isolation:isolate}
+:is(.objetivos,.areas,.mas,.equipo,.contacto)::before{content:"";position:absolute;inset:0 calc(-1*var(--sangre));z-index:-1;pointer-events:none;
   -webkit-mask-image:var(--mili-fade);mask-image:var(--mili-fade);
   background-image:linear-gradient(var(--mili) 1px,transparent 1px),linear-gradient(90deg,var(--mili) 1px,transparent 1px);
   background-size:36px 36px;background-position:12px var(--gy,0px)}
@@ -108,10 +108,6 @@ section{position:relative}
   background-image:linear-gradient(var(--mili) 1px,transparent 1px),linear-gradient(90deg,var(--mili) 1px,transparent 1px);
   background-size:36px 36px;background-position:12px 0,12px 0;
   -webkit-mask-image:var(--mili-fade);mask-image:var(--mili-fade)}
-/* halftone: el color del punto se cambia por sección con --tc */
-.trama{position:absolute;inset:0 calc(-1*var(--sangre));pointer-events:none;opacity:.16;
-  background-image:radial-gradient(circle,var(--tc,#E3B229) 1.3px,transparent 1.6px);background-size:11px 11px;
-  -webkit-mask-image:linear-gradient(120deg,transparent 35%,#000 100%);mask-image:linear-gradient(120deg,transparent 35%,#000 100%)}
 
 /* ---------- MENÚ LATERAL (minimal) ---------- */
 /* navegación: barra superior fina (logo a la izquierda; CTA y menú a la derecha). Se esconde al bajar y vuelve al subir */
@@ -231,7 +227,7 @@ html:not(.cargando) .riel{animation:baja-barra .9s cubic-bezier(.16,1,.3,1) 1.3s
 }
 .tesis .copy{left:50%;top:50%;width:1100px;transform:translate(-50%,-50%);text-align:center}
 .tesis h2{width:max-content;margin:24px auto 0}
-.tesis p{max-width:720px;margin:24px auto 0}
+.tesis p{max-width:780px;margin:12px auto 0;text-wrap:pretty}
 /* borde superior suave: el amarillo se funde sobre el paisaje en vez de cortarlo en seco */
 .tesis::before{content:"";position:absolute;left:calc(-1*var(--sangre));right:calc(-1*var(--sangre));bottom:100%;height:180px;pointer-events:none;background:var(--bg),var(--papel);
   -webkit-mask-image:linear-gradient(transparent,#000);mask-image:linear-gradient(transparent,#000)}
@@ -240,7 +236,7 @@ html:not(.cargando) .riel{animation:baja-barra .9s cubic-bezier(.16,1,.3,1) 1.3s
 .objetivos{height:1050px;overflow:visible clip;z-index:2}
 /* dos filas tipo tabla: número · título y bajada · checklist · ilustración, separadas por filetes */
 .objetivos .filas{left:120px;top:140px;width:1200px;border-top:1px solid rgba(29,29,27,.2)}
-.objetivos .fila{display:grid;grid-template-columns:170px 1fr 340px 180px;align-items:center;height:220px;border-bottom:1px solid rgba(29,29,27,.2)}
+.objetivos .fila{display:grid;grid-template-columns:170px 1fr 420px;align-items:center;height:220px;border-bottom:1px solid rgba(29,29,27,.2)}
 .objetivos .fila>*+*{height:150px;padding-left:32px;border-left:1px solid rgba(29,29,27,.12);display:flex;flex-direction:column;justify-content:center}
 .objetivos .num{font-size:112px;line-height:.8;letter-spacing:-.04em}
 .objetivos .fila.a .num{color:var(--agua)}
@@ -258,12 +254,13 @@ html:not(.cargando) .riel{animation:baja-barra .9s cubic-bezier(.16,1,.3,1) 1.3s
 .objetivos .hitos{left:511px;top:620px;width:839px;height:362px}
 
 /* ---------- FILOSOFÍA (copias pegadas) ---------- */
-.filosofia{height:688px;--bg:linear-gradient(var(--violeta30),var(--violeta30));z-index:4}
-.filosofia .trama{--tc:#A866CF}
+.filosofia{height:688px;--bg:linear-gradient(var(--papel),var(--papel));z-index:4}
 .filosofia h2{left:120px;top:109px;width:1100px}
 .copia{position:absolute;width:372px;height:490px;background:var(--papel);transform-origin:0 0;
   box-shadow:0 1px 2px rgba(28,28,26,.15),2px 10px 18px rgba(28,28,26,.14);}
 .copia .ph{position:absolute;left:16px;top:16px;width:340px;height:260px;object-fit:cover}
+/* etiqueta chica sobre la foto, abajo a la izquierda */
+.copia .tag{position:absolute;left:28px;top:240px;padding:4px 8px;font-size:11px}
 /* título, raya y texto en flujo: si el título ocupa dos líneas, lo demás baja solo */
 .copia h3{margin:300px 20px 0;width:340px}
 .copia .regla{margin:12px 20px 0;width:150px;height:2px;background:var(--violeta)}
@@ -277,32 +274,54 @@ html:not(.cargando) .riel{animation:baja-barra .9s cubic-bezier(.16,1,.3,1) 1.3s
 .cita figcaption{left:0;right:0;top:506px;text-align:center;font:400 15px/1.3 var(--mono)}
 
 /* ---------- ÁREAS ---------- */
-.areas{height:730px;overflow:visible clip}
+.areas{height:1063px;overflow:visible clip}
 .areas h2{left:120px;top:118px;width:900px}
-.area{position:absolute;top:227px;width:588px;height:401px;overflow:hidden}
-.area.vivir{left:118px;background:linear-gradient(90deg,rgba(134,197,160,0) 0%,var(--agua) 100%)}
-.area.producir{left:795px;background:linear-gradient(90deg,var(--violeta30) 0%,rgba(220,192,231,0) 100%)}
-.area .txt{position:absolute;left:48px;top:48px;width:340px}
-.area .regla{width:200px;height:2px;margin:30px 0}
-.area.vivir .regla{background:var(--agua)} .area.producir .regla{background:var(--violeta)}
-.area .sub22{width:320px}
-.area .body16{width:320px;margin-top:30px}
-.area .objs{position:absolute;left:368px;top:0;width:220px;height:401px}
-.area .forma{position:absolute;pointer-events:none}
+/* tarjetas de Figma: pintura arriba, velo del color del pilar que sube hacia abajo, texto y ejemplos al pie */
+.area{position:absolute;top:227px;width:588px;height:726px;overflow:hidden;border-radius:4px}
+.area.vivir{left:118px;--c:215,233,218;background:var(--agua30)}
+.area.producir{left:795px;--c:220,192,231;background:var(--violeta30)}
+.area .foto{position:absolute;max-width:none;pointer-events:none}
+.area.vivir .foto{left:-2px;top:-291px;width:680px;height:1020px}
+.area.producir .foto{left:-10px;top:-184px;width:607px;height:910px;object-fit:cover}
+.area .velo{position:absolute;inset:0;-webkit-backdrop-filter:blur(2.5px);backdrop-filter:blur(2.5px);-webkit-mask-image:linear-gradient(transparent 15%,#000 60%);mask-image:linear-gradient(transparent 15%,#000 60%);
+  background:linear-gradient(rgba(var(--c),0) 0%,rgba(var(--c),.55) 38%,rgba(var(--c),.9) 70%)}
+.area h3{position:absolute;left:40px;top:27px;width:400px;color:var(--papel)}
+.area .sub22{position:absolute;left:40px;top:528px;white-space:nowrap}
+.area .ejemplos{position:absolute;left:40px;top:610px;width:508px;display:flex;flex-wrap:wrap;gap:8px}
+.area .ejemplos .tag{background:var(--papel);letter-spacing:.08em}
+/* hover (solo con mouse; en táctil queda todo visible): la pintura se acerca despacio, el texto sube y las etiquetas entran una tras otra */
+@media (hover:hover){
+  .area .foto{transition:scale 1.6s var(--ease)}
+  .area h3{transition:translate .8s var(--ease)}
+  .area .sub22{translate:0 56px;transition:translate .8s var(--ease)}
+  .area .ejemplos .tag{opacity:0;translate:0 14px;transition:opacity .5s var(--ease),translate .6s var(--ease)}
+  .area:hover .foto{scale:1.06}
+  .area:hover h3{translate:6px 0}
+  .area:hover .sub22{translate:0 0}
+  .area:hover .ejemplos .tag{opacity:1;translate:0 0}
+  .area .ejemplos .tag:nth-child(1){transition-delay:.08s}
+  .area .ejemplos .tag:nth-child(2){transition-delay:.14s}
+  .area .ejemplos .tag:nth-child(3){transition-delay:.2s}
+  .area .ejemplos .tag:nth-child(4){transition-delay:.26s}
+  .area .ejemplos .tag:nth-child(5){transition-delay:.32s}
+  .area:not(:hover) .ejemplos .tag{transition-delay:0s}
+}
 
 /* ---------- MÁS ALLÁ ---------- */
-.mas{height:620px}
+.mas{height:1130px}
 .mas .tag{left:120px;top:35px}
 .mas h2{left:120px;top:105px;width:900px}
-.mas .cols{position:absolute;left:120px;top:258px;width:1220px;display:grid;grid-template-columns:repeat(3,370px);gap:55px}
-.mas .head{display:flex;gap:18px;align-items:flex-start;height:82px}
-.mas .head span{font:400 15px/1.5 var(--mono)}
-.mas .head img{margin-top:-4px}
-.mas h3{margin-top:18px}
-.mas p{margin-top:18px;width:360px}
-/* un CTA por tarjeta, cada uno para un público distinto; alineados abajo aunque los textos tengan distinto largo */
-.mas .cols>div{display:flex;flex-direction:column;align-items:flex-start}
-.mas .cols .btn{margin-top:auto;translate:0 26px}
+/* grilla de 8 servicios, 4 por fila, separados por filetes finos; la ilustración es un recuadro provisorio */
+.mas .grilla{position:absolute;left:96px;top:250px;width:1248px;display:grid;grid-template-columns:repeat(4,1fr)}
+.mas .grilla>div{padding:34px 24px 40px;border-left:1px solid rgba(29,29,27,.12);border-top:1px solid rgba(29,29,27,.12)}
+.mas .grilla>div:nth-child(4n+1){border-left:0}
+.mas .grilla>div:nth-child(-n+4){border-top:0}
+.mas .grilla span{display:block;font:400 13px/1.5 var(--mono)}
+/* ilustraciones exportadas de Figma a 2x sobre papel; darken deja ver la cuadrícula del fondo a través del papel */
+.mas .ilu-img{display:block;width:100%;height:auto;aspect-ratio:251/180;margin-top:20px;mix-blend-mode:darken}
+.mas .ilu{display:grid;place-items:center;aspect-ratio:251/180;margin-top:20px;border:1px dashed rgba(29,29,27,.25);border-radius:4px;background:rgba(29,29,27,.04);font:400 10px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:rgba(29,29,27,.4)}
+.mas h3{margin-top:24px;font-size:20px;line-height:1.2}
+.mas p{margin-top:14px;font-size:14px;line-height:1.55}
 
 /* ---------- DÓNDE ESTAMOS ---------- */
 .donde{height:730px;--bg:var(--amarillo-fade);overflow:visible clip}
@@ -319,7 +338,7 @@ html:not(.cargando) .riel{animation:baja-barra .9s cubic-bezier(.16,1,.3,1) 1.3s
 .cifras span{display:block;margin-top:4px;font:400 15px/1.5 var(--mono);text-transform:uppercase}
 
 /* ---------- CÓMO TRABAJAMOS ---------- */
-.proceso{height:590px}
+.proceso{height:590px;--bg:var(--amarillo-fade)}
 .proceso .tag{left:120px;top:95px}
 .proceso h2{left:120px;top:150px;width:1000px}
 /* timeline atada al scroll: la línea se llena y cada paso se "enciende" cuando la línea lo alcanza */
@@ -334,13 +353,8 @@ html:not(.cargando) .riel{animation:baja-barra .9s cubic-bezier(.16,1,.3,1) 1.3s
 .paso.hecho i{background:var(--tinta);border-color:var(--tinta);color:var(--papel)}
 .paso.actual i{scale:1.15;background:var(--amarillo);color:var(--tinta)}
 .paso.hecho h3,.paso.hecho p{opacity:1}
-/* el 5 es la meta: queda en amarillo. Al llegar, la línea sigue y se va por el borde: la compañía sigue sola */
+/* el 5 es la meta: queda en amarillo */
 .paso.meta.hecho i{scale:1.15;background:var(--amarillo);border-color:var(--tinta);color:var(--tinta)}
-.proceso .salida{left:1139px;top:324px;right:calc(28px - var(--sangre));height:3px}
-.proceso .salida b{position:absolute;inset:0;background:var(--tinta);transform-origin:0 50%;scale:0 1;transition:scale 1.1s cubic-bezier(.65,0,.35,1)}
-.proceso .salida::after{content:"";position:absolute;right:0;top:-6px;width:12px;height:12px;border-top:3px solid var(--tinta);border-right:3px solid var(--tinta);rotate:45deg;opacity:0;transition:opacity .3s}
-.proceso.fin .salida b{scale:1 1}
-.proceso.fin .salida::after{opacity:1;transition-delay:.9s}
 
 /* ---------- EQUIPO ---------- */
 .equipo{height:780px;overflow:visible clip}
@@ -401,10 +415,6 @@ html:not(.cargando) .riel{animation:baja-barra .9s cubic-bezier(.16,1,.3,1) 1.3s
 
 /* ---------- FOOTER ---------- */
 .footer{position:relative;background:var(--tinta);color:var(--papel);overflow:hidden}
-/* el mismo halftone del loader, más tenue todavía, desde arriba a la izquierda */
-.footer::before{content:"";position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(circle,rgba(242,194,48,.2) .8px,transparent 1.2px) 0 0/11px 11px;
-  -webkit-mask:radial-gradient(120% 90% at 0 0,#000 0%,rgba(0,0,0,.3) 35%,transparent 65%);mask:radial-gradient(120% 90% at 0 0,#000 0%,rgba(0,0,0,.3) 35%,transparent 65%)}
 .footer>*{position:relative}
 .pie-links{display:grid;grid-template-columns:1.7fr 1fr 1fr 1fr;gap:48px;padding:104px 120px 80px}
 .pie-links h4{margin-bottom:22px;font:400 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:rgba(250,248,243,.45)}
@@ -436,10 +446,6 @@ html.cargando{overflow:hidden;background:var(--tinta)}
 /* mientras sube la cortina, el logo se achica apenas */
 .loader .marca{transition:scale 1.1s cubic-bezier(.76,0,.24,1)}
 .loader.fuera .marca{scale:.92}
-/* halftone muy suave: grilla de puntos amarillos que se desvanece desde arriba a la izquierda */
-.loader::before{content:"";position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(circle,rgba(242,194,48,.28) .8px,transparent 1.2px) 0 0/11px 11px;
-  -webkit-mask:radial-gradient(130% 110% at 0 0,#000 0%,rgba(0,0,0,.35) 35%,transparent 70%);mask:radial-gradient(130% 110% at 0 0,#000 0%,rgba(0,0,0,.35) 35%,transparent 70%)}
 .loader .marca{position:absolute;left:50%;top:46%;translate:-50% -50%;display:flex;overflow:hidden;padding:.14em .04em 0;
   font-family:var(--display);font-weight:800;font-stretch:118%;font-size:clamp(140px,calc(17vw / var(--z)),320px);line-height:1;letter-spacing:-.02em;white-space:nowrap}
 /* las capas amarilla y violeta suben con el porcentaje (--p de 0 a 1) */
@@ -494,9 +500,6 @@ html.cargando{overflow:hidden;background:var(--tinta)}
 .hero .c2{--y:50px;--k:.62}
 .hero .c3{--y:100px;--k:.3}
 .hero .c4{--y:420px;--k:-.12}
-/* profundidad: al bajar, las capas se desenfocan apenas; el fondo más, y cada capa hacia adelante menos (--b de 0 a 1) */
-.hero .capa{filter:blur(calc(var(--b,0)*var(--bl,0px)))}
-.hero .c1{--bl:5px}.hero .c2{--bl:3px}.hero .c3{--bl:1.5px}
 
 /* la Tesis sube y se solapa sobre el pie del paisaje: así no se ve dónde termina cada capa */
 
@@ -524,6 +527,8 @@ html:not(.cargando) .hero .c4{animation-delay:.45s}
    La animación usa transform; el parallax usa translate, así no se pisan.
    Para sumar una escena: un .escena[data-escena] con sus 4 capas, un chip y, si hace falta, sus --y propios. */
 .hero .escena{position:absolute;inset:0}
+/* las escenas que no se ven dejan de pintarse cuando terminan de irse: el parallax solo mueve las 4 capas activas */
+.hero .escena:not(.activa){visibility:hidden;transition:visibility 0s 1.2s}
 .hero .escena .capa{transition:transform .9s cubic-bezier(.5,0,.75,0),opacity .7s ease}
 .hero .escena:not(.activa) .capa{opacity:0;transform:translateY(90px)}
 .hero .escena:not(.activa) .c1{transform:none}
@@ -538,23 +543,18 @@ html:not(.cargando) .hero .c4{animation-delay:.45s}
 /* posiciones propias de la escena mar */
 .hero [data-escena=mar] .c1{--y:-420px}
 .hero [data-escena=mar] .c2{--y:-210px}
-.hero [data-escena=mar] .c3{--y:-60px}
-.hero [data-escena=mar] .c4{--y:330px}
-/* escena editorial (prueba): una sola ilustración sobre papel, a la derecha; queda fija mientras sube la Tesis, y el texto pasa a tinta */
-.hero [data-escena=editorial]{background:#F9EED9;transition:opacity .8s ease}
-.hero [data-escena=editorial]:not(.activa){opacity:0}
-.hero .ed{--y:-46%;--k:1;top:calc(50vh / var(--z));bottom:auto;left:auto;right:-1%;width:51%;
-  -webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent),linear-gradient(transparent,#000 6%,#000 94%,transparent);-webkit-mask-composite:source-in;
-  mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent),linear-gradient(transparent,#000 6%,#000 94%,transparent);mask-composite:intersect}
-.hero.claro .copy h1,.hero.claro .copy h1 .mark,.hero.claro .copy p{color:var(--tinta)}
-.hero.claro .btn.solid{background:var(--tinta);color:var(--papel);border-color:var(--tinta)}
-.hero.claro .btn.ghost{border-color:var(--tinta);color:var(--tinta);--relleno:var(--tinta)}
-.hero.claro .btn.ghost:hover{color:var(--papel)}
-.hero.claro .escenas button{color:var(--tinta)}
-.hero.claro .escenas button.activa::before{background:rgba(29,29,27,.25)}
-.hero.claro .escenas button.activa::after{background:var(--tinta)}
-html:has(.hero.claro):not(.abierto) .riel.sobre-hero .riel-logo{color:var(--tinta)}
-html:has(.hero.claro):not(.abierto) .riel.sobre-hero .riel-menu span{background:var(--tinta)}
+.hero [data-escena=mar] .c3{--y:-60px;--k:.5}
+.hero [data-escena=mar] .c4{--y:230px}
+/* ultrawide (pantallas más anchas que 2:1): valores propios por escena */
+@media (min-aspect-ratio:2/1){
+  .hero [data-escena=mineria] .c1{--y:-1190px}
+  .hero [data-escena=mar] .c4{--y:250px}
+}
+/* posiciones propias de la escena campus */
+.hero [data-escena=campus] .c1{--y:-690px}
+.hero [data-escena=campus] .c2{--y:50px}
+.hero [data-escena=campus] .c3{--y:100px}
+.hero [data-escena=campus] .c4{--y:420px;-webkit-mask-image:linear-gradient(transparent,#000 25%);mask-image:linear-gradient(transparent,#000 25%)}
 /* chips */
 /* chips abajo al centro de la pantalla, aparte del texto (no se desenfocan con él); la Tesis los pisa al subir */
 .hero .escenas{position:fixed;z-index:3;left:50%;bottom:40px;translate:-50% 0;display:flex;gap:28px;transition:opacity .4s,translate .4s}
@@ -627,7 +627,7 @@ html:not(.abierto) .riel.sobre-hero .riel-menu span{background:var(--papel)}
     <button type="button" class="activa" data-escena="mineria" data-tag="Minería con menos impacto · Latinoamérica" aria-pressed="true">Minería</button>
     <button type="button" data-escena="ciencia" data-tag="Ciencia que llega al mercado · Latinoamérica" aria-pressed="false">Ciencia</button>
     <button type="button" data-escena="mar" data-tag="Pesca y acuicultura más eficientes · Latinoamérica" aria-pressed="false">Mar</button>
-    <button type="button" data-escena="editorial" data-tag="Ciencia que llega al mercado · Latinoamérica" aria-pressed="false">Editorial</button>
+    <button type="button" data-escena="campus" data-tag="Del campus a la industria · Latinoamérica" aria-pressed="false">Campus</button>
   </div>
   <div class="paisaje" aria-hidden="true">
     <div class="escena activa" data-escena="mineria">
@@ -648,8 +648,11 @@ html:not(.abierto) .riel.sobre-hero .riel-menu span{background:var(--papel)}
       <img class="capa c3" src="img/hero/mar-3.png" alt="">
       <img class="capa c4" src="img/hero/mar-4.png" alt="">
     </div>
-    <div class="escena" data-escena="editorial">
-      <img class="capa ed" src="img/hero/editorial.png" alt="">
+    <div class="escena" data-escena="campus">
+      <img class="capa c1" src="img/hero/campus-1.png" alt="">
+      <img class="capa c2" src="img/hero/campus-2.png" alt="">
+      <img class="capa c3" src="img/hero/campus-3.png" alt="">
+      <img class="capa c4" src="img/hero/campus-4.png" alt="">
     </div>
   </div>
   <div class="capitulos">
@@ -674,9 +677,8 @@ html:not(.abierto) .riel.sobre-hero .riel-menu span{background:var(--papel)}
 <div class="viaje-espacio" aria-hidden="true"></div>
 <div class="abanico" aria-hidden="true"><i></i><i></i></div>
 <section class="tesis bleed" id="fondo">
-  <div class="trama"></div>
   <div class="abs copy">
-    <span class="tag"><b>FIG.#1</b>· La tesis</span>
+    <span class="tag"><b>#1</b>· La tesis</span>
     <h2 class="display d64">La ciencia está.<br>Falta el camino <span class="mark">al mercado.</span></h2>
     <p class="body18">En Latinoamérica hay ciencia de nivel mundial que no llega al mercado. Lo que falta es capital paciente, estructura empresarial, conexión con la industria y una red de especialistas para cada desafío legal, regulatorio y comercial. Numancia construye ese camino.</p>
   </div>
@@ -684,13 +686,13 @@ html:not(.abierto) .riel.sobre-hero .riel-menu span{background:var(--papel)}
 
 <!-- DOS OBJETIVOS -->
 <section class="objetivos" id="como-invertimos">
-  <div class="banda abs bleed"><div class="trama"></div></div>
-  <span class="tag abs" style="left:120px;top:74px"><b>FIG.#2</b>· dos objetivos en paralelo</span>
+  <div class="banda abs bleed"></div>
+  <span class="tag abs" style="left:120px;top:74px"><b>#2</b>· dos objetivos en paralelo</span>
 
   <div class="abs filas">
     <div class="fila a">
       <span class="display num">01</span>
-      <div class="txt"><h3 class="display d40">Madurez tecnológica</h3><p class="body16">Llevar la tecnología del laboratorio al punto en que un socio industrial o un inversor pueda evaluarla y comprarla.</p></div>
+      <div class="txt"><h3 class="display d40">Ciencia con futuro comercial</h3><p class="body16">Desarrollar la plataforma tecnológica a partir de investigación de frontera, hasta convertirla en una plataforma tecnológica con aplicación en el mercado.</p></div>
       <ul>
         <li>Validaciones técnicas pendientes</li>
         <li>Procesos reproducibles y escalables</li>
@@ -698,11 +700,10 @@ html:not(.abierto) .riel.sobre-hero .riel-menu span{background:var(--papel)}
         <li>Camino regulatorio</li>
         <li>Patentes y libertad de operación</li>
       </ul>
-      <div class="ilu"><img src="img/objetivo-1.png" alt=""></div>
     </div>
     <div class="fila b">
       <span class="display num">02</span>
-      <div class="txt"><h3 class="display d40">Preparación corporativa</h3><p class="body16">Construir la compañía que va a ser dueña de esa tecnología, lista para la próxima ronda, licencia o alianza.</p></div>
+      <div class="txt"><h3 class="display d40">Preparación corporativa</h3><p class="body16">Convertir la plataforma en una compañía sólida, lista para la próxima ronda, licencia o alianza.</p></div>
       <ul>
         <li>Estructura para inversión internacional</li>
         <li>PI a nombre de la compañía</li>
@@ -710,7 +711,6 @@ html:not(.abierto) .riel.sobre-hero .riel-menu span{background:var(--papel)}
         <li>Gobierno y gestión por resultados</li>
         <li>Lista para due diligence</li>
       </ul>
-      <div class="ilu"><img src="img/objetivo-2.png" alt=""></div>
     </div>
   </div>
 
@@ -724,28 +724,30 @@ html:not(.abierto) .riel.sobre-hero .riel-menu span{background:var(--papel)}
 
 <!-- FILOSOFÍA -->
 <section class="filosofia bleed" id="como-decidimos">
-  <div class="trama"></div>
-  <span class="tag abs" style="left:120px;top:60px"><b>FIG.#3</b>· Cómo decidimos</span>
-  <h2 class="abs display d64">Primero el problema.<br><span class="mark">Después la tecnología.</span></h2>
+  <span class="tag abs" style="left:120px;top:60px"><b>#3</b>· Cómo decidimos</span>
+  <h2 class="abs display d64">Problemas difíciles que<br><span class="mark">nadie está resolviendo</span></h2>
 
   <article class="copia" style="left:120px;top:260px">
     <img class="ph" src="img/foto-ciencia.jpg" alt="Científica observando una placa de Petri">
+    <span class="tag">Laboratorio</span>
     <h3 class="display d28">Ciencia validada</h3><div class="regla"></div>
-    <p class="body16">Conocimiento reconocido a nivel internacional, no una apuesta aislada.</p>
+    <p class="body16">Placeholder</p>
     <a class="cta" href="#proceso">Cómo evaluamos&nbsp;&nbsp;→</a>
   </article>
 
   <article class="copia" style="left:534px;top:260px">
     <img class="ph" src="img/foto-region.jpg" alt="Campo cultivado con una estación agrícola al fondo">
+    <span class="tag">Campo</span>
     <h3 class="display d28">Latinoamérica como ventaja</h3><div class="regla"></div>
-    <p class="body16">Como base productiva, mercado de aplicación o acceso a recursos y talento.</p>
+    <p class="body16">Placeholder</p>
     <a class="cta" href="#donde">Dónde estamos&nbsp;&nbsp;→</a>
   </article>
 
   <article class="copia" style="left:948px;top:260px">
     <img class="ph" src="img/foto-mercado.jpg" alt="Ingeniero revisando un biorreactor en una planta piloto">
+    <span class="tag">Planta piloto</span>
     <h3 class="display d28">Mercado relevante</h3><div class="regla"></div>
-    <p class="body16">Grande para crecer en serio, con un camino claro: licencia, servicios, producto o alianza.</p>
+    <p class="body16">Placeholder</p>
     <a class="cta" href="#areas">Áreas de interés&nbsp;&nbsp;→</a>
   </article>
 </section>
@@ -761,53 +763,45 @@ html:not(.abierto) .riel.sobre-hero .riel-menu span{background:var(--papel)}
 
 <!-- ÁREAS -->
 <section class="areas" id="areas">
-  <span class="tag abs" style="left:120px;top:48px"><b>FIG.#4</b>· Áreas de interés</span>
-  <h2 class="abs display d64">Dónde ponemos <span class="mark">el foco.</span></h2>
+  <span class="tag abs" style="left:120px;top:48px"><b>#4</b>· Áreas de interés</span>
+  <h2 class="abs display d64"><span class="mark">Pilares</span> de inversión</h2>
   <div class="area vivir">
-    <img class="objs" src="img/areas-vivir.png" alt="Objetos de salud: estetoscopio, medicamentos, dispositivos de diagnóstico">
-    <img class="forma" src="img/forma-amarilla.png" style="left:420px;top:300px;width:200px" alt="">
-    <div class="txt">
-      <h3 class="display d40">Vivir mejor</h3><div class="regla"></div>
-      <p class="sub22">Tecnologías que mejoran la salud y el bienestar</p>
-      <p class="body16">una terapia, un mejor tratamiento de heridas, un diagnóstico más temprano, un alimento más sano o un dispositivo que simplifica un tratamiento.</p>
-    </div>
+    <img class="foto" src="img/pilar-vivir.jpg" alt="Mesa junto a una ventana con aloe, frutas y una tablet que muestra un ritmo cardíaco">
+    <div class="velo"></div>
+    <h3 class="display d40">Vivir mejor</h3>
+    <p class="sub22">Tecnologías que<br>mejoran la salud y el bienestar</p>
+    <div class="ejemplos"><span class="tag">Terapias</span><span class="tag">Tratamiento de heridas</span><span class="tag">Diagnóstico temprano</span><span class="tag">Alimentos más sanos</span><span class="tag">Dispositivos médicos</span></div>
   </div>
   <div class="area producir">
-    <img class="objs" src="img/areas-producir.png" alt="Objetos productivos: dron, sensores, biorreactor, panel solar">
-    <img class="forma" src="img/forma-violeta.png" style="left:470px;top:225px;width:170px" alt="">
-    <div class="txt">
-      <h3 class="display d40">Producir mejor</h3><div class="regla"></div>
-      <p class="sub22">Tecnologías que aprovechan mejor los recursos naturales</p>
-      <p class="body16">un cultivo más resistente, una pesca más eficiente, una minería con menos impacto o un insumo que agrega valor.</p>
-    </div>
+    <img class="foto" src="img/pilar-producir.jpg" alt="Paisaje con campos, un dron, paneles solares, un lago y un barco en el mar">
+    <div class="velo"></div>
+    <h3 class="display d40">Producir mejor</h3>
+    <p class="sub22">Tecnologías que<br>aprovechan mejor los recursos naturales</p>
+    <div class="ejemplos"><span class="tag">Cultivos más resistentes</span><span class="tag">Pesca eficiente</span><span class="tag">Minería de menor impacto</span><span class="tag">Insumos con valor agregado</span></div>
   </div>
 </section>
 
 <!-- MÁS ALLÁ DEL CAPITAL -->
 <section class="mas">
-  <span class="tag abs"><b>FIG.#5</b>· Qué sumamos</span>
+  <span class="tag abs"><b>#5</b>· Qué sumamos</span>
   <h2 class="abs display d64">Más allá <span class="mark">del capital.</span></h2>
-  <div class="cols">
-    <div><div class="head"><span>01.</span><img src="img/mas-1.png" width="104" alt=""></div>
-      <h3 class="display d28">Consejo científico</h3>
-      <p class="body16">Asesores que ayudan a evaluar compañías y, cuando hace falta, acompañan desde el directorio.</p>
-      <a class="btn ghost" href="mailto:contacto@numancia.com?subject=Sumarme%20como%20asesor"><span class="t"><span>Sumate como asesor&nbsp;&nbsp;→</span></span></a></div>
-    <div><div class="head"><span>02.</span><img src="img/mas-2.png" width="151" alt=""></div>
-      <h3 class="display d28">Red industrial</h3>
-      <p class="body16">Acceso a socios industriales e internacionales y a instituciones científicas.</p>
-      <a class="btn ghost" href="mailto:contacto@numancia.com?subject=Ser%20socio%20industrial"><span class="t"><span>Ser socio industrial&nbsp;&nbsp;→</span></span></a></div>
-    <div><div class="head"><span>03.</span><img src="img/mas-3.png" width="128" alt=""></div>
-      <h3 class="display d28">Financiamiento no dilutivo</h3>
-      <p class="body16">Subsidios y programas públicos que suman sin ceder participación.</p>
-      <a class="btn ghost" href="mailto:contacto@numancia.com?subject=Consulta%20de%20elegibilidad"><span class="t"><span>Consultar elegibilidad&nbsp;&nbsp;→</span></span></a></div>
+  <div class="grilla">
+    <div><span>01</span><img class="ilu-img" src="img/sumamos-1.png" alt=""><h3 class="display">Consejo científico</h3><p class="body16">Expertos que validan y guían la ciencia.</p></div>
+    <div><span>02</span><img class="ilu-img" src="img/sumamos-2.png" alt=""><h3 class="display">Red industrial</h3><p class="body16">Acceso a socios, clientes y potenciales licenciatarios.</p></div>
+    <div><span>03</span><img class="ilu-img" src="img/sumamos-3.png" alt=""><h3 class="display">Desarrollo de proceso y escalado</h3><p class="body16">Pasar del laboratorio a producción.</p></div>
+    <div><span>04</span><img class="ilu-img" src="img/sumamos-4.png" alt=""><h3 class="display">Calidad y camino regulatorio</h3><p class="body16">BPM, ISO, trazabilidad y aprobaciones.</p></div>
+    <div><span>05</span><img class="ilu-img" src="img/sumamos-5.png" alt=""><h3 class="display">Propiedad intelectual</h3><p class="body16">Estrategia de patentes y libertad de operación.</p></div>
+    <div><span>06</span><img class="ilu-img" src="img/sumamos-6.png" alt=""><h3 class="display">Estructura corporativa y legal</h3><p class="body16">Gobierno, acuerdos y due diligence.</p></div>
+    <div><span>07</span><img class="ilu-img" src="img/sumamos-7.png" alt=""><h3 class="display">Acceso a capital</h3><p class="body16">Conexión con inversores y financiamiento no dilutivo.</p></div>
+    <div><span>08</span><img class="ilu-img" src="img/sumamos-8.png" alt=""><h3 class="display">Talento</h3><p class="body16">Equipo técnico y de gestión.</p></div>
   </div>
 </section>
 
 <!-- DÓNDE ESTAMOS -->
-<section class="donde bleed" id="donde">
+<section class="donde bleed" id="donde" hidden>
   <canvas class="abs mapa" role="img" aria-label="Mapa de puntos de Latinoamérica"></canvas>
   <div class="abs copy">
-    <span class="tag pa"><b>FIG.#6</b>· Dónde estamos</span>
+    <span class="tag pa"><b>#6</b>· Dónde estamos</span>
     <h2 class="display d64">El talento está.<br><span class="mark">Faltaba el puente.</span></h2>
     <p class="body18">Latinoamérica produce ciencia de primer nivel que pocas veces llega al mercado. Estamos donde esa ciencia ocurre, de Ciudad de México a Buenos Aires.</p>
     <div class="fila-cifras">
@@ -822,11 +816,10 @@ html:not(.abierto) .riel.sobre-hero .riel-menu span{background:var(--papel)}
 </section>
 
 <!-- CÓMO TRABAJAMOS -->
-<section class="proceso" id="proceso">
-  <span class="tag abs"><b>FIG.#7</b>· Cómo trabajamos</span>
+<section class="proceso bleed" id="proceso">
+  <span class="tag abs"><b>#7</b>· Cómo trabajamos</span>
   <h2 class="abs display d64">De la primera charla<br><span class="mark">a la siguiente ronda.</span></h2>
   <div class="abs linea"><b></b></div>
-  <div class="abs salida" aria-hidden="true"><b></b></div>
   <div class="paso" style="left:120px"><i>1</i><h3 class="display d28">Contacto</h3><p class="body16">Una charla para entender el problema. No hace falta un plan de negocios.</p></div>
   <div class="paso" style="left:365px"><i>2</i><h3 class="display d28">Evaluación</h3><p class="body16">Científicos revisan los datos; en paralelo, el mercado. Devolvemos lo que vimos.</p></div>
   <div class="paso" style="left:610px"><i>3</i><h3 class="display d28">Estructura</h3><p class="body16">Hitos para los dos objetivos y el instrumento adecuado.</p></div>
@@ -836,8 +829,7 @@ html:not(.abierto) .riel.sobre-hero .riel-menu span{background:var(--papel)}
 
 <!-- EQUIPO -->
 <section class="equipo" id="equipo">
-  <img class="abs circulo" src="img/equipo-circulo.svg" alt="">
-  <span class="tag abs"><b>FIG.#8</b>· Equipo</span>
+  <span class="tag abs"><b>#8</b>· Equipo</span>
   <h2 class="abs display d64">Quiénes hacen<br><span class="mark">Numancia.</span></h2>
   <div class="grupos">
     <div><h3>Comité de inversión</h3><p>Carolina Méndez · Andrés Villalba · Julieta Ortiz</p></div>
@@ -1103,7 +1095,7 @@ html:not(.abierto) .riel.sobre-hero .riel-menu span{background:var(--papel)}
   // Por bloque, no por elemento suelto
   const tipos=[
     ['.copy>*,section>.tag,section>h2,.cita blockquote,.cita figcaption,.objetivos .fila,.banda-copy,'+
-     '.area,.mas .cols>div,.paso,.puerta,.copia,.equipo .grupos>div,.miembro','up'],
+     '.area,.mas .grilla>div,.paso,.puerta,.copia,.equipo .grupos>div,.miembro','up'],
     ['.objetivos img,.donde .mapa','fade'],
     ['.proceso .linea','linea'],['.mark','mark']
   ];
@@ -1154,7 +1146,7 @@ html:not(.abierto) .riel.sobre-hero .riel-menu span{background:var(--papel)}
     let ultimo=-1;const riel=document.querySelector('.riel'),chips=hero.querySelector('.escenas');
     // con el zoom de retina (--z) el scroll y la pantalla vienen en px de pantalla: se pasan a px de la página
     const f=y=>{y=Math.round(y);if(y===ultimo)return;ultimo=y;const z=parseFloat(getComputedStyle(document.documentElement).zoom)||1,innerHeight=window.innerHeight/z;y=y/z;const H=hero.offsetHeight;
-      const P=H-innerHeight;hero.style.setProperty("--sy",Math.min(Math.max(0,y),P)+"px");const sz=Math.min(Math.max(0,y-P),innerHeight);hero.style.setProperty("--sz",sz+"px");hero.style.setProperty("--d",(sz/innerHeight).toFixed(3));hero.style.setProperty("--b",Math.min(1,Math.max(0,y)/innerHeight).toFixed(3));hero.style.setProperty("--c",Math.min(1,Math.max(0,y)/(innerHeight*.6)).toFixed(3));copia.classList.toggle('ido',y>H);riel&&riel.classList.toggle('sobre-hero',sz<innerHeight-56);chips&&chips.classList.toggle('ido',y>H)};
+      const P=H-innerHeight;hero.style.setProperty("--sy",Math.min(Math.max(0,y),P)+"px");const sz=Math.min(Math.max(0,y-P),innerHeight);hero.style.setProperty("--sz",sz+"px");hero.style.setProperty("--d",(sz/innerHeight).toFixed(3));hero.style.setProperty("--c",Math.min(1,Math.max(0,y)/(innerHeight*.6)).toFixed(3));copia.classList.toggle('ido',y>H);riel&&riel.classList.toggle('sobre-hero',sz<innerHeight-56);chips&&chips.classList.toggle('ido',y>H)};
     if(window.lenisN)window.lenisN.on('scroll',l=>f(l.animatedScroll));else addEventListener('scroll',()=>f(scrollY),{passive:true});
     addEventListener('resize',()=>{ultimo=-1;f(scrollY)});f(scrollY)})();
 </script>
@@ -1164,7 +1156,7 @@ html:not(.abierto) .riel.sobre-hero .riel-menu span{background:var(--papel)}
     const chips=[...grupo.querySelectorAll('button')],escenas=[...hero.querySelectorAll('.escena')],tag=hero.querySelector('.copy>.tag');
     const quieto=matchMedia('(prefers-reduced-motion: reduce)').matches&&!document.documentElement.classList.contains('anim');
     const ir=nombre=>{chips.forEach(c=>{const si=c.dataset.escena===nombre;c.classList.toggle('activa',si);c.setAttribute('aria-pressed',si)});
-      escenas.forEach(e=>e.classList.toggle('activa',e.dataset.escena===nombre));hero.classList.toggle('claro',nombre==='editorial');
+      escenas.forEach(e=>e.classList.toggle('activa',e.dataset.escena===nombre));
       const c=chips.find(c=>c.dataset.escena===nombre);if(tag&&c.dataset.tag)tag.textContent=c.dataset.tag};
     let reloj=null;const RITMO=7000;
     const reiniciar=()=>{grupo.classList.remove('rota');void grupo.offsetWidth;grupo.classList.add('rota')};
