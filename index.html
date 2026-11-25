@@ -45,7 +45,7 @@ section{width:1440px;margin-inline:auto}
   /* la barra no se achica: queda igual que en index */
   html .riel{zoom:1.25;padding:0 calc(max(0px,calc(50vw - 720px)) + 120px)}
   /* el wordmark del loader, más chico */
-  html .loader .marca{font-size:clamp(64px,calc(7.6vw / var(--z)),150px)}}
+  html .loader .marca{font-size:clamp(84px,calc(10.5vw / var(--z)),200px)}}
 :root{--sangre:max(0px,calc(calc(50vw / var(--z)) - 720px))}
 .bleed{background:none;border-image:var(--bg) 0 fill / 0 / 0 var(--sangre)}
 /* el hero queda fijo detrás: todas las demás secciones llevan base papel opaca (también a sangre) para taparlo */
@@ -230,11 +230,13 @@ html:not(.cargando) .riel{animation:baja-barra .9s cubic-bezier(.16,1,.3,1) 1.3s
 .objetivos{height:1050px;overflow:visible clip;z-index:2}
 /* dos filas con la misma grilla que "Más allá": sin borde exterior, filetes finos solo entre celdas y de alto completo */
 .objetivos .filas{left:96px;top:140px;width:1248px}
-.objetivos .fila{display:grid;grid-template-columns:194px 1fr 444px;height:220px}
+.objetivos .fila{display:grid;grid-template-columns:194px 1fr 444px;height:260px}
 .objetivos .fila+.fila{border-top:1px solid rgba(29,29,27,.12)}
 .objetivos .fila>*{padding:0 24px;display:flex;flex-direction:column;justify-content:center}
 .objetivos .fila>*+*{padding-left:32px;border-left:1px solid rgba(29,29,27,.12)}
 .objetivos .num{font-size:112px;line-height:.8;letter-spacing:-.04em}
+/* ilustración pintada (Figma) arriba del número */
+.objetivos .ilu-num{display:block;width:104px;height:104px;margin:0 0 8px -10px;mix-blend-mode:darken}
 .objetivos .fila.a .num{color:var(--agua)}
 .objetivos .fila.b .num{color:var(--violeta60)}
 .objetivos .txt h3{white-space:nowrap}
@@ -271,7 +273,6 @@ html:not(.cargando) .riel{animation:baja-barra .9s cubic-bezier(.16,1,.3,1) 1.3s
 
 /* ---------- CITA ---------- */
 .cita{height:632px;--bg:var(--amarillo-fade);overflow:visible clip;z-index:1}
-.cita .bg{left:calc(-1*var(--sangre));top:-52px;width:calc(1440px + 2*var(--sangre));height:903px;object-fit:cover;opacity:.1;filter:grayscale(.2)}
 .cita blockquote{left:182px;top:196px;width:1076px;text-align:center}
 .cita figcaption{left:0;right:0;top:506px;text-align:center;font:400 15px/1.3 var(--mono)}
 
@@ -532,7 +533,7 @@ html:not(.cargando) .hero .c4{animation-delay:.45s}
 .hero .escena.activa .c2{--e:.12s}.hero .escena.activa .c3{--e:.24s}.hero .escena.activa .c4{--e:.36s}
 .hero .escena:not(.activa) .capa{animation:none!important}
 /* posiciones propias de la escena ciencia (microscopio con flores) */
-.hero [data-escena=ciencia] .c1{--y:-380px}
+.hero [data-escena=ciencia] .c1{--y:-380px;scale:-1 1}
 .hero [data-escena=ciencia] .c2{--y:-40px}
 .hero [data-escena=ciencia] .c3{--y:60px}
 .hero [data-escena=ciencia] .c4{--y:300px}
@@ -546,24 +547,40 @@ html:not(.cargando) .hero .c4{animation-delay:.45s}
   .hero [data-escena=mineria] .c1{--y:-1190px}
   .hero [data-escena=mar] .c4{--y:250px}
 }
-/* posiciones propias de la escena campus */
-.hero [data-escena=campus] .c1{--y:-690px}
-.hero [data-escena=campus] .c2{--y:50px}
-.hero [data-escena=campus] .c3{--y:100px}
-.hero [data-escena=campus] .c4{--y:420px;-webkit-mask-image:linear-gradient(transparent,#000 25%);mask-image:linear-gradient(transparent,#000 25%)}
+/* posiciones propias de la escena longevidad (todas las capas espejadas) */
+.hero [data-escena=longevidad] .capa{scale:-1 1}
+.hero [data-escena=longevidad] .c1{--y:-400px;-webkit-mask-image:none;mask-image:none}
+.hero [data-escena=longevidad] .c2{--y:-420px;--k:.85}
+.hero [data-escena=longevidad] .c4{--y:250px}
+/* posiciones propias de la escena computo: la sala tapa todo y la ciudad se ve por la ventana */
+.hero [data-escena=computo] .c1{--y:-400px;-webkit-mask-image:none;mask-image:none}
+.hero [data-escena=computo] .c2{--y:-395px;--k:.86}
+/* el computador cuántico cuelga del techo: anclado arriba de la pantalla en vez de abajo, y se mueve con la sala */
+.hero [data-escena=computo] .c3{top:0;bottom:auto;--y:-10px;--k:.45}
+.hero [data-escena=computo] .c4{--y:320px}
+/* posiciones propias de la escena agro */
+.hero [data-escena=agro] .c1{--y:-840px;--k:.5}
+.hero [data-escena=agro] .c2{--y:-100px;--k:.38}
+.hero [data-escena=agro] .c3{--y:-50px}
+.hero [data-escena=agro] .c4{--y:270px;-webkit-mask-image:linear-gradient(transparent,#000 25%);mask-image:linear-gradient(transparent,#000 25%)}
 /* chips */
 /* chips abajo al centro de la pantalla, aparte del texto (no se desenfocan con él); la Tesis los pisa al subir */
-.hero .escenas{position:fixed;z-index:3;left:50%;bottom:40px;translate:-50% 0;display:flex;gap:28px;transition:opacity .4s,translate .4s}
+.hero .escenas{position:fixed;z-index:3;left:50%;bottom:40px;translate:-50% 0;display:flex;gap:2px;padding:4px;border-radius:999px;background:rgba(29,29,27,.3);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:1px solid rgba(250,248,243,.16);transition:opacity .4s,translate .4s}
+/* selector de escenas: control segmentado en una cápsula de vidrio, para que no se lea como links de la barra; la escena activa va en papel con su barra de carga */
 .hero .escenas.ido{visibility:hidden}
 .hero .escenas button:focus{outline:0}
 .hero .escenas button:focus-visible{outline:1px solid var(--papel);outline-offset:6px}
-.hero .escenas button{position:relative;overflow:hidden;height:auto;padding:0 0 7px;border:0;border-radius:0;background:none;opacity:.6;color:var(--papel);
+.hero .escenas button{position:relative;overflow:hidden;height:auto;padding:9px 14px 10px;border:0;border-radius:999px;background:none;opacity:.75;color:var(--papel);
   font:400 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:background .3s,color .3s,border-color .3s}
-.hero .escenas button:hover{opacity:1}
-.hero .escenas button.activa{opacity:1}
-.hero .escenas button.activa::before{content:"";position:absolute;left:0;bottom:0;height:1px;width:100%;background:rgba(250,248,243,.35)}
+.hero .escenas button:not(.activa):hover{opacity:1;background:rgba(250,248,243,.12)}
+.hero .escenas button{z-index:1}
+.hero .escenas button.activa{opacity:1;color:var(--tinta)}
+/* píldora de papel que se desliza hasta la escena activa; JS le pasa posición (--ix) y ancho (--iw) */
+.hero .escenas::before{content:"";position:absolute;top:4px;bottom:4px;left:var(--ix,4px);width:var(--iw,0px);border-radius:999px;background:var(--papel)}
+.hero .escenas.listo::before{transition:left .6s var(--ease),width .6s var(--ease)}
+.hero .escenas button.activa::before{content:"";position:absolute;left:14px;right:14px;bottom:5px;height:1px;background:rgba(29,29,27,.15)}
 /* rotación automática: una barra fina muestra cuánto falta para el próximo cambio */
-.hero .escenas button.activa::after{content:"";position:absolute;left:0;bottom:0;height:1px;width:100%;background:var(--papel);transform-origin:0 50%;scale:0 1}
+.hero .escenas button.activa::after{content:"";position:absolute;left:14px;right:14px;bottom:5px;height:1px;background:var(--tinta);transform-origin:0 50%;scale:0 1}
 .hero .escenas.rota button.activa::after{animation:carga-escena var(--rot,7s) linear forwards}
 @keyframes carga-escena{to{scale:1 1}}
 html:not(.cargando) .hero .escenas{animation:entra-chips 1s cubic-bezier(.16,1,.3,1) 1.3s backwards}
@@ -620,9 +637,11 @@ html:not(.abierto) .riel.sobre-hero .riel-menu span{background:var(--papel)}
 <section class="hero" id="top">
   <div class="escenas" role="group" aria-label="Cambiar el paisaje">
     <button type="button" class="activa" data-escena="mineria" data-tag="Minería con menos impacto · Latinoamérica" aria-pressed="true">Minería</button>
-    <button type="button" data-escena="ciencia" data-tag="Ciencia que llega al mercado · Latinoamérica" aria-pressed="false">Ciencia</button>
-    <button type="button" data-escena="mar" data-tag="Pesca y acuicultura más eficientes · Latinoamérica" aria-pressed="false">Mar</button>
-    <button type="button" data-escena="campus" data-tag="Del campus a la industria · Latinoamérica" aria-pressed="false">Campus</button>
+    <button type="button" data-escena="longevidad" data-tag="Vivir más y mejor · Latinoamérica" aria-pressed="false">Longevidad</button>
+    <button type="button" data-escena="ciencia" data-tag="Ciencia que llega al mercado · Latinoamérica" aria-pressed="false" hidden>Ciencia</button>
+    <button type="button" data-escena="mar" data-tag="Pesca y acuicultura más eficientes · Latinoamérica" aria-pressed="false">Pesca</button>
+    <button type="button" data-escena="agro" data-tag="Del campo a la industria · Latinoamérica" aria-pressed="false">Agro</button>
+    <button type="button" data-escena="computo" data-tag="Cómputo que acelera la ciencia · Latinoamérica" aria-pressed="false">Cómputo</button>
   </div>
   <div class="paisaje" aria-hidden="true">
     <div class="escena activa" data-escena="mineria">
@@ -631,7 +650,14 @@ html:not(.abierto) .riel.sobre-hero .riel-menu span{background:var(--papel)}
       <img class="capa c3" src="img/hero/mineria-3.png" alt="">
       <img class="capa c4" src="img/hero/mineria-4.png" alt="">
     </div>
-    <div class="escena" data-escena="ciencia">
+    <div class="escena" data-escena="longevidad">
+      <img class="capa c1" src="img/hero/longevidad-1.png" alt="">
+      <img class="capa c2" src="img/hero/longevidad-2.png" alt="">
+      <img class="capa c3" src="img/hero/longevidad-3.png" alt="">
+      <img class="capa c4" src="img/hero/longevidad-4.png" alt="">
+    </div>
+    <!-- ciencia oculta por ahora -->
+    <div class="escena" data-escena="ciencia" hidden>
       <img class="capa c1" src="img/hero/ciencia-1.png" alt="">
       <img class="capa c2" src="img/hero/ciencia-2.png" alt="">
       <img class="capa c3" src="img/hero/ciencia-3.png" alt="">
@@ -643,11 +669,17 @@ html:not(.abierto) .riel.sobre-hero .riel-menu span{background:var(--papel)}
       <img class="capa c3" src="img/hero/mar-3.png" alt="">
       <img class="capa c4" src="img/hero/mar-4.png" alt="">
     </div>
-    <div class="escena" data-escena="campus">
-      <img class="capa c1" src="img/hero/campus-1.png" alt="">
-      <img class="capa c2" src="img/hero/campus-2.png" alt="">
-      <img class="capa c3" src="img/hero/campus-3.png" alt="">
-      <img class="capa c4" src="img/hero/campus-4.png" alt="">
+    <div class="escena" data-escena="agro">
+      <img class="capa c1" src="img/hero/agro-1.png" alt="">
+      <img class="capa c2" src="img/hero/agro-2.png" alt="">
+      <img class="capa c3" src="img/hero/agro-3.png" alt="">
+      <img class="capa c4" src="img/hero/agro-4.png" alt="">
+    </div>
+    <div class="escena" data-escena="computo">
+      <img class="capa c1" src="img/hero/computo-1.png" alt="">
+      <img class="capa c2" src="img/hero/computo-2.png" alt="">
+      <img class="capa c3" src="img/hero/computo-3.png" alt="">
+      <img class="capa c4" src="img/hero/computo-4.png" alt="">
     </div>
   </div>
   <div class="capitulos">
@@ -686,7 +718,7 @@ html:not(.abierto) .riel.sobre-hero .riel-menu span{background:var(--papel)}
 
   <div class="abs filas">
     <div class="fila a">
-      <span class="display num">01</span>
+      <div><img class="ilu-num" src="img/objetivo-matraz.png" alt=""><span class="display num">01</span></div>
       <div class="txt"><h3 class="display d36">Ciencia con futuro comercial</h3><p class="body16">Desarrollar la plataforma tecnológica a partir de investigación de frontera, hasta convertirla en una plataforma tecnológica con aplicación en el mercado.</p></div>
       <ul>
         <li>Validaciones técnicas pendientes</li>
@@ -697,7 +729,7 @@ html:not(.abierto) .riel.sobre-hero .riel-menu span{background:var(--papel)}
       </ul>
     </div>
     <div class="fila b">
-      <span class="display num">02</span>
+      <div><img class="ilu-num" src="img/objetivo-valija.png" alt=""><span class="display num">02</span></div>
       <div class="txt"><h3 class="display d36">Preparación corporativa</h3><p class="body16">Convertir la plataforma en una compañía sólida, lista para la próxima ronda, licencia o alianza.</p></div>
       <ul>
         <li>Estructura para inversión internacional</li>
@@ -749,7 +781,6 @@ html:not(.abierto) .riel.sobre-hero .riel-menu span{background:var(--papel)}
 
 <!-- CITA -->
 <section class="cita bleed">
-  <img class="abs bg" src="img/cita-foto.jpg" alt="">
   <figure>
     <blockquote class="abs display d80">“ Un buen científico frente a un problema real, antes que un buen pitch ”</blockquote>
     <figcaption class="abs">— Criterio de inversión de Numancia</figcaption>
@@ -1131,11 +1162,13 @@ html:not(.abierto) .riel.sobre-hero .riel-menu span{background:var(--papel)}
 <script>
   /* escenas del hero: chips + rotación automática cada 7s hasta que alguien elige una */
   (()=>{const hero=document.querySelector('.hero'),grupo=hero&&hero.querySelector('.escenas');if(!grupo)return;
-    const chips=[...grupo.querySelectorAll('button')],escenas=[...hero.querySelectorAll('.escena')],tag=hero.querySelector('.copy>.tag');
+    const chips=[...grupo.querySelectorAll('button:not([hidden])')],escenas=[...hero.querySelectorAll('.escena')],tag=hero.querySelector('.copy>.tag');
     const quieto=matchMedia('(prefers-reduced-motion: reduce)').matches&&!document.documentElement.classList.contains('anim');
     const ir=nombre=>{chips.forEach(c=>{const si=c.dataset.escena===nombre;c.classList.toggle('activa',si);c.setAttribute('aria-pressed',si)});
       escenas.forEach(e=>e.classList.toggle('activa',e.dataset.escena===nombre));
-      const c=chips.find(c=>c.dataset.escena===nombre);if(tag&&c.dataset.tag)tag.textContent=c.dataset.tag};
+      const c=chips.find(c=>c.dataset.escena===nombre);if(tag&&c.dataset.tag)tag.textContent=c.dataset.tag;mover()};
+    const mover=()=>{const c=chips.find(c=>c.classList.contains('activa'));if(!c)return;grupo.style.setProperty('--ix',c.offsetLeft+'px');grupo.style.setProperty('--iw',c.offsetWidth+'px')};
+    addEventListener('resize',mover);document.fonts&&document.fonts.ready.then(mover);
     let reloj=null;const RITMO=7000;
     const reiniciar=()=>{grupo.classList.remove('rota');void grupo.offsetWidth;grupo.classList.add('rota')};
     const siguiente=()=>{if(document.hidden||scrollY>innerHeight)return;const i=chips.findIndex(c=>c.classList.contains('activa'));ir(chips[(i+1)%chips.length].dataset.escena);reiniciar()};
@@ -1144,7 +1177,7 @@ html:not(.abierto) .riel.sobre-hero .riel-menu span{background:var(--papel)}
     if(!quieto&&chips.length>1){grupo.style.setProperty('--rot',RITMO+'ms');
       const arrancar=()=>{reiniciar();reloj=setInterval(siguiente,RITMO)};
       document.documentElement.classList.contains('cargando')?new MutationObserver((m,o)=>{if(!document.documentElement.classList.contains('cargando')){o.disconnect();setTimeout(arrancar,1800)}}).observe(document.documentElement,{attributes:true,attributeFilter:['class']}):arrancar()}
-    ir(chips[0].dataset.escena)})();
+    ir(chips[0].dataset.escena);requestAnimationFrame(()=>requestAnimationFrame(()=>grupo.classList.add('listo')))})();
 </script>
 </body>
 </html>
